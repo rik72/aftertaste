@@ -136,7 +136,7 @@ public class ThingLoader implements Loadable {
 											afterVisibility = false;
 
 										String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-										String beforeStatus = entConData.before != null ? entConData.before : complement.getStatus().getLabel();
+										String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
 										String afterStatus = afterVisibility == null ? entConData.after : null;
 
 										ThingOneAction action = new ThingOneAction(
@@ -200,7 +200,7 @@ public class ThingLoader implements Loadable {
 											afterVisibility = false;
 
 										String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-										String beforeStatus = entConData.before != null ? entConData.before : complement.getStatus().getLabel();
+										String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
 										String afterStatus = afterVisibility == null ? entConData.after : null;
 
 										ThingTwoAction action = new ThingTwoAction(

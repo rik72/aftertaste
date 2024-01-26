@@ -12,7 +12,8 @@ import io.rik72.brew.game.ui.ux.TerminalUX;
 
 public class Terminal implements TerminalUX {
 
-	TerminalUX ux;
+	private TerminalUX ux;
+	private String lastLocationDescription;
 
 	private Terminal() {
 		try {
@@ -33,12 +34,15 @@ public class Terminal implements TerminalUX {
 
 	public void showLocation() {
 		Location location = Story.get().getMainCharacter().getLocation();
-		skip(1);
 		// String name = location.getName();
 		// hilightln(name.substring(0, 1).toUpperCase() + name.substring(1));
 		printLocationImage(location);
-		printLongText(location.getDescription());
-		skip(1);
+		if (!location.getDescription().equals(lastLocationDescription)) {
+			lastLocationDescription = location.getDescription();
+			skip(1);
+			emphasisLongText(lastLocationDescription);
+			skip(1);
+		}
 	}
 
 	public Results executeInput(String input) throws Exception {
@@ -61,7 +65,7 @@ public class Terminal implements TerminalUX {
 			// }
 		}
 		else {
-			println("I can't understand.", 2);
+			println("I can't understand.");
 		}
 
 		return results;
@@ -71,10 +75,10 @@ public class Terminal implements TerminalUX {
 
 		if (results.getFeedback() != null && results.getFeedback().length() > 0 || results.getTexts().size() > 0) {
 			if (results.getFeedback().length() > 0)
-				printLongText(results.getFeedback(), 2);
+				printLongText(results.getFeedback());
 			if (results.getTexts().size() > 0)
 				for (String text : results.getTexts())
-					printLongText(text, 2);
+					printLongText(text);
 		}
 
 		if (results.isRefresh())
@@ -131,13 +135,8 @@ public class Terminal implements TerminalUX {
 	}
 
 	@Override
-	public void print(String text, int indent) {
-		ux.print(text, indent);
-	}
-
-	@Override
-	public void println(String text, int indent) {
-		ux.println(text, indent);
+	public void print(String text) {
+		ux.println(text);
 	}
 
 	@Override
@@ -151,13 +150,13 @@ public class Terminal implements TerminalUX {
 	}
 
 	@Override
-	public void printLongText(String text, int indent) {
-		ux.printLongText(text, indent);
+	public void printLongText(String text) {
+		ux.printLongText(text);
 	}
 
 	@Override
-	public void printLongText(String text) {
-		ux.printLongText(text);
+	public void emphasisLongText(String text) {
+		ux.emphasisLongText(text);
 	}
 
 	@Override

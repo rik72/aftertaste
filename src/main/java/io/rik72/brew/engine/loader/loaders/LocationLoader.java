@@ -59,12 +59,8 @@ public class LocationLoader implements Loadable {
 				if (stItem.description == null) {
 					if (lastDescription == null && "initial".equals(stItem.status))
 						throw new Exception("Initial description of location \"" + location.getName() + "\" cannot be null");
-					else
-						location.setAutoRefresh(false);
 				}
 				else {
-					if (!location.isAutoRefresh())
-						throw new Exception("Location \"" + location.getName() + "\" has been marked as no autorefresh, put all non-initial descriptions to null");
 					lastDescription = stItem.description;
 				}
 				LocationStatus status = new LocationStatus(location.getName(), stItem.status, lastDescription,

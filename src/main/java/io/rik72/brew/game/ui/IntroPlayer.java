@@ -12,8 +12,8 @@ public class IntroPlayer {
 
 		Terminal.get().skip(1);
 		Terminal.get().println("=======================================");
-		Terminal.get().println(title, (40 - title.length()) / 2);
-		Terminal.get().println(" ( " + subtitle + " )", (40 - subtitle.length() - 5) / 2);
+		Terminal.get().println(title);
+		Terminal.get().println(" ( " + subtitle + " )");
 		Terminal.get().println("=======================================");
 
 		Terminal.get().pressEnterToContinue(new Future() {

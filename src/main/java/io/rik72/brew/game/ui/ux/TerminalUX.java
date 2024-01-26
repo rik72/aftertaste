@@ -9,17 +9,15 @@ public interface TerminalUX {
 
 	public abstract void pull(int lines);
 
-	public abstract void hilightln(String text);
-
-	public abstract void print(String text, int indent);
-
-	public abstract void println(String text, int indent);
+	public abstract void print(String text);
 
 	public abstract void println(String text);
 
-	public abstract void printLongText(String text, int indent);
+	public abstract void hilightln(String text);
 
 	public abstract void printLongText(String text);
+
+	public abstract void emphasisLongText(String text);
 
 	public abstract void confirm(String question, Future then);
 

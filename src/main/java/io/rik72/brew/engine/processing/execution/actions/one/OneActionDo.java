@@ -74,8 +74,7 @@ public class OneActionDo extends OneActionExecutor {
 					DB.persist(before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
-					if (subject.getLocation().getId() == before.getId() && subject.getLocation().isAutoRefresh())
-						refresh = true;
+					refresh = true;
 				}
 			}
 		}

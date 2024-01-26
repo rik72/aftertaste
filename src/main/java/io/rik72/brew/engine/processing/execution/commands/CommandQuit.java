@@ -20,7 +20,7 @@ public class CommandQuit extends CommandExecutor {
 
 			@Override
 			public void onSuccess() {
-				Terminal.get().println("Quitting...", 2);
+				Terminal.get().println("Quitting...");
 				Terminal.get().skip(1);
 				System.exit(0);
 			}

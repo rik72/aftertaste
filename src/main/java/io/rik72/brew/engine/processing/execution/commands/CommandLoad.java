@@ -26,10 +26,9 @@ public class CommandLoad extends CommandExecutor {
 					Story.get().restart();
 					Deltas.loadFromFile("save0001.sav");
 					Story.get().applyDeltas();
-					Terminal.get().println("Game loaded.", 2);
-					Terminal.get().println("...", 2);
+					Terminal.get().println("Game loaded.");
 				} catch (Exception e) {
-					Terminal.get().println("Error in loading game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")", 2);
+					Terminal.get().hilightln("Error in loading game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 				}
 				Terminal.get().consumeResults(new Results(true, true, "", true));
 			}

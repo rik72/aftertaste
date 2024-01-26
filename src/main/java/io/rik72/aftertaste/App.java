@@ -4,7 +4,6 @@ import io.rik72.aftertaste.ui.scenes.*;
 import io.rik72.aftertaste.ui.ux.GUITerminalUX;
 import io.rik72.brew.game.BrewMain;
 import io.rik72.brew.game.ui.Terminal;
-// import io.rik72.aftertaste.scenes.Test1Scene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

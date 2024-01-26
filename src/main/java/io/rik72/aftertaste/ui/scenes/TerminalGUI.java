@@ -19,11 +19,13 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -33,7 +35,7 @@ import javafx.stage.Stage;
 public class TerminalGUI extends AbstractScene {
 
 	public static int WIDTH = 640;
-	public static int HEIGHT = 400;
+	public static int HEIGHT = 480;
 	public static int TEXT_COLS = 80;
 
 	// private TextArea textArea;
@@ -41,7 +43,7 @@ public class TerminalGUI extends AbstractScene {
 	private ScrollPane textPane;
 	private TextField promptField;
 	private HBox promptPane;
-	private VBox allPane;
+	private BorderPane allPane;
 	private boolean scrollToBottom = false;
 	private Future enterListener;
 
@@ -57,26 +59,17 @@ public class TerminalGUI extends AbstractScene {
 		return Font.font("Georgia", FontWeight.BOLD, 16);
 	}
 
+	public Font italic() {
+		return Font.font("Georgia", FontPosture.ITALIC, 16);
+	}
+
 	@Override
 	public void show() {
 
-		// Elements
+		// Elements ===========================================================
 		textFlow = new TextFlow();
 		textFlow.setMaxWidth(WIDTH - 20);
 		textFlow.setPadding(new Insets(0, 20, 0, 20));
-		textPane = new ScrollPane(textFlow);
-		textPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-        VBox.setVgrow(textPane, Priority.ALWAYS);     
-        textPane.setMinWidth(Region.USE_PREF_SIZE);
-		textFlow.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if (scrollToBottom) {
-					textPane.setVvalue(textPane.getVmax());
-					scrollToBottom = false;
-				}
-            }
-        });
 
 		Label promptLabel = new Label("Your action:");
 		promptLabel.setFont(normal());
@@ -92,12 +85,6 @@ public class TerminalGUI extends AbstractScene {
 				KeyCode kc = event.getCode();
 				String text = promptField.getText();
 				if (kc == KeyCode.ENTER) {
-
-					// if (enterListener != null) {
-					// 	Future then = enterListener;
-					// 	enterListener = null;
-					// 	then.onSuccess();
-					// }
 					if (text.length() > 0) {
 						try {
 							Terminal.get().hilightln("> " + text);
@@ -113,11 +100,31 @@ public class TerminalGUI extends AbstractScene {
 			}
 		});
 
-		// Layout
+		// Layout ===========================================================
+		// scrollable text pane
+		textPane = new ScrollPane(textFlow);
+		textPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        VBox.setVgrow(textPane, Priority.ALWAYS);     
+        // textPane.setMinWidth(Region.USE_PREF_SIZE);
+		textFlow.heightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				if (scrollToBottom) {
+					textPane.setVvalue(textPane.getVmax());
+					scrollToBottom = false;
+				}
+            }
+        });
+		
+		// user input pane
 		promptPane = new HBox(promptLabel, promptField);
 		promptPane.setAlignment(Pos.CENTER_RIGHT);
 		promptPane.setPadding(new Insets(10));
-		allPane = new VBox(textPane);
+		// main pane
+		allPane = new BorderPane();
+		// - top will be used for location images
+		// - bottom will be used for user input
+		allPane.setCenter(textPane);
 
 		// Build and show scene
         Scene scene = new Scene(allPane, WIDTH, HEIGHT);
@@ -139,9 +146,9 @@ public class TerminalGUI extends AbstractScene {
         stage.setScene(scene);
 		stage.setTitle("Aftertaste");
 		stage.setMinWidth(WIDTH);
-		stage.setMaxWidth(WIDTH);
 		stage.setMinHeight(HEIGHT);
-		stage.setMaxHeight(HEIGHT);
+		// stage.setMaxWidth(WIDTH);
+		// stage.setMaxHeight(HEIGHT);
         stage.show();
 	}
 
@@ -227,6 +234,17 @@ public class TerminalGUI extends AbstractScene {
 	}
 
 	public void showPromptPane() {
-		allPane.getChildren().add(promptPane);
+		allPane.setBottom(promptPane);
+		allPane.layout();
+	}
+
+	public void setTopImage(Node imageNode) {
+		allPane.setTop(imageNode);
+		allPane.layout();
+	}
+
+	public void removeTopImage() {
+		allPane.setTop(null);
+		allPane.layout();
 	}
 }

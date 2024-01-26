@@ -22,9 +22,9 @@ public class CommandSave extends CommandExecutor {
 			public void onSuccess() {
 				try {
 					Deltas.saveToFile("save0001.sav");
-					Terminal.get().println("Game saved.", 2);
+					Terminal.get().println("Game saved.");
 				} catch (Exception e) {
-					Terminal.get().println("Error in saving game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")", 2);
+					Terminal.get().hilightln("Error in saving game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 				}
 				Terminal.get().consumeResults(new Results(true, false, ""));
 			}

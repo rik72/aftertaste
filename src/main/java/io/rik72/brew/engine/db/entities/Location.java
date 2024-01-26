@@ -28,15 +28,11 @@ public class Location extends AbstractEntity implements Deltable {
     @JoinColumn
 	private LocationStatus status;
 
-	@Column
-	private boolean autoRefresh;
-
 	public Location() {
 	}
 
 	public Location(String name) {
 		this.name = name;
-		this.autoRefresh = true;
 	}
 
 	@Override
@@ -58,14 +54,6 @@ public class Location extends AbstractEntity implements Deltable {
 
 	public void setStatus(String statusLabel) {
 		this.status = LocationStatusRepository.get().getByLocationAndLabel(this, statusLabel);
-	}
-
-	public boolean isAutoRefresh() {
-		return autoRefresh;
-	}
-
-	public void setAutoRefresh(boolean autoRefresh) {
-		this.autoRefresh = autoRefresh;
 	}
 
 	public String getDescription() {

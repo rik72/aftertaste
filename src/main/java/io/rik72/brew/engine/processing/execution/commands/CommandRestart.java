@@ -23,9 +23,9 @@ public class CommandRestart extends CommandExecutor {
 			public void onSuccess() {
 				try {
 					Story.get().restart();
-					Terminal.get().println("Game restarted.", 2);
+					Terminal.get().println("Game restarted.");
 				} catch (Exception e) {
-					Terminal.get().println("Error in restarting game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")", 2);
+					Terminal.get().hilightln("Error in restarting game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 				}
 				Terminal.get().consumeResults(new Results(true, true, "", true));
 			}
