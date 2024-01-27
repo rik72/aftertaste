@@ -13,7 +13,7 @@ public class WordLoader implements Loadable {
 
 	@Override
 	public void load() {
-		WordsDocLoader loader = new WordsDocLoader("brew/story/other_names.yml");
+		WordsDocLoader loader = new WordsDocLoader("brew/stories/test/other_names.yml");
 		loader.load();
 
 		// Additional loading is delegated to other loaders in the same package

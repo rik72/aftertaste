@@ -8,7 +8,7 @@ public class VerbLoader implements Loadable {
 
 	@Override
 	public void load() {
-		WordsDocLoader loader = new WordsDocLoader("brew/story/verbs.yml");
+		WordsDocLoader loader = new WordsDocLoader("brew/stories/test/verbs.yml");
 		loader.load();
 	}
 

@@ -6,6 +6,7 @@ import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.story.Story;
+import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.delta.Deltas;
 
@@ -23,14 +24,24 @@ public class CommandLoad extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					Story.get().restart();
-					Deltas.loadFromFile("save0001.sav");
-					Story.get().applyDeltas();
-					Terminal.get().println("Game loaded.");
+					SaveGame.loadFromFile("save0001.sav");
+					if (SaveGame.getInstance().checkStoryCompatibility(Story.get())) {
+						Story.get().restart();
+						Deltas.set(SaveGame.getInstance().getDeltas());
+						Story.get().applyDeltas();
+						Terminal.get().println("Game loaded.");
+						Terminal.get().consumeResults(new Results(true, true, "", true));
+					}
+					else {
+						Terminal.get().hilightln("Incompatible save file " + 
+							"('" + SaveGame.getInstance().getStoryRefId() + "' format vs '" + Story.get().getRefId() + "'" +
+							" required by current story)");
+						Terminal.get().consumeResults(new Results(false, false, ""));
+					}
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in loading game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
+					Terminal.get().consumeResults(new Results(false, false, ""));
 				}
-				Terminal.get().consumeResults(new Results(true, true, "", true));
 			}
 
 			@Override

@@ -5,8 +5,8 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
-import io.rik72.mammoth.delta.Deltas;
 
 public class CommandSave extends CommandExecutor {
 
@@ -21,7 +21,7 @@ public class CommandSave extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					Deltas.saveToFile("save0001.sav");
+					SaveGame.saveToFile("save0001.sav");
 					Terminal.get().println("Game saved.");
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in saving game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class LocationStatusRaw extends Raw {
 	public String status;
+	public String image;
 	public String description;
 	public WordRaw word;
 	public DirectionsRaw directions;

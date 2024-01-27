@@ -8,7 +8,7 @@ public class PrepositionLoader implements Loadable {
 
 	@Override
 	public void load() {
-		WordsDocLoader loader = new WordsDocLoader("brew/story/prepositions.yml");
+		WordsDocLoader loader = new WordsDocLoader("brew/stories/test/prepositions.yml");
 		loader.load();
 	}
 

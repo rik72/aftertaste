@@ -28,7 +28,7 @@ public class CharacterLoader implements Loadable {
 	@Override
 	public void load() {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
-		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/story/characters.yml");
+		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
 
 		boolean first = true;
 		for (CharacterRaw character : doc.characters) {
@@ -92,7 +92,7 @@ public class CharacterLoader implements Loadable {
 
 	public void reload() {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
-		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/story/characters.yml");
+		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
 
 		boolean first = true;
 		for (CharacterRaw character : doc.characters) {

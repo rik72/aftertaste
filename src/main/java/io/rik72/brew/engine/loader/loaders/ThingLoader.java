@@ -47,7 +47,7 @@ public class ThingLoader implements Loadable {
 	public void load() {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
-		Docs.Things doc = (Docs.Things) parser.parse("brew/story/things.yml");
+		Docs.Things doc = (Docs.Things) parser.parse("brew/stories/test/things.yml");
 
 		// insert words for things
 		for (ThingRaw thItem : doc.things) {
@@ -266,7 +266,7 @@ public class ThingLoader implements Loadable {
 	public void reload() {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
-		Docs.Things doc = (Docs.Things) parser.parse("brew/story/things.yml");
+		Docs.Things doc = (Docs.Things) parser.parse("brew/stories/test/things.yml");
 
 		for (ThingRaw thItem : doc.things) {
 			Thing thing = ThingRepository.get().getByName(thItem.name);

@@ -32,7 +32,7 @@ public class LocationLoader implements Loadable {
 	public void load() throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Locations.class);
-		Docs.Locations doc = (Docs.Locations) parser.parse("brew/story/locations.yml");
+		Docs.Locations doc = (Docs.Locations) parser.parse("brew/stories/test/locations.yml");
 
 		for (LocationRaw locItem : doc.locations) {
 			Parser.checkNotEmpty("location name", locItem.name);
@@ -63,7 +63,9 @@ public class LocationLoader implements Loadable {
 				else {
 					lastDescription = stItem.description;
 				}
-				LocationStatus status = new LocationStatus(location.getName(), stItem.status, lastDescription,
+				if (stItem.image == null)
+					stItem.image = stItem.status;
+				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, lastDescription,
 					stItem.word != null ? stItem.word.text : locItem.word.text);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
@@ -143,7 +145,7 @@ public class LocationLoader implements Loadable {
 	public void reload() {
 
 		YmlParser parser = new YmlParser(Docs.Locations.class);
-		Docs.Locations doc = (Docs.Locations) parser.parse("brew/story/locations.yml");
+		Docs.Locations doc = (Docs.Locations) parser.parse("brew/stories/test/locations.yml");
 
 		for (LocationRaw locItem : doc.locations) {
 			Location location = LocationRepository.get().getByName(locItem.name);

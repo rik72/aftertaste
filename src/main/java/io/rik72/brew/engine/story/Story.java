@@ -29,6 +29,9 @@ import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltas;
 
 public class Story {
+	private String artifactId;
+	private String version;
+	private int saveVersion;
 	private String title;
 	private String subtitle;
 	private List<String> intro = new ArrayList<>();
@@ -55,6 +58,18 @@ public class Story {
 		return intro;
 	}
 
+	public String getArtifactId() {
+		return artifactId;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public StoryRefId getRefId() {
+		return new StoryRefId(artifactId, saveVersion);
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -65,8 +80,11 @@ public class Story {
 
 	private void load() {
 		YmlParser parser = new YmlParser(Docs.Story.class);
-		Docs.Story doc = (Docs.Story) parser.parse("brew/story/story.yml");
+		Docs.Story doc = (Docs.Story) parser.parse("brew/stories/test/story.yml");
 		
+		this.artifactId = doc.story.artifactId;
+		this.version = doc.story.version;
+		this.saveVersion = doc.story.saveVersion;
 		this.title = doc.story.title;
 		this.subtitle = doc.story.subtitle;
 		for (String item : doc.story.intro)

@@ -24,6 +24,9 @@ public class LocationStatus extends AbstractEntity {
     @Column
     private String label;
 
+    @Column
+    private String image;
+
     @Column(length=1024)
     private String description;
 
@@ -37,9 +40,10 @@ public class LocationStatus extends AbstractEntity {
 	public LocationStatus() {
 	}
 
-	public LocationStatus(String locationName, String label, String description, String canonical) {
+	public LocationStatus(String locationName, String label, String image, String description, String canonical) {
 		setLocation(locationName);
 		this.label = label;
+		this.image = image;
 		this.description = description;
 		this.canonical = canonical;
 	}
@@ -51,6 +55,10 @@ public class LocationStatus extends AbstractEntity {
 
 	public String getLabel() {
 		return label;
+	}
+
+	public String getImage() {
+		return image;
 	}
 
 	public String getDescription() {
@@ -77,6 +85,7 @@ public class LocationStatus extends AbstractEntity {
 			id + " : " + 
 			TextUtils.quote(location.getName()) + " : " + 
 			TextUtils.quote(label) + " : " + 
+			TextUtils.quote(image) + " : " + 
 			TextUtils.quote(description) + " : " +
 			TextUtils.quote(canonical) +
 		" }";

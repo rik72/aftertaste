@@ -83,22 +83,37 @@ public class GUITerminalUX implements TerminalUX {
 	public void waitForInput() {
 		gui.getPromptField().setDisable(false);
 		gui.showPromptPane();
+		gui.getPromptField().requestFocus();
 	}
 
 	@Override
 	public void printLocationImage(Location location) {
-		try {
-			SVGImage topImage = SVGLoader.load(getClass().getClassLoader().getResource(
-				"brew/story/images/" +
-				location.getName() + "-" + location.getStatus().getLabel() +
-				".svg"));
+		SVGImage topImage = loadLocationStatusImage(location.getName(), location.getStatus().getImage());
+		if (topImage == null && !"initial".equals(location.getStatus().getImage()))
+			topImage = loadLocationStatusImage(location.getName(), "initial");
+		if (topImage != null) {
 			topImage.scaleTo(480);
 			BorderPane pane = new BorderPane(topImage);
 			pane.setPadding(new Insets(20));
 			gui.setTopImage(pane);
+		}
+		else {
+			gui.setTopImage(null);
+		}
+	}
+
+	private SVGImage loadLocationStatusImage(String location, String image) {
+		try {
+			SVGImage res = SVGLoader.load(getClass().getClassLoader().getResource(
+				"brew/stories/test/images/" +
+				location + "-" + image +
+				".svg"));
+			return res;
 		} catch (Exception e) {
-			Log.error("Could not load image for location '" + location.getName() + "'");
+			Log.error("Could not load image '" + image + "' for location '" + location + "'");
 			gui.removeTopImage();
 		}
+
+		return null;
 	}
 }
