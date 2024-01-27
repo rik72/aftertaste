@@ -16,6 +16,7 @@ import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.CharacterLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
@@ -29,17 +30,13 @@ import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltas;
 
 public class Story {
-	private String artifactId;
-	private String version;
-	private int saveVersion;
-	private String title;
-	private String subtitle;
+	private StoryDescriptor descriptor;
 	private List<String> intro = new ArrayList<>();
 
 	private Story() {
 	}
 
-	public void init() {
+	public void init(LoadPath loadPath, StoryDescriptor descriptor) {
 		new PrepositionLoader().register();
 		new VerbLoader().register();
 		new LocationLoader().register();
@@ -47,7 +44,7 @@ public class Story {
 		new ThingLoader().register();
 		new WordLoader().register();
 
-		load();
+		load(loadPath, descriptor);
 	}
 
 	public Character getMainCharacter() {
@@ -58,35 +55,28 @@ public class Story {
 		return intro;
 	}
 
-	public String getArtifactId() {
-		return artifactId;
-	}
-
-	public String getVersion() {
-		return version;
+	public StoryDescriptor getDescriptor() {
+		return descriptor;
 	}
 
 	public StoryRefId getRefId() {
-		return new StoryRefId(artifactId, saveVersion);
+		return descriptor.getRefId();
 	}
 
 	public String getTitle() {
-		return title;
+		return descriptor.getTitle();
 	}
 
 	public String getSubtitle() {
-		return subtitle;
+		return descriptor.getSubtitle();
 	}
 
-	private void load() {
+	private void load(LoadPath loadPath, StoryDescriptor descriptor) {
+		this.descriptor = descriptor;
+
 		YmlParser parser = new YmlParser(Docs.Story.class);
-		Docs.Story doc = (Docs.Story) parser.parse("brew/stories/test/story.yml");
+		Docs.Story doc = (Docs.Story) parser.parse(loadPath, "story.yml");
 		
-		this.artifactId = doc.story.artifactId;
-		this.version = doc.story.version;
-		this.saveVersion = doc.story.saveVersion;
-		this.title = doc.story.title;
-		this.subtitle = doc.story.subtitle;
 		for (String item : doc.story.intro)
 			this.intro.add(item);
 	}

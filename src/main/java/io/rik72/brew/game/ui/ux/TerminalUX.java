@@ -1,5 +1,7 @@
 package io.rik72.brew.game.ui.ux;
 
+import java.io.File;
+
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
 
@@ -26,4 +28,8 @@ public interface TerminalUX {
 	public abstract void waitForInput();
 
 	public abstract void printLocationImage(Location location);
+
+	public abstract File chooseOpenFile();
+
+	public abstract File chooseSaveFile();
 }

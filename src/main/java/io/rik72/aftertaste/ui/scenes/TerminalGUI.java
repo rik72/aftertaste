@@ -1,5 +1,7 @@
 package io.rik72.aftertaste.ui.scenes;
 
+import java.io.File;
+
 import io.rik72.bottlerack.scene.AbstractScene;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
@@ -29,6 +31,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -46,6 +49,7 @@ public class TerminalGUI extends AbstractScene {
 	private BorderPane allPane;
 	private boolean scrollToBottom = false;
 	private Future enterListener;
+	private FileChooser fileChooser = new FileChooser();
 
 	public TerminalGUI(Stage stage) {
 		super(stage);
@@ -246,5 +250,21 @@ public class TerminalGUI extends AbstractScene {
 	public void removeTopImage() {
 		allPane.setTop(null);
 		allPane.layout();
+	}
+
+	public File chooseOpenFile() {
+		fileChooser.setTitle("Load game");
+		fileChooser.getExtensionFilters().addAll(
+			new FileChooser.ExtensionFilter("Savegame", "*.save")
+		);
+		return fileChooser.showOpenDialog(stage);
+	}
+
+	public File chooseSaveFile() {
+		fileChooser.setTitle("Save game");
+		fileChooser.getExtensionFilters().addAll(
+			new FileChooser.ExtensionFilter("Savegame", "*.save")
+		);
+		return fileChooser.showSaveDialog(stage);
 	}
 }

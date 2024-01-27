@@ -1,5 +1,7 @@
 package io.rik72.aftertaste.ui.ux;
 
+import java.io.File;
+
 import org.girod.javafx.svgimage.SVGImage;
 import org.girod.javafx.svgimage.SVGLoader;
 
@@ -115,5 +117,15 @@ public class GUITerminalUX implements TerminalUX {
 		}
 
 		return null;
+	}
+
+	@Override
+	public File chooseOpenFile() {
+		return gui.chooseOpenFile();
+	}
+
+	@Override
+	public File chooseSaveFile() {
+		return gui.chooseSaveFile();
 	}
 }

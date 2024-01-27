@@ -22,6 +22,7 @@ import io.rik72.brew.engine.db.repositories.ThingStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingOneActionRepository;
 import io.rik72.brew.engine.db.repositories.ThingTwoActionRepository;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
@@ -44,10 +45,10 @@ import io.rik72.mammoth.db.DB;
 public class ThingLoader implements Loadable {
 
 	@Override
-	public void load() {
+	public void load(LoadPath loadPath) {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
-		Docs.Things doc = (Docs.Things) parser.parse("brew/stories/test/things.yml");
+		Docs.Things doc = (Docs.Things) parser.parse(loadPath, "things.yml");
 
 		// insert words for things
 		for (ThingRaw thItem : doc.things) {

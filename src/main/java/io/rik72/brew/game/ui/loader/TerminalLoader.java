@@ -1,5 +1,6 @@
 package io.rik72.brew.game.ui.loader;
 
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
@@ -7,9 +8,9 @@ import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
 public class TerminalLoader implements Loadable {
 
 	@Override
-	public void load() {
-		WordsDocLoader loader = new WordsDocLoader("brew/ui/commands.yml");
-		loader.load();
+	public void load(LoadPath loadPath) {
+		WordsDocLoader loader = new WordsDocLoader("ui/commands.yml");
+		loader.load(loadPath);
 	}
 
 	@Override

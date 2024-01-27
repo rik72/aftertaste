@@ -5,6 +5,7 @@ import java.util.List;
 import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.repositories.WordRepository;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
@@ -12,9 +13,9 @@ import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
 public class WordLoader implements Loadable {
 
 	@Override
-	public void load() {
-		WordsDocLoader loader = new WordsDocLoader("brew/stories/test/other_names.yml");
-		loader.load();
+	public void load(LoadPath loadPath) {
+		WordsDocLoader loader = new WordsDocLoader("other_names.yml");
+		loader.load(loadPath);
 
 		// Additional loading is delegated to other loaders in the same package
 	}

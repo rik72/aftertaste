@@ -12,6 +12,7 @@ import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationXLocationRepository;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
@@ -29,10 +30,10 @@ import io.rik72.mammoth.db.DB;
 public class LocationLoader implements Loadable {
 
 	@Override
-	public void load() throws Exception {
+	public void load(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Locations.class);
-		Docs.Locations doc = (Docs.Locations) parser.parse("brew/stories/test/locations.yml");
+		Docs.Locations doc = (Docs.Locations) parser.parse(loadPath, "locations.yml");
 
 		for (LocationRaw locItem : doc.locations) {
 			Parser.checkNotEmpty("location name", locItem.name);

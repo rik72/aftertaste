@@ -1,5 +1,7 @@
 package io.rik72.brew.game.ui;
 
+import java.io.File;
+
 import io.rik72.aftertaste.ui.ux.GUITerminalUX;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Executor;
@@ -177,5 +179,15 @@ public class Terminal implements TerminalUX {
 	@Override
 	public void printLocationImage(Location location) {
 		ux.printLocationImage(location);
+	}
+
+	@Override
+	public File chooseOpenFile() {
+		return ux.chooseOpenFile();
+	}
+
+	@Override
+	public File chooseSaveFile() {
+		return ux.chooseSaveFile();
 	}
 }

@@ -10,6 +10,7 @@ import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
@@ -26,9 +27,9 @@ import io.rik72.mammoth.db.DB;
 public class CharacterLoader implements Loadable {
 
 	@Override
-	public void load() {
+	public void load(LoadPath loadPath) {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
-		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
+		Docs.Characters doc = (Docs.Characters) ymlParser.parse(loadPath, "characters.yml");
 
 		boolean first = true;
 		for (CharacterRaw character : doc.characters) {

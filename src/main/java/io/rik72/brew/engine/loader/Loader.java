@@ -3,10 +3,12 @@ package io.rik72.brew.engine.loader;
 import java.util.Vector;
 
 import io.rik72.amber.logger.Log;
+import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.mammoth.db.DB;
 
 public class Loader implements Dumpable {
 
+	private LoadPath loadPath;
 	private Vector<Loadable> loadables = new Vector<>();
 
 	private Loader() {}
@@ -20,7 +22,7 @@ public class Loader implements Dumpable {
         try {
             DB.beginTransaction();
 			for (Loadable loadable : loadables) {
-				loadable.load();
+				loadable.load(loadPath);
 				loadable.dump();
 			}
             DB.commitTransaction();
@@ -28,6 +30,10 @@ public class Loader implements Dumpable {
             DB.rollbackTransaction();
             throw e;
         }
+	}
+
+	public void setLoadPath(LoadPath loadPath) {
+		this.loadPath = loadPath;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

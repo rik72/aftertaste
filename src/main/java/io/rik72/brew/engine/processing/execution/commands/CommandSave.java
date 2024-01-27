@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.processing.execution.commands;
 
+import java.io.File;
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
@@ -21,8 +22,11 @@ public class CommandSave extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					SaveGame.saveToFile("save0001.sav");
-					Terminal.get().println("Game saved.");
+					File file = Terminal.get().chooseSaveFile();
+                    if (file != null) {
+						SaveGame.saveToFile(file.getPath());
+						Terminal.get().println("Game saved.");
+					}
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in saving game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 				}

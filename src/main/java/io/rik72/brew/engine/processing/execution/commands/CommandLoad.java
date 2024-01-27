@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.processing.execution.commands;
 
+import java.io.File;
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
@@ -24,20 +25,23 @@ public class CommandLoad extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					SaveGame.loadFromFile("save0001.sav");
-					if (SaveGame.getInstance().checkStoryCompatibility(Story.get())) {
-						Story.get().restart();
-						Deltas.set(SaveGame.getInstance().getDeltas());
-						Story.get().applyDeltas();
-						Terminal.get().println("Game loaded.");
-						Terminal.get().consumeResults(new Results(true, true, "", true));
-					}
-					else {
-						Terminal.get().hilightln("Incompatible save file " + 
-							"('" + SaveGame.getInstance().getStoryRefId() + "' format vs '" + Story.get().getRefId() + "'" +
-							" required by current story)");
-						Terminal.get().consumeResults(new Results(false, false, ""));
-					}
+					File file = Terminal.get().chooseOpenFile();
+                    if (file != null) {
+						SaveGame.loadFromFile(file.getPath());
+						if (SaveGame.getInstance().checkStoryCompatibility(Story.get())) {
+							Story.get().restart();
+							Deltas.set(SaveGame.getInstance().getDeltas());
+							Story.get().applyDeltas();
+							Terminal.get().println("Game loaded.");
+							Terminal.get().consumeResults(new Results(true, true, "", true));
+						}
+						else {
+							Terminal.get().hilightln("Incompatible save file " + 
+								"('" + SaveGame.getInstance().getStoryRefId() + "' format vs '" + Story.get().getRefId() + "'" +
+								" required by current story)");
+							Terminal.get().consumeResults(new Results(false, false, ""));
+						}
+                    }
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in loading game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 					Terminal.get().consumeResults(new Results(false, false, ""));
