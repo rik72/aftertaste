@@ -1,6 +1,4 @@
-package io.rik72.brew.engine.finder;
-
-import io.rik72.brew.engine.loader.LoadType;
+package io.rik72.brew.engine.loader;
 
 public class LoadPath {
 	private String path;

@@ -10,7 +10,7 @@ import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
-import io.rik72.brew.engine.finder.LoadPath;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;

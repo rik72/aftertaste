@@ -1,4 +1,4 @@
-package io.rik72.aftertaste.ui.scenes;
+package io.rik72.aftertaste.ui.views;
 
 import io.rik72.bottlerack.scene.AbstractScene;
 import javafx.scene.Scene;

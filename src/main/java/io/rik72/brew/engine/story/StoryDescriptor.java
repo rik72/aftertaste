@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.story;
 
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.docs.Docs;
 
@@ -32,13 +33,13 @@ public class StoryDescriptor {
 		return subtitle;
 	}
 
-	public static StoryDescriptor loadDescriptor(String path) {
+	public static StoryDescriptor load(LoadPath loadPath) {
 		YmlParser parser = new YmlParser(Docs.Story.class);
-		System.out.println(path);
-		Docs.Story doc = (Docs.Story) parser.parse(path);
+		Docs.Story doc = (Docs.Story) parser.parse(loadPath.getPath() + "/story.yml");
 		
 		StoryDescriptor res = new StoryDescriptor(
-			new StoryRefId(doc.story.artifactId, doc.story.saveVersion), doc.story.version, doc.story.title, doc.story.subtitle);
+			new StoryRefId(doc.story.artifactId.strip(), doc.story.saveVersion),
+			doc.story.version.strip(), doc.story.title.strip(), doc.story.subtitle.strip());
 
 		return res;
 	}

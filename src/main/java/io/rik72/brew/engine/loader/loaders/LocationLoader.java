@@ -12,7 +12,7 @@ import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationXLocationRepository;
-import io.rik72.brew.engine.finder.LoadPath;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;

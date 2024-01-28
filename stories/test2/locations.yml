@@ -1,0 +1,55 @@
+locations:
+
+  # start location: the small toolshed in the garden
+  - name: toolshed
+    word:
+      text: toolshed
+    statuses:
+      - status: initial
+        description: >
+          You find yourself in a cramped and cluttered toolshed, the air thick with the scent of aged wood and rust.
+          The room feels snug, almost suffocating, as scattered tools and half-empty cans of paint vie for space on
+          dusty shelves lining the walls. Sunlight struggles through a small, grimy window to the north, offering a
+          glimpse of a vibrant garden. To the east, a weathered door stands, apparently shut.
+        possibilities:
+          - impossible: fly ( The ceiling is very low. )
+      - status: door opened
+        description: >
+          The toolshed basks in the light coming mainly from the open door on the east, revealing its cluttered expanse.
+          A tangible aroma of aged wood and dust permeates the air.
+          Scattered tools and half-empty cans of paint vie for space on dusty shelves that line the walls.
+          In the north wall a small, grimy window offers a glimpse of the vibrant garden outside.
+        directions:
+          east: garden
+        possibilities:
+          - inherit: ( initial ) fly
+
+  # the garden with the toolshed
+  - name: garden
+    word:
+      text: garden
+    statuses:
+      - status: initial
+        description: >
+          You are in a garden, sprawling in natural splendor — a tapestry of vibrant colors and scents.
+          Lush foliage dances with the breeze, vibrant blooms nodding in approval. A meandering stone path
+          to the north disappears amidst a menagerie of flowers, seemingly leading nowhere.
+          To the west you see a weathered wooden toolshed. To the north you see a distant tower.
+        directions:
+          north: tower ( fly )
+      - status: door opened
+        directions:
+          west: toolshed
+          north: tower ( fly )
+
+  # the distant tower
+  - name: tower
+    word:
+      text: tower
+    statuses:
+      - status: initial
+        description: >
+          You are on the top of a very high tower.
+
+          Now you remember: last night you drank too much beer and well... maybe letting the water imp drive home
+          was not a good idea. At all...

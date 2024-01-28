@@ -1,10 +1,17 @@
-package io.rik72.aftertaste.ui.scenes;
+package io.rik72.aftertaste.ui.views;
 
 import java.io.File;
+import java.util.Map.Entry;
 
-import io.rik72.bottlerack.scene.AbstractScene;
+import io.rik72.aftertaste.ui.Defaults;
+import io.rik72.aftertaste.ui.ux.TerminalUX;
+import io.rik72.bottlerack.view.AbstractView;
+import io.rik72.brew.engine.finder.Finder;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.story.StoryDescriptor;
+import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.ui.Terminal;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,19 +34,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class TerminalGUI extends AbstractScene {
+public class TerminalView extends AbstractView {
 
-	public static int WIDTH = 640;
-	public static int HEIGHT = 480;
 	public static int TEXT_COLS = 80;
 
 	// private TextArea textArea;
@@ -51,37 +54,25 @@ public class TerminalGUI extends AbstractScene {
 	private Future enterListener;
 	private FileChooser fileChooser = new FileChooser();
 
-	public TerminalGUI(Stage stage) {
+	public TerminalView(Stage stage) {
 		super(stage);
 	}
 
-	public Font normal() {
-		return Font.font("Georgia", 16);
-	}
-
-	public Font bold() {
-		return Font.font("Georgia", FontWeight.BOLD, 16);
-	}
-
-	public Font italic() {
-		return Font.font("Georgia", FontPosture.ITALIC, 16);
-	}
-
 	@Override
-	public void show() {
+	protected Parent create() {
 
 		// Elements ===========================================================
 		textFlow = new TextFlow();
-		textFlow.setMaxWidth(WIDTH - 20);
+		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 20);
 		textFlow.setPadding(new Insets(0, 20, 0, 20));
 
 		Label promptLabel = new Label("Your action:");
-		promptLabel.setFont(normal());
+		promptLabel.setFont(Defaults.FONT_NORMAL);
 		promptLabel.setMinWidth(90);
 		promptLabel.setMaxWidth(90);
 		promptField = new TextField();
 		promptField.setPrefColumnCount(50);
-		promptField.setFont(normal());
+		promptField.setFont(Defaults.FONT_NORMAL);
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -124,16 +115,22 @@ public class TerminalGUI extends AbstractScene {
 		promptPane = new HBox(promptLabel, promptField);
 		promptPane.setAlignment(Pos.CENTER_RIGHT);
 		promptPane.setPadding(new Insets(10));
+
 		// main pane
 		allPane = new BorderPane();
 		// - top will be used for location images
 		// - bottom will be used for user input
 		allPane.setCenter(textPane);
 
-		// Build and show scene
-        Scene scene = new Scene(allPane, WIDTH, HEIGHT);
+		// set GUI view on terminal
+        Terminal.get().setUX(new TerminalUX(this));
 
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		return allPane;
+	}
+
+	public void onOpen() {
+		// Build and show scene
+		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				KeyCode kc = event.getCode();
@@ -147,16 +144,21 @@ public class TerminalGUI extends AbstractScene {
 			}
 		});
 
-        stage.setScene(scene);
-		stage.setTitle("Aftertaste");
-		stage.setMinWidth(WIDTH);
-		stage.setMinHeight(HEIGHT);
-		// stage.setMaxWidth(WIDTH);
-		// stage.setMaxHeight(HEIGHT);
-        stage.show();
+		Entry<LoadPath, StoryDescriptor> storyData = Finder.get().getFirstStory();
+		try {
+			BrewController.load(storyData.getKey());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Terminal.get().intro();
 	}
 
-	public void openConfirmBoxconfirm(String question, Future then) {
+	public void onClose() {
+		stage.getScene().setOnKeyPressed(null);
+	}
+
+	public void openConfirmBox(String question, Future then) {
 		Stage dialog = new Stage();
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.setResizable(false); 

@@ -8,16 +8,22 @@ import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
-import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
+import io.rik72.brew.engine.loader.YmlParser;
+import io.rik72.brew.engine.loader.loaders.docs.Docs;
+import io.rik72.brew.engine.story.Story;
+import io.rik72.brew.engine.story.StoryDescriptor;
 
-public class WordLoader implements Loadable {
+public class StoryLoader implements Loadable {
 
 	@Override
 	public void load(LoadPath loadPath) {
-		WordsDocLoader loader = new WordsDocLoader("other_names.yml");
-		loader.load(loadPath);
-
-		// Additional loading is delegated to other loaders in the same package
+		YmlParser parser = new YmlParser(Docs.Story.class);
+		Docs.Story doc = (Docs.Story) parser.parse(loadPath, "story.yml");
+		
+		Story.get().clear();
+		Story.get().setDescriptor(StoryDescriptor.load(loadPath));
+		for (String item : doc.story.intro)
+			Story.get().getIntro().add(item);
 	}
 
 	@Override

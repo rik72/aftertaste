@@ -1,0 +1,15 @@
+words:
+  commands:
+    - text: quit
+      synonyms:
+        - q
+    - text: save
+    - text: load
+    - text: look
+      synonyms:
+        - l
+    - text: restart
+    - text: inventory
+      synonyms:
+        - i
+    - text: dump

@@ -1,9 +1,11 @@
 story:
-  artifactId: test
-  version: 1.2.6
-  saveVersion: 15
-  title: Never let a water imp drive you home
-  subtitle: A test scenario
+  artifactId: new-test
+  version: 0.0.1
+  saveVersion: 1
+  title: |
+    This is a remake
+  subtitle: |
+    Yet another test scenario
 
   intro:
     - >

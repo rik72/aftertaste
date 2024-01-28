@@ -1,0 +1,74 @@
+words:
+
+  directions:
+    - text: north
+      synonyms:
+        - n
+    - text: northeast
+      synonyms:
+        - ne
+    - text: east
+      synonyms:
+        - e
+    - text: southeast
+      synonyms:
+        - se
+    - text: south
+      synonyms:
+        - s
+    - text: southwest
+      synonyms:
+        - sw
+    - text: west
+      synonyms:
+        - w
+    - text: northwest
+      synonyms:
+        - nw
+    - text: up
+      synonyms:
+        - u
+    - text: down
+      synonyms:
+        - d
+
+  directionActions:
+    - text: go
+      synonyms:
+        - walk
+        - run
+        - move
+    - text: fly
+
+  zeroActions:
+
+  oneActions:
+    - text: examine
+      synonyms:
+        - ex
+    - text: open
+    - text: close
+      synonyms:
+        - shut
+    - text: lock
+    - text: unlock
+    - text: take
+      synonyms:
+        - get
+        - pick
+        - pick up
+    - text: drop
+    - text: read
+      complement: inventory
+    - text: smell
+
+  twoActions:
+    - text: put
+      complement: inventory
+    - text: throw
+      complement: inventory
+    - text: hit
+      supplement: inventory
+      synonyms:
+        - bash
+        - break

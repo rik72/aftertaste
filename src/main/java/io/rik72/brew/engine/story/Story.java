@@ -16,15 +16,13 @@ import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
-import io.rik72.brew.engine.finder.LoadPath;
-import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.CharacterLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
 import io.rik72.brew.engine.loader.loaders.PrepositionLoader;
+import io.rik72.brew.engine.loader.loaders.StoryLoader;
 import io.rik72.brew.engine.loader.loaders.ThingLoader;
 import io.rik72.brew.engine.loader.loaders.VerbLoader;
 import io.rik72.brew.engine.loader.loaders.WordLoader;
-import io.rik72.brew.engine.loader.loaders.docs.Docs;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltas;
@@ -36,15 +34,19 @@ public class Story {
 	private Story() {
 	}
 
-	public void init(LoadPath loadPath, StoryDescriptor descriptor) {
+	public void clear() {
+		this.descriptor = null;
+		intro.clear();
+	}
+
+	public void init() {
+		new StoryLoader().register();
 		new PrepositionLoader().register();
 		new VerbLoader().register();
 		new LocationLoader().register();
 		new CharacterLoader().register();
 		new ThingLoader().register();
 		new WordLoader().register();
-
-		load(loadPath, descriptor);
 	}
 
 	public Character getMainCharacter() {
@@ -59,6 +61,10 @@ public class Story {
 		return descriptor;
 	}
 
+	public void setDescriptor(StoryDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
+
 	public StoryRefId getRefId() {
 		return descriptor.getRefId();
 	}
@@ -69,16 +75,6 @@ public class Story {
 
 	public String getSubtitle() {
 		return descriptor.getSubtitle();
-	}
-
-	private void load(LoadPath loadPath, StoryDescriptor descriptor) {
-		this.descriptor = descriptor;
-
-		YmlParser parser = new YmlParser(Docs.Story.class);
-		Docs.Story doc = (Docs.Story) parser.parse(loadPath, "story.yml");
-		
-		for (String item : doc.story.intro)
-			this.intro.add(item);
 	}
 
 	public void restart() {

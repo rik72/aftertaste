@@ -1,0 +1,14 @@
+words:
+  prepositions:
+    - text: of
+    - text: to
+    - text: from
+    - text: in
+      synonyms:
+        - into
+    - text: with
+    - text: on
+    - text: over
+    - text: for
+    - text: between
+    - text: through

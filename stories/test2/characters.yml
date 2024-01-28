@@ -1,0 +1,16 @@
+characters:
+  - name: main
+    startLocation: toolshed
+    statuses:
+      - status: initial
+        possibilities:
+          - impossible: fly ( Do you think you have wings?? )
+          - impossible: read ( You feel like you miss something... )
+      - status: encumbered
+        possibilities:
+          - impossible: fly ( You are carrying too much! ) !important
+          - inherit: ( initial ) read 
+      - status: fatigued
+        possibilities:
+          - impossible: fly ( You are unwell, flying is not exactly what you feel like at the moment... ) !important
+          - inherit: ( initial ) read

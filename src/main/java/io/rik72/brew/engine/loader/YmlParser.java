@@ -6,8 +6,6 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import io.rik72.brew.engine.finder.LoadPath;
-
 public class YmlParser {
 
 	private Yaml yaml;
@@ -27,7 +25,6 @@ public class YmlParser {
 
 	public Object parse(LoadPath loadPath, String fileName) {
 		if (loadPath.getLoadType() == LoadType.RESOURCES) {
-System.out.println(loadPath.getPath() + "/" + fileName);
 			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(loadPath.getPath() + "/" + fileName);
 			return yaml.load(inputStream);
 		}

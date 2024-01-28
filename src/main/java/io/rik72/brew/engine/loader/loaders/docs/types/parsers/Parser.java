@@ -29,7 +29,7 @@ public abstract class Parser {
 	}
 
 	public static String trim(String str) {
-		return str != null ? str.trim() : null;
+		return str != null ? str.strip() : null;
 	}
 
 	public static void checkNotEmpty(String entityName, String raw) {

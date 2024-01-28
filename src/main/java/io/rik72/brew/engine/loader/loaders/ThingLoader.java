@@ -22,7 +22,7 @@ import io.rik72.brew.engine.db.repositories.ThingStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingOneActionRepository;
 import io.rik72.brew.engine.db.repositories.ThingTwoActionRepository;
-import io.rik72.brew.engine.finder.LoadPath;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;

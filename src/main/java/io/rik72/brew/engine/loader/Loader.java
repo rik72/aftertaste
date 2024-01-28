@@ -3,7 +3,6 @@ package io.rik72.brew.engine.loader;
 import java.util.Vector;
 
 import io.rik72.amber.logger.Log;
-import io.rik72.brew.engine.finder.LoadPath;
 import io.rik72.mammoth.db.DB;
 
 public class Loader implements Dumpable {
@@ -36,17 +35,17 @@ public class Loader implements Dumpable {
 		this.loadPath = loadPath;
 	}
 
-	///////////////////////////////////////////////////////////////////////////
-	private static Loader instance = new Loader();
-	public static Loader get() {
-		return instance;
-	}
-
 	@Override
 	public void dump() throws Exception {
 		for (Loadable loadable : loadables) {
 			loadable.dump();
 		}
 		Log.skip();
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	private static Loader instance = new Loader();
+	public static Loader get() {
+		return instance;
 	}
 }

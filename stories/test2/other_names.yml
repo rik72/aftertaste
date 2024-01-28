@@ -1,0 +1,22 @@
+words:
+  names:
+    - text: wrench
+    - text: ruler
+    # entity names for dump command
+    - text: character
+    - text: characterstatus
+    - text: characterstatuspossibility
+    - text: location
+    - text: locationstatus
+    - text: locationxlocation
+    - text: locationstatuspossibility
+    - text: thing
+    - text: thingstatus
+    - text: thingstatuspossibility
+    - text: characteroneaction
+    - text: charactertwoaction
+    - text: thingoneaction
+    - text: thingtwoaction
+    - text: locationoneaction
+    - text: locationtwoaction
+    - text: word

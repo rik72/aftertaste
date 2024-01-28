@@ -2,7 +2,7 @@ package io.rik72.brew.game.ui;
 
 import java.io.File;
 
-import io.rik72.aftertaste.ui.ux.GUITerminalUX;
+import io.rik72.aftertaste.ui.ux.TerminalUX;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.Future;
@@ -10,20 +10,13 @@ import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.parsing.InputParser;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.loader.TerminalLoader;
-import io.rik72.brew.game.ui.ux.TerminalUX;
 
-public class Terminal implements TerminalUX {
+public class Terminal {
 
 	private TerminalUX ux;
 	private String lastLocationDescription;
 
-	private Terminal() {
-		try {
-			this.ux = uxType.getUXClass().getConstructor().newInstance();
-		} catch (Exception e) {
-			uxInstantiationException = e;
-		}
-	}
+	private Terminal() {}
 
 	public void init() {
 		new TerminalLoader().register();
@@ -88,106 +81,67 @@ public class Terminal implements TerminalUX {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-
-	public static enum UXType {
-		GUI		(GUITerminalUX.class),
-		;
-
-		private Class<? extends TerminalUX> uxClass;
-		
-		private UXType(Class<? extends TerminalUX> uxClass) {
-			this.uxClass = uxClass;
-		}
-
-		public Class<? extends TerminalUX> getUXClass() {
-			return uxClass;
-		}
-	}
-
-	private static UXType uxType = UXType.GUI;
-
-	public static void setUxType(UXType uxType) {
-		Terminal.uxType = uxType;
-	}
-
-	public TerminalUX getUx() {
-		return ux;
-	}
-
-	///////////////////////////////////////////////////////////////////////////
 	private static Terminal instance;
-	private static Exception uxInstantiationException = null;
 	public static Terminal get() {
 		if (instance == null)
 		 	instance = new Terminal();
-		if (instance.ux == null)
-			throw new IllegalStateException(uxInstantiationException);
 		return instance;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	@Override
 	public void skip(int lines) {
 		ux.skip(lines);
 	}
 
-	@Override
 	public void pull(int lines) {
 		ux.pull(lines);
 	}
 
-	@Override
 	public void print(String text) {
 		ux.println(text);
 	}
 
-	@Override
 	public void println(String text) {
 		ux.println(text);
 	}
 
-	@Override
 	public void hilightln(String text) {
 		ux.hilightln(text);
 	}
 
-	@Override
 	public void printLongText(String text) {
 		ux.printLongText(text);
 	}
 
-	@Override
 	public void emphasisLongText(String text) {
 		ux.emphasisLongText(text);
 	}
 
-	@Override
 	public void confirm(String question, Future then) {
 		ux.confirm(question, then);
 	}
 
-	@Override
 	public void pressEnterToContinue(Future then) {
 		ux.pressEnterToContinue(then);
 	}
 
-	@Override
 	public void waitForInput() {
 		ux.waitForInput();
 	}
 
-	@Override
 	public void printLocationImage(Location location) {
 		ux.printLocationImage(location);
 	}
 
-	@Override
 	public File chooseOpenFile() {
 		return ux.chooseOpenFile();
 	}
 
-	@Override
 	public File chooseSaveFile() {
 		return ux.chooseSaveFile();
+	}
+
+	public void setUX(TerminalUX ux) {
+		this.ux = ux;
 	}
 }

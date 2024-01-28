@@ -1,6 +1,6 @@
 package io.rik72.brew.game.ui.loader;
 
-import io.rik72.brew.engine.finder.LoadPath;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
