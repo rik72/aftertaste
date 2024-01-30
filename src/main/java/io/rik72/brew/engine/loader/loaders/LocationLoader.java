@@ -16,15 +16,15 @@ import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
-import io.rik72.brew.engine.loader.loaders.docs.Docs;
-import io.rik72.brew.engine.loader.loaders.docs.Helpers;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.Directions;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.Parser;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.Possibility;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.exceptions.IllegalParseException;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.LocationStatusRaw;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.LocationRaw;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.PossibilityRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Helpers;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.Directions;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.Parser;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.Possibility;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.LocationRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.LocationStatusRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.PossibilityRaw;
 import io.rik72.mammoth.db.DB;
 
 public class LocationLoader implements Loadable {
@@ -37,7 +37,7 @@ public class LocationLoader implements Loadable {
 
 		for (LocationRaw locItem : doc.locations) {
 			Parser.checkNotEmpty("location name", locItem.name);
-			DB.persist(new Location(locItem.name, locItem.finale));
+			DB.persist(new Location(locItem.name));
 		}
 
 		// insert words for locations
@@ -67,7 +67,7 @@ public class LocationLoader implements Loadable {
 				if (stItem.image == null)
 					stItem.image = stItem.status;
 				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, lastDescription,
-					stItem.word != null ? stItem.word.text : locItem.word.text);
+					stItem.word != null ? stItem.word.text : locItem.word.text, stItem.finale);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
 					throw new IllegalParseException("location status list: first item must be the 'initial' status");

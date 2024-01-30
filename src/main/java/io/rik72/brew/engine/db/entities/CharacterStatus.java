@@ -28,12 +28,16 @@ public class CharacterStatus extends AbstractEntity {
     @JoinColumn
 	private Character character;
 
+    @Column
+    private String finale;
+
 	public CharacterStatus() {
 	}
 
-	public CharacterStatus(String characterName, String label) {
+	public CharacterStatus(String characterName, String label, String finale) {
 		setCharacter(characterName);
 		this.label = label;
+		this.finale = finale;
 	}
 
 	@Override
@@ -55,12 +59,17 @@ public class CharacterStatus extends AbstractEntity {
 			throw new EntityNotFoundException("Character", characterName);
 	}
 
+	public String getFinale() {
+		return finale;
+	}
+
     @Override
     public String toString() {
         return "{ CharacterStatus :: " + 
 			id + " : " + 
 			TextUtils.quote(character.getName()) + " : " + 
 			TextUtils.quote(label) +
+			(finale != null && finale.length() > 0 ? (" : " + TextUtils.quote(finale)) : "") +
 		" }";
     }
 }

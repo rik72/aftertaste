@@ -3,7 +3,7 @@ package io.rik72.brew.engine.loader.loaders;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
-import io.rik72.brew.engine.loader.loaders.docs.WordsDocLoader;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.WordsDocLoader;
 
 public class PrepositionLoader implements Loadable {
 

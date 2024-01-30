@@ -13,6 +13,8 @@ import io.rik72.brew.game.ui.loader.TerminalLoader;
 
 public class Terminal {
 
+	private static String finale;
+
 	private TerminalUX ux;
 	private String lastLocationDescription;
 
@@ -46,7 +48,7 @@ public class Terminal {
 		player.play();
 	}
 
-	public void finale() {
+	public void finale(final String finale) {
 		TextPlayer player = new TextPlayer();
 
 		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
@@ -54,7 +56,7 @@ public class Terminal {
 		player.getHeader().add("               T H E    E N D");
 		player.getHeader().add("");
 		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
-		player.getPages().addAll(Story.get().getFinale());
+		player.getPages().add(finale);
 		player.setOnFinish(new Future() {
 			@Override
 			public void onSuccess() {
@@ -118,7 +120,16 @@ public class Terminal {
 		if (results.isRefresh())
 			Terminal.get().showLocation();
 		
-		if (Story.get().getMainCharacter().getLocation().isFinale()) {
+		String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
+		String locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
+		
+		finale = null;
+		if (characterFinale != null && characterFinale.length() > 0)
+			finale = characterFinale;
+		else if (locationFinale != null && locationFinale.length() > 0)
+			finale = locationFinale;
+			
+		if (finale != null) {
 			closeInput();
 			// dummy - required since the bubbling of last ENTER keypress is not done yet
 			pressEnterToContinue(new Future() {
@@ -129,7 +140,7 @@ public class Terminal {
 					pressEnterToContinue(new Future() {
 						@Override
 						public void onSuccess() {
-							finale();
+							finale(finale);
 						}
 					});
 				}

@@ -14,13 +14,13 @@ import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
-import io.rik72.brew.engine.loader.loaders.docs.Docs;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.CharacterStatusRaw;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.Parser;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.Possibility;
-import io.rik72.brew.engine.loader.loaders.docs.types.parsers.exceptions.IllegalParseException;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.CharacterRaw;
-import io.rik72.brew.engine.loader.loaders.docs.types.raw.PossibilityRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.Parser;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.Possibility;
+import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.CharacterRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.CharacterStatusRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.PossibilityRaw;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.mammoth.db.DB;
 
@@ -36,7 +36,7 @@ public class CharacterLoader implements Loadable {
 			Parser.checkNotEmpty("character name", character.name);
 			if (first) {
 				first = false;
-				Location inventory = new Location(Character.inventory(character.name), false);
+				Location inventory = new Location(Character.inventory(character.name));
 				DB.persist(inventory);
 				Parser.checkNotEmpty("character start location",character.startLocation);
 				Character mainCharacter = new Character(character.name, character.startLocation);
@@ -46,7 +46,7 @@ public class CharacterLoader implements Loadable {
 				boolean firstStatus = true;
 				for (CharacterStatusRaw stItem : character.statuses) {
 					Parser.checkNotEmpty("character status label", stItem.status);
-					CharacterStatus status = new CharacterStatus(character.name, stItem.status);
+					CharacterStatus status = new CharacterStatus(character.name, stItem.status, stItem.finale);
 					DB.persist(status);
 					if (firstStatus && !"initial".equals(stItem.status))
 						throw new IllegalParseException("character status list: first item must be the 'initial' status");

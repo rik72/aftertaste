@@ -9,7 +9,7 @@ import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
-import io.rik72.brew.engine.loader.loaders.docs.Docs;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.StoryDescriptor;
 
@@ -25,9 +25,6 @@ public class StoryLoader implements Loadable {
 		if (doc.story.intro != null)
 			for (String item : doc.story.intro)
 				Story.get().getIntro().add(item);
-		if (doc.story.finale != null)
-			for (String item : doc.story.finale)
-				Story.get().getFinale().add(item);
 	}
 
 	@Override

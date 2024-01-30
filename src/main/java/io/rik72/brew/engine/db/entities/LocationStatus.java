@@ -33,6 +33,9 @@ public class LocationStatus extends AbstractEntity {
     @Column
     private String canonical;
 
+    @Column
+    private String finale;
+
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
 	private Location location;
@@ -40,12 +43,13 @@ public class LocationStatus extends AbstractEntity {
 	public LocationStatus() {
 	}
 
-	public LocationStatus(String locationName, String label, String image, String description, String canonical) {
+	public LocationStatus(String locationName, String label, String image, String description, String canonical, String finale) {
 		setLocation(locationName);
 		this.label = label;
 		this.image = image;
 		this.description = description;
 		this.canonical = canonical;
+		this.finale = finale;
 	}
 
 	@Override
@@ -79,15 +83,20 @@ public class LocationStatus extends AbstractEntity {
 			throw new EntityNotFoundException("Location", locationName);
 	}
 
+	public String getFinale() {
+		return finale;
+	}
+
     @Override
     public String toString() {
         return "{ LocationStatus :: " + 
 			id + " : " + 
 			TextUtils.quote(location.getName()) + " : " + 
 			TextUtils.quote(label) + " : " + 
+			TextUtils.quote(canonical) + " : " + 
 			TextUtils.quote(image) + " : " + 
 			TextUtils.quote(description) + " : " +
-			TextUtils.quote(canonical) +
+			(finale != null && finale.length() > 0 ? (" : " + TextUtils.quote(finale)) : "") +
 		" }";
     }
 }

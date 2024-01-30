@@ -2,7 +2,7 @@ package io.rik72.brew.engine.story;
 
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.YmlParser;
-import io.rik72.brew.engine.loader.loaders.docs.Docs;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 
 public class StoryDescriptor {
 	private StoryRefId refId;
