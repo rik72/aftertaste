@@ -37,7 +37,7 @@ public class LocationLoader implements Loadable {
 
 		for (LocationRaw locItem : doc.locations) {
 			Parser.checkNotEmpty("location name", locItem.name);
-			DB.persist(new Location(locItem.name));
+			DB.persist(new Location(locItem.name, locItem.finale));
 		}
 
 		// insert words for locations

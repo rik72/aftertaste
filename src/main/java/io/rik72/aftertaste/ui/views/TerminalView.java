@@ -244,6 +244,11 @@ public class TerminalView extends AbstractView {
 		allPane.layout();
 	}
 
+	public void hidePromptPane() {
+		allPane.setBottom(null);
+		allPane.layout();
+	}
+
 	public void setTopImage(Node imageNode) {
 		allPane.setTop(imageNode);
 		allPane.layout();

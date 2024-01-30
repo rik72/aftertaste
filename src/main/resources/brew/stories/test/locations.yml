@@ -46,6 +46,7 @@ locations:
   - name: tower
     word:
       text: tower
+    finale: true
     statuses:
       - status: initial
         description: >

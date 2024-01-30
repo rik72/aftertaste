@@ -36,7 +36,7 @@ public class CharacterLoader implements Loadable {
 			Parser.checkNotEmpty("character name", character.name);
 			if (first) {
 				first = false;
-				Location inventory = new Location(Character.inventory(character.name));
+				Location inventory = new Location(Character.inventory(character.name), false);
 				DB.persist(inventory);
 				Parser.checkNotEmpty("character start location",character.startLocation);
 				Character mainCharacter = new Character(character.name, character.startLocation);

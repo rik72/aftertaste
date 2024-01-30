@@ -22,8 +22,12 @@ public class StoryLoader implements Loadable {
 		
 		Story.get().clear();
 		Story.get().setDescriptor(StoryDescriptor.load(loadPath));
-		for (String item : doc.story.intro)
-			Story.get().getIntro().add(item);
+		if (doc.story.intro != null)
+			for (String item : doc.story.intro)
+				Story.get().getIntro().add(item);
+		if (doc.story.finale != null)
+			for (String item : doc.story.finale)
+				Story.get().getFinale().add(item);
 	}
 
 	@Override

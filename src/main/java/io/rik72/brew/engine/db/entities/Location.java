@@ -24,6 +24,9 @@ public class Location extends AbstractEntity implements Deltable {
     @Column
     private String name;
 
+    @Column
+    private boolean finale;
+
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
 	private LocationStatus status;
@@ -31,8 +34,9 @@ public class Location extends AbstractEntity implements Deltable {
 	public Location() {
 	}
 
-	public Location(String name) {
+	public Location(String name, boolean finale) {
 		this.name = name;
+		this.finale = finale;
 	}
 
 	@Override
@@ -54,6 +58,10 @@ public class Location extends AbstractEntity implements Deltable {
 
 	public void setStatus(String statusLabel) {
 		this.status = LocationStatusRepository.get().getByLocationAndLabel(this, statusLabel);
+	}
+
+	public boolean isFinale() {
+		return finale;
 	}
 
 	public String getDescription() {
@@ -78,6 +86,7 @@ public class Location extends AbstractEntity implements Deltable {
 			id + " : " + 
 			TextUtils.quote(name) +
 			(status != null ? " : " + TextUtils.quote(status.getLabel()) : "") +
+			(finale ? " : * FINALE *" : "") +
 		" }";
     }
 

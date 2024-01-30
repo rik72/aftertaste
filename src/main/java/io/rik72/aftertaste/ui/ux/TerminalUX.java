@@ -65,6 +65,13 @@ public class TerminalUX {
 		gui.openConfirmBox(question, then);
 	}
 
+	public void pressEnterTo(Future then, String action) {
+		skip(1);
+		hilightln("(Press ENTER to " + action + ")");
+		skip(1);
+		gui.setEnterListener(then);
+	}
+
 	public void pressEnterToContinue(Future then) {
 		skip(1);
 		hilightln("(Press ENTER to continue)");
@@ -72,10 +79,15 @@ public class TerminalUX {
 		gui.setEnterListener(then);
 	}
 
-	public void waitForInput() {
+	public void openInput() {
 		gui.getPromptField().setDisable(false);
 		gui.showPromptPane();
 		gui.getPromptField().requestFocus();
+	}
+
+	public void closeInput() {
+		gui.getPromptField().setDisable(true);
+		gui.hidePromptPane();
 	}
 
 	public void printLocationImage(Location location) {

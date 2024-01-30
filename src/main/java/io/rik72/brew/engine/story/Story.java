@@ -30,6 +30,7 @@ import io.rik72.mammoth.delta.Deltas;
 public class Story {
 	private StoryDescriptor descriptor;
 	private List<String> intro = new ArrayList<>();
+	private List<String> finale = new ArrayList<>();
 
 	private Story() {
 	}
@@ -55,6 +56,10 @@ public class Story {
 
 	public List<String> getIntro() {
 		return intro;
+	}
+
+	public List<String> getFinale() {
+		return finale;
 	}
 
 	public StoryDescriptor getDescriptor() {

@@ -8,5 +8,6 @@ public class StoryRaw {
 	public String title;
 	public String subtitle;
 	public List<String> intro;
+	public List<String> finale;
 	public int saveVersion;
 }

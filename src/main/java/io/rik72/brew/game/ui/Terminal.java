@@ -23,8 +23,47 @@ public class Terminal {
 	}
 
 	public void intro() {
-		IntroPlayer introPlayer = new IntroPlayer();
-		introPlayer.play();
+		TextPlayer player = new TextPlayer();
+
+		String title = Story.get().getTitle();
+		String subtitle = Story.get().getSubtitle().toLowerCase().strip();
+		player.getHeader().add("=======================================");
+		player.getHeader().add(title);
+		player.getHeader().add(" ( " + subtitle + " )");
+		player.getHeader().add("=======================================");
+		player.getPages().addAll(Story.get().getIntro());
+		player.setOnFinish(new Future() {
+			@Override
+			public void onSuccess() {
+				Terminal.get().pull(2);
+				Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+				Terminal.get().showLocation();
+				Terminal.get().openInput();
+			}			
+		});
+		player.setFinishAction("begin adventuring...");
+
+		player.play();
+	}
+
+	public void finale() {
+		TextPlayer player = new TextPlayer();
+
+		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
+		player.getHeader().add("");
+		player.getHeader().add("               T H E    E N D");
+		player.getHeader().add("");
+		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
+		player.getPages().addAll(Story.get().getFinale());
+		player.setOnFinish(new Future() {
+			@Override
+			public void onSuccess() {
+				System.exit(0);
+			}			
+		});
+		player.setFinishAction("exit");
+
+		player.play();
 	}
 
 	public void showLocation() {
@@ -78,6 +117,24 @@ public class Terminal {
 
 		if (results.isRefresh())
 			Terminal.get().showLocation();
+		
+		if (Story.get().getMainCharacter().getLocation().isFinale()) {
+			closeInput();
+			// dummy - required since the bubbling of last ENTER keypress is not done yet
+			pressEnterToContinue(new Future() {
+				@Override
+				public void onSuccess() {
+					pull(2);
+					// start finale text slideshow
+					pressEnterToContinue(new Future() {
+						@Override
+						public void onSuccess() {
+							finale();
+						}
+					});
+				}
+			});
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -125,8 +182,16 @@ public class Terminal {
 		ux.pressEnterToContinue(then);
 	}
 
-	public void waitForInput() {
-		ux.waitForInput();
+	public void pressEnterTo(Future then, String action) {
+		ux.pressEnterTo(then, action);
+	}
+
+	public void openInput() {
+		ux.openInput();
+	}
+
+	public void closeInput() {
+		ux.closeInput();
 	}
 
 	public void printLocationImage(Location location) {
