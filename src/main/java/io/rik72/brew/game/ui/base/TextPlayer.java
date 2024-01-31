@@ -1,9 +1,10 @@
-package io.rik72.brew.game.ui;
+package io.rik72.brew.game.ui.base;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.game.ui.Terminal;
 
 public class TextPlayer {
 
@@ -49,6 +50,7 @@ public class TextPlayer {
 				});
 		}
 		else if (pages.size() > 0) {
+			Terminal.get().pull(1);
 			next();
 		}
 		else {

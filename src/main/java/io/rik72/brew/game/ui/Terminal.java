@@ -1,21 +1,19 @@
 package io.rik72.brew.game.ui;
 
-import java.io.File;
-
-import io.rik72.aftertaste.ui.ux.TerminalUX;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.parsing.InputParser;
 import io.rik72.brew.engine.story.Story;
+import io.rik72.brew.game.ui.base.TerminalBase;
+import io.rik72.brew.game.ui.base.TextPlayer;
 import io.rik72.brew.game.ui.loader.TerminalLoader;
 
-public class Terminal {
+public class Terminal extends TerminalBase {
 
 	private static String finale;
 
-	private TerminalUX ux;
 	private String lastLocationDescription;
 
 	private Terminal() {}
@@ -73,7 +71,7 @@ public class Terminal {
 		printLocationImage(location);
 		lastLocationDescription = location.getDescription();
 		skip(1);
-		emphasisLongText(lastLocationDescription);
+		emphasisLongText(lastLocationDescription + ")");
 		skip(1);
 	}
 
@@ -127,7 +125,6 @@ public class Terminal {
 
 		if (finale != null) {
 			closeInput();
-			pull(1);
 			// dummy - required since the bubbling of last ENTER keypress is not done yet
 			pressEnterToContinue(new Future() {
 				@Override
@@ -154,68 +151,4 @@ public class Terminal {
 		return instance;
 	}
 
-	///////////////////////////////////////////////////////////////////////////
-	public void skip(int lines) {
-		ux.skip(lines);
-	}
-
-	public void pull(int lines) {
-		ux.pull(lines);
-	}
-
-	public void print(String text) {
-		ux.println(text);
-	}
-
-	public void println(String text) {
-		ux.println(text);
-	}
-
-	public void hilightln(String text) {
-		ux.hilightln(text);
-	}
-
-	public void printLongText(String text) {
-		ux.printLongText(text);
-	}
-
-	public void emphasisLongText(String text) {
-		ux.emphasisLongText(text);
-	}
-
-	public void confirm(String question, Future then) {
-		ux.confirm(question, then);
-	}
-
-	public void pressEnterToContinue(Future then) {
-		ux.pressEnterToContinue(then);
-	}
-
-	public void pressEnterTo(Future then, String action) {
-		ux.pressEnterTo(then, action);
-	}
-
-	public void openInput() {
-		ux.openInput();
-	}
-
-	public void closeInput() {
-		ux.closeInput();
-	}
-
-	public void printLocationImage(Location location) {
-		ux.printLocationImage(location);
-	}
-
-	public File chooseOpenFile() {
-		return ux.chooseOpenFile();
-	}
-
-	public File chooseSaveFile() {
-		return ux.chooseSaveFile();
-	}
-
-	public void setUX(TerminalUX ux) {
-		this.ux = ux;
-	}
 }

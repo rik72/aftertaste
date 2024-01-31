@@ -73,10 +73,7 @@ public class TerminalUX {
 	}
 
 	public void pressEnterToContinue(Future then) {
-		skip(1);
-		hilightln("(Press ENTER to continue)");
-		skip(1);
-		gui.setEnterListener(then);
+		pressEnterTo(then, "continue");
 	}
 
 	public void openInput() {
