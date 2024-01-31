@@ -46,7 +46,7 @@ public class CharacterLoader implements Loadable {
 				boolean firstStatus = true;
 				for (CharacterStatusRaw stItem : character.statuses) {
 					Parser.checkNotEmpty("character status label", stItem.status);
-					CharacterStatus status = new CharacterStatus(character.name, stItem.status, stItem.finale);
+					CharacterStatus status = new CharacterStatus(character.name, stItem.status, stItem.finale != null ? stItem.finale.strip() : null);
 					DB.persist(status);
 					if (firstStatus && !"initial".equals(stItem.status))
 						throw new IllegalParseException("character status list: first item must be the 'initial' status");

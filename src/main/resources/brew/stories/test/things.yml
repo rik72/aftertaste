@@ -65,10 +65,6 @@ things:
               - thing: . -> invisible
           - action: put . ( on ) ( toolshed shelves ) initial
             consequences:
-              - thing: ( toolshed door ) initial -> open ( You hear the door click gently. )
-              - thing: ( garden door ) initial -> open
-              - location: ( toolshed ) initial -> door opened
-              - location: ( garden ) initial -> door opened
               - character: ( main ) initial -> fatigued ( You suddenly feel unwell. )
 
   - name: toolshed small hammer

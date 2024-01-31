@@ -45,18 +45,18 @@ public class Terminal {
 		});
 		player.setFinishAction("begin adventuring...");
 
-		player.play();
+		player.start();
 	}
 
 	public void finale(final String finale) {
 		TextPlayer player = new TextPlayer();
 
-		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
-		player.getHeader().add("");
-		player.getHeader().add("               T H E    E N D");
-		player.getHeader().add("");
-		player.getHeader().add("* * * * * * * * * * * * * * * * * * * *");
 		player.getPages().add(finale);
+		player.getFooter().add("* * * * * * * * * * * * * * * * * * * *");
+		player.getFooter().add("");
+		player.getFooter().add("               T H E    E N D");
+		player.getFooter().add("");
+		player.getFooter().add("* * * * * * * * * * * * * * * * * * * *");
 		player.setOnFinish(new Future() {
 			@Override
 			public void onSuccess() {
@@ -65,20 +65,16 @@ public class Terminal {
 		});
 		player.setFinishAction("exit");
 
-		player.play();
+		player.start();
 	}
 
 	public void showLocation() {
 		Location location = Story.get().getMainCharacter().getLocation();
-		// String name = location.getName();
-		// hilightln(name.substring(0, 1).toUpperCase() + name.substring(1));
 		printLocationImage(location);
-		if (!location.getDescription().equals(lastLocationDescription)) {
-			lastLocationDescription = location.getDescription();
-			skip(1);
-			emphasisLongText(lastLocationDescription);
-			skip(1);
-		}
+		lastLocationDescription = location.getDescription();
+		skip(1);
+		emphasisLongText(lastLocationDescription);
+		skip(1);
 	}
 
 	public Results executeInput(String input) throws Exception {
@@ -117,7 +113,7 @@ public class Terminal {
 					printLongText(text);
 		}
 
-		if (results.isRefresh())
+		if (results.isRefresh() && !Story.get().getMainCharacter().getLocation().getDescription().equals(lastLocationDescription))
 			Terminal.get().showLocation();
 		
 		String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
@@ -128,9 +124,10 @@ public class Terminal {
 			finale = characterFinale;
 		else if (locationFinale != null && locationFinale.length() > 0)
 			finale = locationFinale;
-			
+
 		if (finale != null) {
 			closeInput();
+			pull(1);
 			// dummy - required since the bubbling of last ENTER keypress is not done yet
 			pressEnterToContinue(new Future() {
 				@Override
@@ -140,6 +137,7 @@ public class Terminal {
 					pressEnterToContinue(new Future() {
 						@Override
 						public void onSuccess() {
+							pull(2);
 							finale(finale);
 						}
 					});

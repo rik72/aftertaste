@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.game.ui.Terminal;
 
 public class CommandLook extends CommandExecutor {
 
@@ -13,6 +14,7 @@ public class CommandLook extends CommandExecutor {
 
 	@Override
 	public Results execute() throws Exception {
-		return new Results(true, true, "");
+		Terminal.get().showLocation();
+		return new Results(true, false, "");
 	}
 }

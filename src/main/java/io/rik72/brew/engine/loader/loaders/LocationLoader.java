@@ -62,12 +62,12 @@ public class LocationLoader implements Loadable {
 						throw new Exception("Initial description of location \"" + location.getName() + "\" cannot be null");
 				}
 				else {
-					lastDescription = stItem.description;
+					lastDescription = stItem.description.strip();
 				}
 				if (stItem.image == null)
 					stItem.image = stItem.status;
 				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, lastDescription,
-					stItem.word != null ? stItem.word.text : locItem.word.text, stItem.finale);
+					stItem.word != null ? stItem.word.text : locItem.word.text, stItem.finale != null ? stItem.finale.strip() : null);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
 					throw new IllegalParseException("location status list: first item must be the 'initial' status");

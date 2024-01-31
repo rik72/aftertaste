@@ -61,7 +61,7 @@ public class Location extends AbstractEntity implements Deltable {
 		builder.append(status.getDescription());
 		List<Thing> thingsHere = ThingRepository.get().findByLocation(this, true, true);
 		if (thingsHere.size() > 0) {
-			builder.append("You see: ");
+			builder.append("\nYou see: ");
 			String sep = "";
 			for (Thing thing : thingsHere) {
 				builder.append(sep).append(thing.getListCanonical());

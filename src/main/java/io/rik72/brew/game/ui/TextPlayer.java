@@ -9,8 +9,8 @@ public class TextPlayer {
 
 	private List<String> header = new ArrayList<>();
 	private List<String> pages = new ArrayList<>();
+	private List<String> footer = new ArrayList<>();
 	private Future onFinish;
-	private String defaultAction = "continue";
 	private String finishAction = "continue";
 
 	public List<String> getHeader() {
@@ -21,6 +21,10 @@ public class TextPlayer {
 		return pages;
 	}
 
+	public List<String> getFooter() {
+		return footer;
+	}
+
 	public void setOnFinish(Future onFinish) {
 		this.onFinish = onFinish;
 	}
@@ -29,27 +33,34 @@ public class TextPlayer {
 		this.finishAction = finishAction;
 	}
 
-	public void play() {
+	public void start() {
 
-		Terminal.get().skip(1);
-		for (String line : header)
-			Terminal.get().println(line);
-
-		if (pages.size() > 0)
-			Terminal.get().pressEnterToContinue(new Future() {
-				@Override
-				public void onSuccess() {
-					Terminal.get().pull(2);
-					next();
-				}
-			});
+		if (header.size() > 0) {
+			Terminal.get().skip(1);
+			for (String line : header)
+				Terminal.get().println(line);
+			if (pages.size() > 0)
+				Terminal.get().pressEnterToContinue(new Future() {
+					@Override
+					public void onSuccess() {
+						Terminal.get().pull(2);
+						next();
+					}
+				});
+		}
+		else if (pages.size() > 0) {
+			next();
+		}
+		else {
+			finish();
+		}
 	}
 
 	public void next() {
 
 		Terminal.get().printLongText(pages.remove(0));
 
-		Terminal.get().pressEnterTo(new Future() {
+		Terminal.get().pressEnterToContinue(new Future() {
 			@Override
 			public void onSuccess() {
 				if (pages.size() > 0) {
@@ -57,10 +68,25 @@ public class TextPlayer {
 					next();
 				}
 				else {
-					if (onFinish != null)
-						onFinish.onSuccess();
+					Terminal.get().pull(2);
+					finish();
 				}
 			}
-		}, pages.size() > 0 ? defaultAction : finishAction);
+		});
+	}
+
+	public void finish() {
+
+		for (String line : footer)
+			Terminal.get().println(line);
+
+		Terminal.get().pressEnterTo(new Future() {
+			@Override
+			public void onSuccess() {
+				Terminal.get().pull(2);
+				if (onFinish != null)
+					onFinish.onSuccess();
+			}
+		}, finishAction);
 	}
 }
