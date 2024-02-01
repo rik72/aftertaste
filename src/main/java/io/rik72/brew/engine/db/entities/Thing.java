@@ -1,6 +1,7 @@
 package io.rik72.brew.engine.db.entities;
 
 import io.rik72.brew.engine.db.delta.ThingDelta;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -18,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Thing extends AbstractEntity implements Deltable {
+public class Thing extends AbstractEntity implements Deltable, Complement {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +62,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		return id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -73,6 +75,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		return location;
 	}
 
+	@Override
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -91,6 +94,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		this.visible = visible;
 	}
 
+	@Override
 	public boolean isTakeable() {
 		return takeable;
 	}
@@ -99,6 +103,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		this.takeable = takeable;
 	}
 
+	@Override
 	public boolean isDroppable() {
 		return droppable;
 	}
@@ -107,6 +112,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		this.droppable = droppable;
 	}
 
+	@Override
 	public boolean isPlural() {
 		return plural;
 	}
@@ -115,6 +121,7 @@ public class Thing extends AbstractEntity implements Deltable {
 		this.plural = plural;
 	}
 
+	@Override
 	public ThingStatus getStatus() {
 		return status;
 	}

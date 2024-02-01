@@ -4,8 +4,8 @@ import java.util.List;
 
 import io.rik72.brew.engine.db.entities.CharacterStatus;
 import io.rik72.brew.engine.db.entities.CharacterOneAction;
-import io.rik72.brew.engine.db.entities.ThingStatus;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -19,7 +19,7 @@ public class CharacterOneActionRepository extends AbstractRepository<CharacterOn
 		super(CharacterOneAction.class);
 	}
 
-	public List<CharacterOneAction> findByParts(Word action, ThingStatus complementStatus) {
+	public List<CharacterOneAction> findByParts(Word action, Status complementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
 		CriteriaQuery<CharacterOneAction> cr = cb.createQuery(entityClass);
 		Root<CharacterOneAction> root = cr.from(entityClass);

@@ -5,6 +5,7 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.one.OneActionExecutor;
@@ -14,7 +15,7 @@ public class TwoActionExecutor extends OneActionExecutor {
 
 	protected Word preposition;
 	protected Word sName;
-	protected Thing supplement;
+	protected Complement supplement;
 	protected boolean supplementIsInInventory;
 
 	public TwoActionExecutor(Vector<Word> words, boolean toBeConfirmed) {
@@ -30,9 +31,9 @@ public class TwoActionExecutor extends OneActionExecutor {
 	}
 
 	protected TwoActionExecutor(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
-								Word cName, Thing complement, boolean complementIsInInventory,
+								Word cName, Complement complement, boolean complementIsInInventory,
 								Word preposition,
-								Word sName, Thing supplement, boolean supplementIsInInventory) {
+								Word sName, Complement supplement, boolean supplementIsInInventory) {
 		super(words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 		this.preposition = preposition;
 		this.sName = sName;

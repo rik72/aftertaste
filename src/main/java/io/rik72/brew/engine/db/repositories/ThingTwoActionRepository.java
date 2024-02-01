@@ -5,6 +5,7 @@ import java.util.List;
 import io.rik72.brew.engine.db.entities.ThingStatus;
 import io.rik72.brew.engine.db.entities.ThingTwoAction;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -18,8 +19,8 @@ public class ThingTwoActionRepository extends AbstractRepository<ThingTwoAction>
 		super(ThingTwoAction.class);
 	}
 
-	public List<ThingTwoAction> findByParts(Word action, ThingStatus complementStatus,
-	                                             Word preposition, ThingStatus supplementStatus) {
+	public List<ThingTwoAction> findByParts(Word action, Status complementStatus,
+	                                             Word preposition, Status supplementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
 		CriteriaQuery<ThingTwoAction> cr = cb.createQuery(entityClass);
 		Root<ThingTwoAction> root = cr.from(entityClass);

@@ -1,6 +1,7 @@
 package io.rik72.brew.engine.db.entities;
 
 import io.rik72.brew.engine.db.delta.CharacterDelta;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -19,7 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Character extends AbstractEntity implements Deltable {
+public class Character extends AbstractEntity implements Deltable, Complement {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +62,7 @@ public class Character extends AbstractEntity implements Deltable {
 			throw new EntityNotFoundException("Character inventory location", inventory(name));
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -73,6 +75,7 @@ public class Character extends AbstractEntity implements Deltable {
 		return inventory;
 	}
 
+	@Override
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -83,6 +86,7 @@ public class Character extends AbstractEntity implements Deltable {
 			throw new EntityNotFoundException("Location", locationName);
 	}
 
+	@Override
 	public CharacterStatus getStatus() {
 		return status;
 	}
@@ -95,6 +99,21 @@ public class Character extends AbstractEntity implements Deltable {
 		this.status = CharacterStatusRepository.get().getByCharacterAndLabel(this, statusLabel);
 		if (this.status == null)
 			throw new EntityNotFoundException("Status", statusLabel, "character", name);
+	}
+
+	@Override
+	public boolean isPlural() {
+		return false;
+	}
+
+	@Override
+	public boolean isDroppable() {
+		return false;
+	}
+
+	@Override
+	public boolean isTakeable() {
+		return false;
 	}
 
     @Override
@@ -115,5 +134,4 @@ public class Character extends AbstractEntity implements Deltable {
 	public Delta getDelta() {
 		return new CharacterDelta(this);
 	}
-	
 }

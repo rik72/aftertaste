@@ -3,8 +3,8 @@ package io.rik72.brew.engine.db.repositories;
 import java.util.List;
 
 import io.rik72.brew.engine.db.entities.LocationOneAction;
-import io.rik72.brew.engine.db.entities.ThingStatus;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -18,7 +18,7 @@ public class LocationOneActionRepository extends AbstractRepository<LocationOneA
 		super(LocationOneAction.class);
 	}
 
-	public List<LocationOneAction> findByParts(Word action, ThingStatus complementStatus) {
+	public List<LocationOneAction> findByParts(Word action, Status complementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
 		CriteriaQuery<LocationOneAction> cr = cb.createQuery(entityClass);
 		Root<LocationOneAction> root = cr.from(entityClass);

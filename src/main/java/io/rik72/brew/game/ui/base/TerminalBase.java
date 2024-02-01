@@ -7,9 +7,9 @@ import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
 
 public abstract class TerminalBase {
+
 	private TerminalUX ux;
 
-	///////////////////////////////////////////////////////////////////////////
 	public void skip(int lines) {
 		ux.skip(lines);
 	}

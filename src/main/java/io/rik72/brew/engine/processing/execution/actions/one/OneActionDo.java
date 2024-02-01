@@ -11,6 +11,7 @@ import io.rik72.brew.engine.db.entities.CharacterOneAction;
 import io.rik72.brew.engine.db.entities.LocationOneAction;
 import io.rik72.brew.engine.db.entities.ThingOneAction;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOneActionRepository;
 import io.rik72.brew.engine.db.repositories.LocationOneActionRepository;
@@ -21,7 +22,7 @@ import io.rik72.mammoth.db.DB;
 public class OneActionDo extends OneActionExecutor {
 
 	protected OneActionDo(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
-	                      Word cName, Thing complement, boolean complementIsInInventory) {
+	                      Word cName, Complement complement, boolean complementIsInInventory) {
 		super(words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 	}
 

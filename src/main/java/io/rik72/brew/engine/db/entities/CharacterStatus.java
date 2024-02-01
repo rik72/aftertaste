@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.entities.AbstractEntity;
@@ -14,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CharacterStatus extends AbstractEntity {
+public class CharacterStatus extends AbstractEntity implements Status {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +62,12 @@ public class CharacterStatus extends AbstractEntity {
 
 	public String getFinale() {
 		return finale;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getDescription'");
 	}
 
     @Override

@@ -3,6 +3,7 @@ package io.rik72.brew.engine.db.entities;
 import java.util.List;
 
 import io.rik72.brew.engine.db.delta.LocationDelta;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -12,7 +13,7 @@ import io.rik72.mammoth.entities.AbstractEntity;
 import jakarta.persistence.*;
 
 @Entity
-public class Location extends AbstractEntity implements Deltable {
+public class Location extends AbstractEntity implements Deltable, Complement {
 
 	public static String INVENTORY = "inventory";
 
@@ -40,10 +41,12 @@ public class Location extends AbstractEntity implements Deltable {
 		return id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public LocationStatus getStatus() {
 		return status;
 	}
@@ -72,6 +75,21 @@ public class Location extends AbstractEntity implements Deltable {
 		return builder.toString();
 	}
 
+	@Override
+	public boolean isDroppable() {
+		return false;
+	}
+
+	@Override
+	public boolean isTakeable() {
+		return false;
+	}
+
+	@Override
+	public void setLocation(Location location) {
+		throw new UnsupportedOperationException("Unsupported method 'setLocation'");
+	}
+
     @Override
     public String toString() {
         return "{ Location :: " + 
@@ -84,5 +102,10 @@ public class Location extends AbstractEntity implements Deltable {
 	@Override
 	public Delta getDelta() {
 		return new LocationDelta(this);
+	}
+
+	@Override
+	public boolean isPlural() {
+		return false;
 	}
 }

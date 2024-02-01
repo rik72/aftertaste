@@ -31,58 +31,52 @@ public class CharacterLoader implements Loadable {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) ymlParser.parse(loadPath, "characters.yml");
 
-		boolean first = true;
-		for (CharacterRaw character : doc.characters) {
-			Parser.checkNotEmpty("character name", character.name);
-			if (first) {
-				first = false;
-				Location inventory = new Location(Character.inventory(character.name));
-				DB.persist(inventory);
-				Parser.checkNotEmpty("character start location",character.startLocation);
-				Character mainCharacter = new Character(character.name, character.startLocation);
-				DB.persist(mainCharacter);
-				CharacterRepository.get().setMainCharacterId(mainCharacter.getId());
-				Parser.checkNotEmpty("character status list", character.statuses);
-				boolean firstStatus = true;
-				for (CharacterStatusRaw stItem : character.statuses) {
-					Parser.checkNotEmpty("character status label", stItem.status);
-					CharacterStatus status = new CharacterStatus(character.name, stItem.status, stItem.finale != null ? stItem.finale.strip() : null);
-					DB.persist(status);
-					if (firstStatus && !"initial".equals(stItem.status))
-						throw new IllegalParseException("character status list: first item must be the 'initial' status");
-					firstStatus = false;
-					if (stItem.possibilities != null) for (PossibilityRaw pDoc : stItem.possibilities) {
-						Possibility pItem = Possibility.parse(pDoc);
-						CharacterStatusPossibility possibility;
-						if (pItem.inherit != null) {
-							CharacterStatusPossibility parent =
-								CharacterStatusPossibilityRepository.get().getByCharacterStatusAction(
-									mainCharacter, pItem.inherit, pItem.verb);
-							if (parent == null)
-								throw new IllegalParseException("inherit reference to unknown status", pItem.inherit);
-							possibility = new CharacterStatusPossibility(
-								character.name, stItem.status, parent.getAction().getText(),
-								parent.isPossible(), parent.isImportant(), parent.getFeedback());
-							if (pItem.possible != null)
-								possibility.setPossible(pItem.possible);
-							if (pItem.important != null)
-								possibility.setImportant(pItem.important);
-							if (pItem.feedback != null)
-								possibility.setFeedback(pItem.feedback);
-						}
-						else {
-							possibility = new CharacterStatusPossibility(
-								character.name, stItem.status, pItem.verb, pItem.possible, pItem.important, pItem.feedback);
-						}
-						DB.persist(possibility);
+		for (CharacterRaw chItem : doc.characters) {
+			Parser.checkNotEmpty("character name", chItem.name);
+			Location inventory = new Location(Character.inventory(chItem.name));
+			DB.persist(inventory);
+			Parser.checkNotEmpty("character start location",chItem.startLocation);
+			Character character = new Character(chItem.name, chItem.startLocation);
+			DB.persist(character);
+			if (chItem.main)
+				CharacterRepository.get().setMainCharacterId(character.getId());
+			Parser.checkNotEmpty("character status list", chItem.statuses);
+			boolean firstStatus = true;
+			for (CharacterStatusRaw stItem : chItem.statuses) {
+				Parser.checkNotEmpty("character status label", stItem.status);
+				CharacterStatus status = new CharacterStatus(chItem.name, stItem.status, stItem.finale != null ? stItem.finale.strip() : null);
+				DB.persist(status);
+				if (firstStatus && !"initial".equals(stItem.status))
+					throw new IllegalParseException("character status list: first item must be the 'initial' status");
+				firstStatus = false;
+				if (stItem.possibilities != null) for (PossibilityRaw pDoc : stItem.possibilities) {
+					Possibility pItem = Possibility.parse(pDoc);
+					CharacterStatusPossibility possibility;
+					if (pItem.inherit != null) {
+						CharacterStatusPossibility parent =
+							CharacterStatusPossibilityRepository.get().getByCharacterStatusAction(
+								character, pItem.inherit, pItem.verb);
+						if (parent == null)
+							throw new IllegalParseException("inherit reference to unknown status", pItem.inherit);
+						possibility = new CharacterStatusPossibility(
+							chItem.name, stItem.status, parent.getAction().getText(),
+							parent.isPossible(), parent.isImportant(), parent.getFeedback());
+						if (pItem.possible != null)
+							possibility.setPossible(pItem.possible);
+						if (pItem.important != null)
+							possibility.setImportant(pItem.important);
+						if (pItem.feedback != null)
+							possibility.setFeedback(pItem.feedback);
 					}
+					else {
+						possibility = new CharacterStatusPossibility(
+							chItem.name, stItem.status, pItem.verb, pItem.possible, pItem.important, pItem.feedback);
+					}
+					DB.persist(possibility);
 				}
-				mainCharacter.setStatus("initial");
-				DB.persist(mainCharacter);
 			}
-			else {
-				DB.persist(new Character(character.name, character.startLocation));
-			}
+			character.setStatus("initial");
+			DB.persist(character);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.entities.AbstractEntity;
@@ -14,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingStatus extends AbstractEntity {
+public class ThingStatus extends AbstractEntity implements Status {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +54,7 @@ public class ThingStatus extends AbstractEntity {
 		return label;
 	}
 
+	@Override
 	public String getDescription() {
 		return description;
 	}

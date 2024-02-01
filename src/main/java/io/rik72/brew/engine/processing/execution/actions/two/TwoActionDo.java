@@ -11,6 +11,7 @@ import io.rik72.brew.engine.db.entities.CharacterTwoAction;
 import io.rik72.brew.engine.db.entities.LocationTwoAction;
 import io.rik72.brew.engine.db.entities.ThingTwoAction;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.CharacterTwoActionRepository;
 import io.rik72.brew.engine.db.repositories.LocationTwoActionRepository;
@@ -21,9 +22,9 @@ import io.rik72.mammoth.db.DB;
 public class TwoActionDo extends TwoActionExecutor {
 
 	protected TwoActionDo(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
-	                      Word cName, Thing complement, boolean complementIsInInventory,
+	                      Word cName, Complement complement, boolean complementIsInInventory,
 						  Word preposition,
-						  Word sName, Thing supplement, boolean supplementIsInInventory) {
+						  Word sName, Complement supplement, boolean supplementIsInInventory) {
 		super(words, toBeConfirmed, verb, subject, additionalFeedback,
 			cName, complement, complementIsInInventory, preposition, sName, supplement, supplementIsInInventory);
 	}

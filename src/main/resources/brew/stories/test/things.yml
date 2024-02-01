@@ -11,7 +11,7 @@ things:
         actions:
           - action: smell .
             consequences:
-              - character: ( main ) initial => tower ( The sweet scent enthralls your brain. You fall unconscious. You finally wake up. Again... )
+              - character: ( lazlo ) initial => tower ( The sweet scent enthralls your brain. You fall unconscious. You finally wake up. Again... )
 
   - name: garden pencil
     location: garden
@@ -65,7 +65,7 @@ things:
               - thing: . -> invisible
           - action: put . ( on ) ( toolshed shelves ) initial
             consequences:
-              - character: ( main ) initial -> fatigued ( You suddenly feel unwell. )
+              - character: ( lazlo ) initial -> suicidal ( You suddenly feel depressed. )
 
   - name: toolshed small hammer
     location: toolshed
@@ -109,10 +109,10 @@ things:
             consequences:
               - thing: ( toolshed note ) initial -> visible ( Under one of the cans you spot a small note on paper. )
               - thing: ( toolshed paints ) initial -> taken
-              - character: ( main ) initial -> encumbered ( You feel encumbered. )
+              - character: ( lazlo ) initial -> encumbered ( You feel encumbered. )
           - action: drop .
             consequences:
-              - character: ( main ) encumbered -> initial ( You feel lighter now. )
+              - character: ( lazlo ) encumbered -> initial ( You feel lighter now. )
       - status: taken
         description: >
           Several cans of paint, their labels faded and smudged. Each can bears the marks of
@@ -120,10 +120,10 @@ things:
         actions:
           - action: take .
             consequences:
-              - character: ( main ) initial -> encumbered ( You feel encumbered. )
+              - character: ( lazlo ) initial -> encumbered ( You feel encumbered. )
           - action: drop .
             consequences:
-              - character: ( main ) encumbered -> initial ( You feel lighter now. )
+              - character: ( lazlo ) encumbered -> initial ( You feel lighter now. )
 
   - name: toolshed note
     location: toolshed
