@@ -14,7 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Word extends AbstractEntity {
+public class Word implements AbstractEntity {
 
 	public static enum Type {
 		DIRECTION,

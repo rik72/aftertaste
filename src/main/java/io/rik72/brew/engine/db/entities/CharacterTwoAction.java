@@ -18,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CharacterTwoAction extends AbstractEntity {
+public class CharacterTwoAction implements AbstractEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

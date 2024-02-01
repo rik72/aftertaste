@@ -7,7 +7,6 @@ import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltable;
-import io.rik72.mammoth.entities.AbstractEntity;
 import io.rik72.mammoth.exceptions.EntityNotFoundException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Thing extends AbstractEntity implements Deltable, Complement {
+public class Thing implements Complement, Deltable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

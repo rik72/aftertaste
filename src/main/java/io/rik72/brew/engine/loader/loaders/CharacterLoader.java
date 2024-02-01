@@ -7,6 +7,7 @@ import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.CharacterStatus;
 import io.rik72.brew.engine.db.entities.CharacterStatusPossibility;
 import io.rik72.brew.engine.db.entities.Location;
+import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
@@ -15,6 +16,7 @@ import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
+import io.rik72.brew.engine.loader.loaders.parsing.docs.Helpers;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.Parser;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.Possibility;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
@@ -31,6 +33,14 @@ public class CharacterLoader implements Loadable {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) ymlParser.parse(loadPath, "characters.yml");
 
+		// insert words for characters
+		for (CharacterRaw chItem : doc.characters) {
+			Helpers.loadWord(chItem.word, Word.Type.NAME);
+			Parser.checkNotEmpty("character name", chItem.name);
+			for (CharacterStatusRaw stItem : chItem.statuses)
+				Helpers.loadWord(stItem.word, Word.Type.NAME);
+		}
+
 		for (CharacterRaw chItem : doc.characters) {
 			Parser.checkNotEmpty("character name", chItem.name);
 			Location inventory = new Location(Character.inventory(chItem.name));
@@ -44,7 +54,10 @@ public class CharacterLoader implements Loadable {
 			boolean firstStatus = true;
 			for (CharacterStatusRaw stItem : chItem.statuses) {
 				Parser.checkNotEmpty("character status label", stItem.status);
-				CharacterStatus status = new CharacterStatus(chItem.name, stItem.status, stItem.finale != null ? stItem.finale.strip() : null);
+				CharacterStatus status = new CharacterStatus(
+					chItem.name, stItem.status, stItem.brief, stItem.description,
+					stItem.word != null ? stItem.word.text : chItem.word.text,
+					stItem.finale != null ? stItem.finale.strip() : null);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
 					throw new IllegalParseException("character status list: first item must be the 'initial' status");

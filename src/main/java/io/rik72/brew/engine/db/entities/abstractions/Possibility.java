@@ -1,4 +1,6 @@
-package io.rik72.brew.engine.db.entities;
+package io.rik72.brew.engine.db.entities.abstractions;
+
+import io.rik72.brew.engine.db.entities.Word;
 
 public interface Possibility {
 	public Word getAction();

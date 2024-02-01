@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.Possibility;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
@@ -16,7 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingStatusPossibility extends AbstractEntity implements Possibility {
+public class ThingStatusPossibility implements AbstractEntity, Possibility {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

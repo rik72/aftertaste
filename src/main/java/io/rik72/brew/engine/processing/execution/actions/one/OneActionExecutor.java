@@ -5,6 +5,7 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.zero.ZeroActionExecutor;
@@ -24,6 +25,10 @@ public class OneActionExecutor extends ZeroActionExecutor {
 			complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), cName.getCanonical().getText());
 			if (complement != null)
 				complementIsInInventory = true;
+			else if (subject.getLocation().getStatus().getCanonical().equals(cName.getCanonical().getText()))
+				complement = subject.getLocation();
+			else
+				complement = CharacterRepository.get().getByStatusCanonical(cName.getCanonical().getText());
 		}
 	}
 

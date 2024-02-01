@@ -4,16 +4,16 @@ import java.util.List;
 
 import io.rik72.brew.engine.db.delta.LocationDelta;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltable;
-import io.rik72.mammoth.entities.AbstractEntity;
 import jakarta.persistence.*;
 
 @Entity
-public class Location extends AbstractEntity implements Deltable, Complement {
+public class Location implements Complement, Deltable {
 
 	public static String INVENTORY = "inventory";
 
@@ -62,6 +62,15 @@ public class Location extends AbstractEntity implements Deltable, Complement {
 	public String getDescription() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(status.getDescription());
+		List<Character> charactersHere = CharacterRepository.get().findByLocation(this);
+		if (charactersHere.size() > 0) {
+			for (Character character : charactersHere) {
+				String name = character.getName();
+				builder.append("\n").append(name.substring(0, 1).toUpperCase()).append(name.substring(1))
+				       .append(" is here. ")
+				       .append(character.getStatus().getBrief());
+			}
+		}
 		List<Thing> thingsHere = ThingRepository.get().findByLocation(this, true, true);
 		if (thingsHere.size() > 0) {
 			builder.append("\nYou see: ");

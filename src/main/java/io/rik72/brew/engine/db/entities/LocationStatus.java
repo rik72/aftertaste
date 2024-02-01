@@ -15,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class LocationStatus extends AbstractEntity implements Status {
+public class LocationStatus implements AbstractEntity, Status {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

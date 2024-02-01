@@ -15,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CharacterStatus extends AbstractEntity implements Status {
+public class CharacterStatus implements AbstractEntity, Status {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,15 @@ public class CharacterStatus extends AbstractEntity implements Status {
 
     @Column
     private String label;
+
+    @Column
+    private String brief;
+
+    @Column(length=1024)
+    private String description;
+
+    @Column
+    private String canonical;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
@@ -35,9 +44,12 @@ public class CharacterStatus extends AbstractEntity implements Status {
 	public CharacterStatus() {
 	}
 
-	public CharacterStatus(String characterName, String label, String finale) {
+	public CharacterStatus(String characterName, String label, String brief, String description, String canonical, String finale) {
 		setCharacter(characterName);
 		this.label = label;
+		this.brief = brief;
+		this.description = description;
+		this.canonical = canonical;
 		this.finale = finale;
 	}
 
@@ -48,6 +60,10 @@ public class CharacterStatus extends AbstractEntity implements Status {
 
 	public String getLabel() {
 		return label;
+	}
+
+	public String getBrief() {
+		return brief;
 	}
 
 	public Character getCharacter() {
@@ -66,8 +82,11 @@ public class CharacterStatus extends AbstractEntity implements Status {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getDescription'");
+		return description;
+	}
+
+	public String getCanonical() {
+		return canonical;
 	}
 
     @Override
@@ -75,7 +94,9 @@ public class CharacterStatus extends AbstractEntity implements Status {
         return "{ CharacterStatus :: " + 
 			id + " : " + 
 			TextUtils.quote(character.getName()) + " : " + 
-			TextUtils.quote(label) +
+			TextUtils.quote(canonical) + " : " + 
+			TextUtils.quote(brief) + " : " + 
+			TextUtils.quote(description) + " : " + 
 			(finale != null && finale.length() > 0 ? (" : " + TextUtils.quote(finale)) : "") +
 		" }";
     }

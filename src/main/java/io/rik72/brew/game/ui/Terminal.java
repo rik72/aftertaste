@@ -71,7 +71,7 @@ public class Terminal extends TerminalBase {
 		printLocationImage(location);
 		lastLocationDescription = location.getDescription();
 		skip(1);
-		emphasisLongText(lastLocationDescription + ")");
+		emphasisLongText(lastLocationDescription);
 		skip(1);
 	}
 
