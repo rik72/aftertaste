@@ -111,8 +111,11 @@ public class Terminal extends TerminalBase {
 					printLongText(text);
 		}
 
-		if (results.isRefresh() && !Story.get().getMainCharacter().getLocation().getDescription().equals(lastLocationDescription))
+		boolean lastLineSkipped = false;
+		if (results.isRefresh() && !Story.get().getMainCharacter().getLocation().getDescription().equals(lastLocationDescription)) {
 			Terminal.get().showLocation();
+			lastLineSkipped = true;
+		}
 		
 		String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
 		String locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
@@ -124,17 +127,24 @@ public class Terminal extends TerminalBase {
 			finale = locationFinale;
 
 		if (finale != null) {
+			if (!lastLineSkipped)
+				skip(1);
+			Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 			closeInput();
 			// dummy - required since the bubbling of last ENTER keypress is not done yet
 			pressEnterToContinue(new Future() {
 				@Override
 				public void onSuccess() {
 					pull(2);
+					printLongText(
+						"It seems your story has come to an end.\n" +
+						"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
 					// start finale text slideshow
 					pressEnterToContinue(new Future() {
 						@Override
 						public void onSuccess() {
 							pull(2);
+							skip(1);
 							finale(finale);
 						}
 					});

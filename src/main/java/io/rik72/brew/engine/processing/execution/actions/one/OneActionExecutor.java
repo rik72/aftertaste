@@ -20,16 +20,7 @@ public class OneActionExecutor extends ZeroActionExecutor {
 	public OneActionExecutor(Vector<Word> words, boolean toBeConfirmed) {
 		super(words, toBeConfirmed);
 		this.cName = words.get(1);
-		complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
-		if (complement == null) {
-			complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), cName.getCanonical().getText());
-			if (complement != null)
-				complementIsInInventory = true;
-			else if (subject.getLocation().getStatus().getCanonical().equals(cName.getCanonical().getText()))
-				complement = subject.getLocation();
-			else
-				complement = CharacterRepository.get().getByStatusCanonical(cName.getCanonical().getText());
-		}
+		resolveComplement();
 	}
 
 	protected OneActionExecutor(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
@@ -60,7 +51,37 @@ public class OneActionExecutor extends ZeroActionExecutor {
 		return action.execute();
 	}
 
+	protected void resolveComplement() {
+		switch (cName.getEntityType()) {
+
+			case character: {
+				complement = CharacterRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
+				break;
+			}
+
+			case location: {
+				if (subject.getLocation().getStatus().getCanonical().equals(cName.getCanonical().getText()))
+					complement = subject.getLocation();
+				break;
+			}
+
+			case thing: {
+				complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
+				if (complement == null) {
+					complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), cName.getCanonical().getText());
+					if (complement != null)
+						complementIsInInventory = true;
+				}
+				break;
+			}
+			
+			default: {
+				break;
+			}
+		}
+	}
+
 	protected String noSuchThing() {
-		return "No " + cName.getText() + " can be seen here.";
+		return "You can't see that.";
 	}
 }

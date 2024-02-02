@@ -7,17 +7,16 @@ locations:
     statuses:
       - status: initial
         description: >
-          You find yourself in a cramped and cluttered toolshed, the air thick with the scent of aged wood and rust.
-          The room feels snug, almost suffocating, as scattered tools and half-empty cans of paint vie for space on
-          dusty shelves lining the walls. Sunlight struggles through a small, grimy window to the north, offering a
-          glimpse of a vibrant garden. To the east, a weathered door stands, apparently shut.
+          You find yourself in a cramped and cluttered toolshed.
+          Scattered tools and cans of paint vie for space on dusty shelves lining the walls.
+          Sunlight struggles through a small, grimy window to the south, offering a
+          glimpse of a vibrant garden. To the east you see a weathered door.
         possibilities:
           - impossible: fly ( The ceiling is very low. )
       - status: door opened
         description: >
-          The toolshed basks in the light coming mainly from the open door on the east, revealing its cluttered expanse.
-          A tangible aroma of aged wood and dust permeates the air.
-          Scattered tools and half-empty cans of paint vie for space on dusty shelves that line the walls.
+          The toolshed basks in the light coming mainly from the open door on the east.
+          Scattered tools and cans of paint vie for space on dusty shelves that line the walls.
           In the north wall a small, grimy window offers a glimpse of the vibrant garden outside.
         directions:
           east: garden
@@ -32,8 +31,7 @@ locations:
       - status: initial
         description: >
           You are in a garden, sprawling in natural splendor — a tapestry of vibrant colors and scents.
-          Lush foliage dances with the breeze, vibrant blooms nodding in approval. A meandering stone path
-          to the north disappears amidst a menagerie of flowers, seemingly leading nowhere.
+          Lush foliage dances with the breeze, vibrant blooms nodding in approval.
           To the west you see a weathered wooden toolshed. To the north you see a distant tower.
         directions:
           north: tower ( fly )

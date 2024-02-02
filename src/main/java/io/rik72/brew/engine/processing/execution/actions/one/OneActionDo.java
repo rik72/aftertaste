@@ -110,9 +110,9 @@ public class OneActionDo extends OneActionExecutor {
 				return new Results(false, false, cantDoThat());
 			return new Results(false, false, noSuchThing());
 		}
-		else if (verb.getComplement() == Word.Position.inventory && !complementIsInInventory)
+		else if (verb.getComplementPosition() == Word.Position.inventory && !complementIsInInventory)
 			return new Results(false, false, complementNotInInventory());
-		else if (verb.getComplement() == Word.Position.location && complementIsInInventory)
+		else if (verb.getComplementPosition() == Word.Position.location && complementIsInInventory)
 			return new Results(false, false, complementNotInLocation());
 		return null;
 	}

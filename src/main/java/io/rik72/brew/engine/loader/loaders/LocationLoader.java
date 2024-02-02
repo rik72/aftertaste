@@ -7,7 +7,8 @@ import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.LocationStatus;
 import io.rik72.brew.engine.db.entities.LocationStatusPossibility;
 import io.rik72.brew.engine.db.entities.LocationXLocation;
-import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
+import io.rik72.brew.engine.db.entities.Word.Type;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
@@ -42,11 +43,11 @@ public class LocationLoader implements Loadable {
 
 		// insert words for locations
 		for (LocationRaw locItem : doc.locations) {
-			Helpers.loadWord(locItem.word, Word.Type.NAME);
+			Helpers.loadWord(locItem.word, Type.name, EntityType.location);
 			Parser.checkNotEmpty("location word", locItem.word);
 			Parser.checkNotEmpty("location status list", locItem.statuses);
 			for (LocationStatusRaw stItem : locItem.statuses) {
-				Helpers.loadWord(stItem.word, Word.Type.NAME);
+				Helpers.loadWord(stItem.word, Type.name, EntityType.location);
 			}
 		}
 

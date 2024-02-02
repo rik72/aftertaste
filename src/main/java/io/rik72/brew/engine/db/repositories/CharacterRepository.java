@@ -36,15 +36,28 @@ public class CharacterRepository extends AbstractRepository<Character> {
 		return getByField("name", value);
 	}
 
-	public Character getByStatusCanonical(String value) {
+	public Character getVisibleByLocationAndCanonical(Location location, String canonical) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
 		CriteriaQuery<Character> cr = cb.createQuery(entityClass);
 		Root<Character> root = cr.from(entityClass);
-		Join<Character, CharacterStatus> csj = root.join("status", JoinType.INNER);
-		cr.select(root).where(cb.equal(csj.get("canonical"), value));
-		List<Character> list = DB.createQuery(cr).list();
-		return list.size() >= 1 ? list.get(0) : null;
+		Join<Character, CharacterStatus> sj = root.join("status", JoinType.INNER);
+		cr.select(root).where(cb.and(
+			cb.equal(root.get("visible"), true),
+			cb.equal(root.get("location"), location),
+			cb.equal(sj.get("canonical"), canonical)));
+		List<Character> resList = DB.createQuery(cr).list();
+		return resList.size() > 0 ? resList.get(0) : null;
 	}
+
+	// public Character getByStatusCanonical(String value) {
+	// 	CriteriaBuilder cb = DB.getCriteriaBuilder();
+	// 	CriteriaQuery<Character> cr = cb.createQuery(entityClass);
+	// 	Root<Character> root = cr.from(entityClass);
+	// 	Join<Character, CharacterStatus> csj = root.join("status", JoinType.INNER);
+	// 	cr.select(root).where(cb.equal(csj.get("canonical"), value));
+	// 	List<Character> list = DB.createQuery(cr).list();
+	// 	return list.size() >= 1 ? list.get(0) : null;
+	// }
 
 	public List<Character> findByLocation(Location location/* , Boolean visible, Boolean takeable*/) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();

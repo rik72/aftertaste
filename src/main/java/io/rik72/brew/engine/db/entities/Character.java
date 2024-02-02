@@ -33,6 +33,9 @@ public class Character implements Complement, Deltable {
     @JoinColumn
 	private Location location;
 
+    @Column
+	private boolean visible = true;
+
 	@OneToOne(fetch=FetchType.LAZY)
     @JoinColumn
 	private Location inventory;
@@ -85,6 +88,14 @@ public class Character implements Complement, Deltable {
 			throw new EntityNotFoundException("Location", locationName);
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 	@Override
 	public CharacterStatus getStatus() {
 		return status;
@@ -120,8 +131,9 @@ public class Character implements Complement, Deltable {
         return "{ Character :: " + 
 			id + " : " + 
 			TextUtils.quote(name) + " : " + 
-			TextUtils.quote(status.getLabel()) + " : " + 
-			TextUtils.quote(location.getName()) +
+			TextUtils.quote(location.getName()) + " : " +
+			(visible ? "visible" : "invisible") + " : " +
+			TextUtils.quote(status.getLabel()) +
 		" }";
     }
 

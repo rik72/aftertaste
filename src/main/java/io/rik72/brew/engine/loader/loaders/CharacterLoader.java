@@ -7,7 +7,8 @@ import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.CharacterStatus;
 import io.rik72.brew.engine.db.entities.CharacterStatusPossibility;
 import io.rik72.brew.engine.db.entities.Location;
-import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
+import io.rik72.brew.engine.db.entities.Word.Type;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusPossibilityRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
@@ -23,7 +24,6 @@ import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalPar
 import io.rik72.brew.engine.loader.loaders.parsing.raw.CharacterRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.CharacterStatusRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.PossibilityRaw;
-import io.rik72.brew.engine.story.Story;
 import io.rik72.mammoth.db.DB;
 
 public class CharacterLoader implements Loadable {
@@ -35,10 +35,10 @@ public class CharacterLoader implements Loadable {
 
 		// insert words for characters
 		for (CharacterRaw chItem : doc.characters) {
-			Helpers.loadWord(chItem.word, Word.Type.NAME);
+			Helpers.loadWord(chItem.word, Type.name, EntityType.character);
 			Parser.checkNotEmpty("character name", chItem.name);
 			for (CharacterStatusRaw stItem : chItem.statuses)
-				Helpers.loadWord(stItem.word, Word.Type.NAME);
+				Helpers.loadWord(stItem.word, Type.name, EntityType.character);
 		}
 
 		for (CharacterRaw chItem : doc.characters) {
@@ -47,6 +47,8 @@ public class CharacterLoader implements Loadable {
 			DB.persist(inventory);
 			Parser.checkNotEmpty("character start location",chItem.startLocation);
 			Character character = new Character(chItem.name, chItem.startLocation);
+			if (!chItem.visible)
+				character.setVisible(false);
 			DB.persist(character);
 			if (chItem.main)
 				CharacterRepository.get().setMainCharacterId(character.getId());
@@ -102,17 +104,11 @@ public class CharacterLoader implements Loadable {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
 
-		boolean first = true;
-		for (CharacterRaw character : doc.characters) {
-			if (first) {
-				first = false;
-				Character mainCharacter = Story.get().getMainCharacter();
-				mainCharacter.setLocation(character.startLocation);
-				DB.persist(mainCharacter);
-			}
-			else {
-				DB.persist(new Character(character.name, character.startLocation));
-			}
+		for (CharacterRaw chItem : doc.characters) {
+			Character character = CharacterRepository.get().getByName(chItem.name);
+			character.setLocation(chItem.startLocation);
+			character.setStatus("initial");
+			DB.persist(character);
 		}
 	}
 

@@ -120,9 +120,9 @@ public class TwoActionDo extends TwoActionExecutor {
 				return new Results(false, false, cantDoThat());
 			return new Results(false, false, noSuchThing(cName));
 		}
-		else if (verb.getComplement() == Word.Position.inventory && !complementIsInInventory)
+		else if (verb.getComplementPosition() == Word.Position.inventory && !complementIsInInventory)
 			return new Results(false, false, complementNotInInventory());
-		else if (verb.getComplement() == Word.Position.location && complementIsInInventory)
+		else if (verb.getComplementPosition() == Word.Position.location && complementIsInInventory)
 			return new Results(false, false, complementNotInLocation());
 		return null;
 	}
@@ -134,9 +134,9 @@ public class TwoActionDo extends TwoActionExecutor {
 				return new Results(false, false, cantDoThat());
 			return new Results(false, false, noSuchThing(sName));
 		}
-		else if (verb.getSupplement() == Word.Position.inventory && !supplementIsInInventory)
+		else if (verb.getSupplementPosition() == Word.Position.inventory && !supplementIsInInventory)
 			return new Results(false, false, supplementNotInInventory());
-		else if (verb.getSupplement() == Word.Position.location && supplementIsInInventory)
+		else if (verb.getSupplementPosition() == Word.Position.location && supplementIsInInventory)
 			return new Results(false, false, supplementNotInLocation());
 		return null;
 	}

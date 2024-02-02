@@ -12,7 +12,8 @@ import io.rik72.brew.engine.db.entities.ThingStatus;
 import io.rik72.brew.engine.db.entities.ThingStatusPossibility;
 import io.rik72.brew.engine.db.entities.ThingOneAction;
 import io.rik72.brew.engine.db.entities.ThingTwoAction;
-import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
+import io.rik72.brew.engine.db.entities.Word.Type;
 import io.rik72.brew.engine.db.repositories.CharacterOneActionRepository;
 import io.rik72.brew.engine.db.repositories.CharacterTwoActionRepository;
 import io.rik72.brew.engine.db.repositories.LocationOneActionRepository;
@@ -52,10 +53,10 @@ public class ThingLoader implements Loadable {
 
 		// insert words for things
 		for (ThingRaw thItem : doc.things) {
-			Helpers.loadWord(thItem.word, Word.Type.NAME);
+			Helpers.loadWord(thItem.word, Type.name, EntityType.thing);
 			Parser.checkNotEmpty("thing name", thItem.name);
 			for (ThingStatusRaw stItem : thItem.statuses)
-				Helpers.loadWord(stItem.word, Word.Type.NAME);
+				Helpers.loadWord(stItem.word, Type.name, EntityType.thing);
 		}
 
 		// 2nd pass to insert things & statuses

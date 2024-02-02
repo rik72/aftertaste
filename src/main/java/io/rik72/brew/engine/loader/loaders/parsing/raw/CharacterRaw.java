@@ -7,5 +7,6 @@ public class CharacterRaw extends Raw {
 	public boolean main;
 	public String startLocation;
 	public WordRaw word;
+	public boolean visible = true;
 	public List<CharacterStatusRaw> statuses;
 }

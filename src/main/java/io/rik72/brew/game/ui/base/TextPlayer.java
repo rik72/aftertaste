@@ -12,6 +12,7 @@ public class TextPlayer {
 	private List<String> pages = new ArrayList<>();
 	private List<String> footer = new ArrayList<>();
 	private Future onFinish;
+	private String defaultAction = "continue";
 	private String finishAction = "continue";
 
 	public List<String> getHeader() {
@@ -60,9 +61,9 @@ public class TextPlayer {
 
 	public void next() {
 
-		Terminal.get().printLongText(pages.remove(0));
+		Terminal.get().emphasisLongText(pages.remove(0));
 
-		Terminal.get().pressEnterToContinue(new Future() {
+		Terminal.get().pressEnterTo(new Future() {
 			@Override
 			public void onSuccess() {
 				if (pages.size() > 0) {
@@ -71,10 +72,14 @@ public class TextPlayer {
 				}
 				else {
 					Terminal.get().pull(2);
-					finish();
+					if (footer.size() > 0)
+						finish();
+					else if (onFinish != null)
+						onFinish.onSuccess();
 				}
 			}
-		});
+		}, pages.size() > 0 || (pages.size() == 0 && footer.size() > 0) ?
+			defaultAction : finishAction);
 	}
 
 	public void finish() {

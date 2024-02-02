@@ -20,14 +20,14 @@ public class ExecutorFactory {
 	private static Map<Type[], Class<? extends Executor>> executorMap = new HashMap<>();
 
 	static {
-		executorMap.put(new Type[] { Type.COMMAND }, CommandExecutor.class);
-		executorMap.put(new Type[] { Type.COMMAND, Type.NAME }, CommandExecutor.class);
-		executorMap.put(new Type[] { Type.COMMAND, Type.NAME, Type.NUMBER }, CommandExecutor.class);
-		executorMap.put(new Type[] { Type.DIRECTION }, ZeroActionExecutor.class);
-		executorMap.put(new Type[] { Type._D_ACTION,  Type.DIRECTION }, DirectionActionExecutor.class);
-		executorMap.put(new Type[] { Type._0_ACTION }, ZeroActionExecutor.class);
-		executorMap.put(new Type[] { Type._1_ACTION, Type.NAME }, OneActionExecutor.class);
-		executorMap.put(new Type[] { Type._2_ACTION, Type.NAME, Type.PREPOSITION, Type.NAME }, TwoActionExecutor.class);
+		executorMap.put(new Type[] { Type.command }, CommandExecutor.class);
+		executorMap.put(new Type[] { Type.command, Type.name }, CommandExecutor.class);
+		executorMap.put(new Type[] { Type.command, Type.name, Type.number }, CommandExecutor.class);
+		executorMap.put(new Type[] { Type.direction }, ZeroActionExecutor.class);
+		executorMap.put(new Type[] { Type._d_action,  Type.direction }, DirectionActionExecutor.class);
+		executorMap.put(new Type[] { Type._0_action }, ZeroActionExecutor.class);
+		executorMap.put(new Type[] { Type._1_action, Type.name }, OneActionExecutor.class);
+		executorMap.put(new Type[] { Type._2_action, Type.name, Type.preposition, Type.name }, TwoActionExecutor.class);
 	}
 
 	public static Executor get(Vector<Word> words, boolean toBeConfirmed) throws Exception {

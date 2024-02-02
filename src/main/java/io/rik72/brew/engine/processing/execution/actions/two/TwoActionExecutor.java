@@ -3,7 +3,6 @@ package io.rik72.brew.engine.processing.execution.actions.two;
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Character;
-import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
@@ -61,7 +60,7 @@ public class TwoActionExecutor extends OneActionExecutor {
 		}
 		TwoActionExecutor action = commandClass.getDeclaredConstructor(
 			Vector.class, boolean.class, Word.class, Character.class, String.class,
-			Word.class, Thing.class, boolean.class, Word.class, Word.class, Thing.class, boolean.class).newInstance(
+			Word.class, Complement.class, boolean.class, Word.class, Word.class, Complement.class, boolean.class).newInstance(
 				words, toBeConfirmed, verb, subject, additionalFeedback,
 				cName, complement, complementIsInInventory,
 				preposition,

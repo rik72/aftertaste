@@ -3,6 +3,8 @@ package io.rik72.brew.engine.processing.parsing;
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
+import io.rik72.brew.engine.db.entities.Word.Type;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.ExecutorFactory;
@@ -33,7 +35,7 @@ public class InputParser {
 		for (int i = 0; i < inputTokens.length; i++) {
 			Word word = null;
 			if (isShort(inputTokens[i]))
-				word = new Word(inputTokens[i], Word.Type.NUMBER);
+				word = new Word(inputTokens[i], Type.number, EntityType.none);
 			else if (i < inputTokens.length - 2) {
 				word = WordRepository.get().getByTokens(inputTokens[i], inputTokens[i+1], inputTokens[i+2]);
 				if (word == null) {

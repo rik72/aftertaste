@@ -17,15 +17,22 @@ import jakarta.persistence.ManyToOne;
 public class Word implements AbstractEntity {
 
 	public static enum Type {
-		DIRECTION,
-		_D_ACTION,
-		_0_ACTION,
-		_1_ACTION,
-		_2_ACTION,
-		COMMAND,
-		NAME,
-		PREPOSITION,
-		NUMBER,
+		direction,
+		_d_action,
+		_0_action,
+		_1_action,
+		_2_action,
+		command,
+		name,
+		preposition,
+		number,
+	}
+
+	public static enum EntityType {
+		none,
+		character,
+		location,
+		thing,
 	}
 
 	public static enum Position {
@@ -45,6 +52,9 @@ public class Word implements AbstractEntity {
     private Type type;
 
     @Column
+    private EntityType entityType;
+
+    @Column
     private Position complement;
 
     @Column
@@ -57,23 +67,25 @@ public class Word implements AbstractEntity {
 	public Word() {
 	}
 
-	public Word(String text, Type type) {
+	public Word(String text, Type type, EntityType entityType) {
 		this.text = text;
 		this.type = type;
+		this.entityType = entityType;
 		this.canonical = this;
 	}
 
-	public Word(String text, Type type, String canonical) {
+	public Word(String text, Type type, EntityType entityType, String canonical) {
 		this.text = text;
 		this.type = type;
+		this.entityType = entityType;
 		if (canonical != null)
 			setCanonical(canonical);
 		else
 			this.canonical = this;
 	}
 
-	public Word(String text, Type type, String canonical, Position complement, Position supplement) {
-		this(text, type, canonical);
+	public Word(String text, Type type, EntityType entityType, String canonical, Position complement, Position supplement) {
+		this(text, type, entityType, canonical);
 		this.complement = complement;
 		this.supplement = supplement;
 	}
@@ -91,6 +103,10 @@ public class Word implements AbstractEntity {
 		return type;
 	}
 
+	public EntityType getEntityType() {
+		return entityType;
+	}
+
 	public Word getCanonical() {
 		return canonical;
 	}
@@ -105,19 +121,19 @@ public class Word implements AbstractEntity {
 		this.canonical = null;
 	}
 
-	public Position getComplement() {
+	public Position getComplementPosition() {
 		return complement;
 	}
 
-	public void setComplement(Position complement) {
+	public void setComplementPosition(Position complement) {
 		this.complement = complement;
 	}
 
-	public Position getSupplement() {
+	public Position getSupplementPosition() {
 		return supplement;
 	}
 
-	public void setSupplement(Position supplement) {
+	public void setSupplementPosition(Position supplement) {
 		this.supplement = supplement;
 	}
 
@@ -127,6 +143,7 @@ public class Word implements AbstractEntity {
 			id + " : " + 
 			TextUtils.quote(text) + " : " +
 			type + 
+			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
 			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
 			(complement != null ? " : " + "complement in " + complement : "") +
 			(supplement != null ? " : " + "supplement in " + supplement : "") +
