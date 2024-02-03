@@ -143,11 +143,15 @@ public class ZeroActionExecutor extends Executor {
 	}
 
 	protected Results buildResults(boolean success, boolean refresh, String feedback) {
-		return buildResults(success, refresh, feedback, false);
+		return buildResults(success, refresh, feedback, false, false);
 	}
 
-	protected Results buildResults(boolean success, boolean refresh, String feedback, boolean restart) {
-		Results results = new Results(success, refresh, feedback, restart);
+	protected Results buildResults(boolean success, boolean refresh, String feedback, boolean emphasis) {
+		return buildResults(success, refresh, feedback, emphasis, false);
+	}
+
+	protected Results buildResults(boolean success, boolean refresh, String feedback, boolean emphasis, boolean restart) {
+		Results results = new Results(success, refresh, feedback, emphasis, restart);
 		mergeFeedbacks(results);
 		return results;
 	}

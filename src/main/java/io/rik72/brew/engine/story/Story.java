@@ -17,6 +17,7 @@ import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.loader.loaders.CharacterLoader;
+import io.rik72.brew.engine.loader.loaders.ConsequenceLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
 import io.rik72.brew.engine.loader.loaders.PrepositionLoader;
 import io.rik72.brew.engine.loader.loaders.StoryLoader;
@@ -43,10 +44,11 @@ public class Story {
 		new StoryLoader().register();
 		new PrepositionLoader().register();
 		new VerbLoader().register();
+		new WordLoader().register();
 		new LocationLoader().register();
 		new CharacterLoader().register();
 		new ThingLoader().register();
-		new WordLoader().register();
+		new ConsequenceLoader().register();
 	}
 
 	public Character getMainCharacter() {
@@ -78,9 +80,9 @@ public class Story {
 	}
 
 	public void restart() {
-		new ThingLoader().reload();
-		new LocationLoader().reload();
-		new CharacterLoader().reload();
+		new ThingLoader().reset();
+		new LocationLoader().reset();
+		new CharacterLoader().reset();
 	}
 
 	public void applyDeltas() {

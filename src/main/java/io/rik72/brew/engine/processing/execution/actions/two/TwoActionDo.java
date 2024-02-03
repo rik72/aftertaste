@@ -7,15 +7,15 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
-import io.rik72.brew.engine.db.entities.CharacterTwoAction;
-import io.rik72.brew.engine.db.entities.LocationTwoAction;
-import io.rik72.brew.engine.db.entities.ThingTwoAction;
+import io.rik72.brew.engine.db.entities.ThingThingOnCharacter;
+import io.rik72.brew.engine.db.entities.ThingThingOnLocation;
+import io.rik72.brew.engine.db.entities.ThingThingOnThing;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.CharacterTwoActionRepository;
-import io.rik72.brew.engine.db.repositories.LocationTwoActionRepository;
-import io.rik72.brew.engine.db.repositories.ThingTwoActionRepository;
+import io.rik72.brew.engine.db.repositories.ThingThingOnCharacterRepository;
+import io.rik72.brew.engine.db.repositories.ThingThingOnLocationRepository;
+import io.rik72.brew.engine.db.repositories.ThingThingOnThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.mammoth.db.DB;
 
@@ -36,14 +36,14 @@ public class TwoActionDo extends TwoActionExecutor {
 		if (results != null)
 			return results;
 
-		List<ThingTwoAction> thingActions =
-			ThingTwoActionRepository.get().findByParts(
+		List<ThingThingOnThing> thingActions =
+			ThingThingOnThingRepository.get().findByParts(
 				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
-		List<LocationTwoAction> locationActions =
-			LocationTwoActionRepository.get().findByParts(
+		List<ThingThingOnLocation> locationActions =
+			ThingThingOnLocationRepository.get().findByParts(
 				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
-		List<CharacterTwoAction> characterActions =
-			CharacterTwoActionRepository.get().findByParts(
+		List<ThingThingOnCharacter> characterActions =
+			ThingThingOnCharacterRepository.get().findByParts(
 				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
 
 		if (!thingActions.isEmpty() || !locationActions.isEmpty() || !characterActions.isEmpty())
@@ -61,7 +61,7 @@ public class TwoActionDo extends TwoActionExecutor {
 
 		List<String> texts = new ArrayList<>();
 		if (thingActions.size() > 0) {
-			for (ThingTwoAction action : thingActions) {
+			for (ThingThingOnThing action : thingActions) {
 				Thing before = action.getBeforeStatus().getThing();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					if (action.getAfterStatus() != null)
@@ -78,7 +78,7 @@ public class TwoActionDo extends TwoActionExecutor {
 		}
 
 		if (locationActions.size() > 0) {
-			for (LocationTwoAction action : locationActions) {
+			for (ThingThingOnLocation action : locationActions) {
 				Location before = action.getBeforeStatus().getLocation();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					before.setStatus(action.getAfterStatus().getLabel());
@@ -91,7 +91,7 @@ public class TwoActionDo extends TwoActionExecutor {
 		}
 
 		if (characterActions.size() > 0) {
-			for (CharacterTwoAction action : characterActions) {
+			for (ThingThingOnCharacter action : characterActions) {
 				Character before = action.getBeforeStatus().getCharacter();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					if (action.getAfterStatus() != null)

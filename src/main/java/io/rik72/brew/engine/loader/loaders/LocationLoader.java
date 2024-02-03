@@ -144,7 +144,7 @@ public class LocationLoader implements Loadable {
 		Loader.get().register(this);
 	}
 
-	public void reload() {
+	public void reset() {
 
 		YmlParser parser = new YmlParser(Docs.Locations.class);
 		Docs.Locations doc = (Docs.Locations) parser.parse("brew/stories/test/locations.yml");

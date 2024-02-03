@@ -1,7 +1,9 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
+import io.rik72.brew.engine.db.repositories.CharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -17,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingOneAction implements AbstractEntity {
+public class ThingOnCharacter implements AbstractEntity, ConsequenceOnCharacter {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +36,11 @@ public class ThingOneAction implements AbstractEntity {
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus beforeStatus;
+	private CharacterStatus beforeStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus afterStatus;
+	private CharacterStatus afterStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
@@ -50,13 +52,13 @@ public class ThingOneAction implements AbstractEntity {
 	@Column
 	String afterText;
 
-	public ThingOneAction(String action,
-							   Thing complement, String complementStatusLabel,
-							   String beforeName, String beforeStatusLabel,
-							   String afterStatusLabel,
-							   String toLocationName,
-							   Boolean afterVisibility,
-							   String afterText) {
+	public ThingOnCharacter(String action,
+							Thing complement, String complementStatusLabel,
+							String beforeName, String beforeStatusLabel,
+							String afterStatusLabel,
+							String toLocationName,
+							Boolean afterVisibility,
+							String afterText) {
 		setAction(action);
 		setComplementStatus(complement, complementStatusLabel);
 		setBeforeStatus(beforeName, beforeStatusLabel);
@@ -93,26 +95,26 @@ public class ThingOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", complementStatusLabel, "complement", complement.getName());
 	}
 
-	public ThingStatus getBeforeStatus() {
+	public CharacterStatus getBeforeStatus() {
 		return beforeStatus;
 	}
 
 	private void setBeforeStatus(String beforeName, String beforeStatusLabel) {
-		Thing thing = ThingRepository.get().getByName(beforeName);
-		this.beforeStatus = ThingStatusRepository.get().getByThingAndLabel(thing, beforeStatusLabel);
+		Character character = CharacterRepository.get().getByName(beforeName);
+		this.beforeStatus = CharacterStatusRepository.get().getByCharacterAndLabel(character, beforeStatusLabel);
 		if (this.beforeStatus == null)
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
-	public ThingStatus getAfterStatus() {
+	public CharacterStatus getAfterStatus() {
 		return afterStatus;
 	}
 
 	private void setAfterStatus(String afterStatusLabel) {
-		Thing thing = ThingRepository.get().getByName(beforeStatus.getThing().getName());
-		this.afterStatus = ThingStatusRepository.get().getByThingAndLabel(thing, afterStatusLabel);
+		Character character = CharacterRepository.get().getByName(beforeStatus.getCharacter().getName());
+		this.afterStatus = CharacterStatusRepository.get().getByCharacterAndLabel(character, afterStatusLabel);
 		if (this.afterStatus == null)
-			throw new EntityNotFoundException("Status", afterStatusLabel, "thing", thing.getName());
+			throw new EntityNotFoundException("Status", afterStatusLabel, "character", character.getName());
 	}
 
 	private void setToLocation(String toLocationName) {
@@ -125,6 +127,7 @@ public class ThingOneAction implements AbstractEntity {
 		return toLocation;
 	}
 
+	@Override
 	public Boolean getAfterVisibility() {
 		return afterVisibility;
 	}
@@ -135,16 +138,15 @@ public class ThingOneAction implements AbstractEntity {
 
     @Override
     public String toString() {
-        return "{ Thing 1-Action :: " + 
+        return "{ ThingOnCharacter :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
 			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
 			TextUtils.quote(complementStatus.getLabel()) + " : " + 
-			TextUtils.quote(beforeStatus.getThing().getName()) + " : " + 
+			TextUtils.quote(beforeStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
 			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
 			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
-			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
 			(afterText != null ? afterText : "-") +
 		" }";
 	}

@@ -31,6 +31,7 @@ public class OneActionExamine extends OneActionDo {
 
 		results.setSuccess(true);
 		results.setFeedback(complement.getStatus().getDescription());
+		results.setEmphasis(true);
 		mergeFeedbacks(results);
 		return results;
 	}

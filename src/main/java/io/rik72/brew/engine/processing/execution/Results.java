@@ -9,22 +9,28 @@ public class Results {
 	private boolean success;
 	private boolean refresh;
 	private String feedback;
+	private boolean emphasis;
 	private boolean restart;
 	private List<String> texts = new ArrayList<>();
 
-	public Results(boolean success, boolean refresh, String feedback, boolean restart) {
+	public Results(boolean success, boolean refresh, String feedback, boolean emphasis, boolean restart) {
 		this.success = success;
 		this.refresh = refresh;
 		this.feedback = feedback;
+		this.emphasis = emphasis;
 		this.restart = restart;
 	}
 
+	public Results(boolean success, boolean refresh, String feedback, boolean emphasis) {
+		this(success, refresh, feedback, emphasis, false);
+	}
+
 	public Results(boolean success, boolean refresh, String feedback) {
-		this(success, refresh, feedback, false);
+		this(success, refresh, feedback, false, false);
 	}
 
 	public Results(boolean success) {
-		this(success, false, null, false);
+		this(success, false, null, false, false);
 	}
 
 	public boolean isSuccess() {
@@ -41,6 +47,14 @@ public class Results {
 
 	public void setRefresh(boolean refresh) {
 		this.refresh = refresh;
+	}
+
+	public boolean isEmphasis() {
+		return emphasis;
+	}
+
+	public void setEmphasis(boolean emphasis) {
+		this.emphasis = emphasis;
 	}
 
 	public boolean isRestart() {
@@ -65,9 +79,10 @@ public class Results {
 
 	@Override
 	public String toString() {
-		return "{ ProcessingResult :: " +
+		return "{ Results :: " +
 			success + " : " + 
 			refresh + " : " + 
+			emphasis + " : " + 
 			restart + " : " + 
 			TextUtils.quote(feedback) + " : " + 
 			texts +

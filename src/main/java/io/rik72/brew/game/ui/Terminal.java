@@ -105,7 +105,10 @@ public class Terminal extends TerminalBase {
 
 		if (results.getFeedback() != null && results.getFeedback().length() > 0 || results.getTexts().size() > 0) {
 			if (results.getFeedback().length() > 0)
-				printLongText(results.getFeedback());
+				if (results.isEmphasis())
+					emphasisLongText(results.getFeedback());
+				else
+					printLongText(results.getFeedback());
 			if (results.getTexts().size() > 0)
 				for (String text : results.getTexts())
 					printLongText(text);

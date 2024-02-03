@@ -13,10 +13,10 @@ words:
     - text: thing
     - text: thingstatus
     - text: thingstatuspossibility
-    - text: characteroneaction
-    - text: charactertwoaction
-    - text: thingoneaction
-    - text: thingtwoaction
-    - text: locationoneaction
-    - text: locationtwoaction
+    - text: thingoncharacter
+    - text: thingthingoncharacter
+    - text: thingonlocation
+    - text: thingthingonlocation
+    - text: thingonthing
+    - text: thingthingonthing
     - text: word

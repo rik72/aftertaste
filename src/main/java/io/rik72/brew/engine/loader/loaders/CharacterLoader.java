@@ -41,6 +41,7 @@ public class CharacterLoader implements Loadable {
 				Helpers.loadWord(stItem.word, Type.name, EntityType.character);
 		}
 
+		// 2nd pass for data and statuses
 		for (CharacterRaw chItem : doc.characters) {
 			Parser.checkNotEmpty("character name", chItem.name);
 			Location inventory = new Location(Character.inventory(chItem.name));
@@ -100,7 +101,7 @@ public class CharacterLoader implements Loadable {
 		Loader.get().register(this);
 	}
 
-	public void reload() {
+	public void reset() {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
 

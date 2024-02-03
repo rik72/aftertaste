@@ -2,8 +2,8 @@ package io.rik72.brew.engine.db.repositories;
 
 import java.util.List;
 
+import io.rik72.brew.engine.db.entities.ThingThingOnLocation;
 import io.rik72.brew.engine.db.entities.ThingStatus;
-import io.rik72.brew.engine.db.entities.ThingTwoAction;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
@@ -13,17 +13,17 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Root;
 
-public class ThingTwoActionRepository extends AbstractRepository<ThingTwoAction> {
+public class ThingThingOnLocationRepository extends AbstractRepository<ThingThingOnLocation> {
 
-	private ThingTwoActionRepository() {
-		super(ThingTwoAction.class);
+	private ThingThingOnLocationRepository() {
+		super(ThingThingOnLocation.class);
 	}
 
-	public List<ThingTwoAction> findByParts(Word action, Status complementStatus,
+	public List<ThingThingOnLocation> findByParts(Word action, Status complementStatus,
 	                                             Word preposition, Status supplementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
-		CriteriaQuery<ThingTwoAction> cr = cb.createQuery(entityClass);
-		Root<ThingTwoAction> root = cr.from(entityClass);
+		CriteriaQuery<ThingThingOnLocation> cr = cb.createQuery(entityClass);
+		Root<ThingThingOnLocation> root = cr.from(entityClass);
 		Order idAsc = cb.asc(root.get("id"));
 		cr.select(root).where(cb.and(
 			cb.equal(root.get("action"), action),
@@ -33,10 +33,10 @@ public class ThingTwoActionRepository extends AbstractRepository<ThingTwoAction>
 		return DB.createQuery(cr).list();
 	}
 
-	public List<ThingTwoAction> findByActionAndAfterStatus(Word action, ThingStatus afterStatus) {
+	public List<ThingThingOnLocation> findByActionAndAfterStatus(Word action, ThingStatus afterStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
-		CriteriaQuery<ThingTwoAction> cr = cb.createQuery(entityClass);
-		Root<ThingTwoAction> root = cr.from(entityClass);
+		CriteriaQuery<ThingThingOnLocation> cr = cb.createQuery(entityClass);
+		Root<ThingThingOnLocation> root = cr.from(entityClass);
 		cr.select(root).where(cb.and(
 			cb.equal(root.get("action"), action),
 			cb.equal(root.get("afterStatus"), afterStatus)));
@@ -44,8 +44,8 @@ public class ThingTwoActionRepository extends AbstractRepository<ThingTwoAction>
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	private static ThingTwoActionRepository instance = new ThingTwoActionRepository();
-	public static ThingTwoActionRepository get() {
+	private static ThingThingOnLocationRepository instance = new ThingThingOnLocationRepository();
+	public static ThingThingOnLocationRepository get() {
 		return instance;
 	}
 }

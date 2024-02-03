@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
@@ -17,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class LocationOneAction implements AbstractEntity {
+public class ThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,7 @@ public class LocationOneAction implements AbstractEntity {
 	@Column
 	String afterText;
 
-	public LocationOneAction(String action,
+	public ThingOnLocation(String action,
 							      Thing complement, String complementStatusLabel,
 							      String beforeName, String beforeStatusLabel,
 							      String afterStatusLabel,
@@ -80,6 +81,7 @@ public class LocationOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", complementStatusLabel, "complement", complement.getName());
 	}
 
+	@Override
 	public LocationStatus getBeforeStatus() {
 		return beforeStatus;
 	}
@@ -91,6 +93,7 @@ public class LocationOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
+	@Override
 	public LocationStatus getAfterStatus() {
 		return afterStatus;
 	}
@@ -102,13 +105,14 @@ public class LocationOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", afterStatusLabel, "location", location.getName());
 	}
 
+	@Override
 	public String getAfterText() {
 		return afterText;
 	}
 
     @Override
     public String toString() {
-        return "{ Location 1-Action :: " + 
+        return "{ ThingOnLocation :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
 			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 

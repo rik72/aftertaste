@@ -2,7 +2,7 @@ package io.rik72.brew.engine.db.repositories;
 
 import java.util.List;
 
-import io.rik72.brew.engine.db.entities.LocationOneAction;
+import io.rik72.brew.engine.db.entities.ThingOnLocation;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
@@ -12,16 +12,16 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Root;
 
-public class LocationOneActionRepository extends AbstractRepository<LocationOneAction> {
+public class ThingOnLocationRepository extends AbstractRepository<ThingOnLocation> {
 
-	private LocationOneActionRepository() {
-		super(LocationOneAction.class);
+	private ThingOnLocationRepository() {
+		super(ThingOnLocation.class);
 	}
 
-	public List<LocationOneAction> findByParts(Word action, Status complementStatus) {
+	public List<ThingOnLocation> findByParts(Word action, Status complementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
-		CriteriaQuery<LocationOneAction> cr = cb.createQuery(entityClass);
-		Root<LocationOneAction> root = cr.from(entityClass);
+		CriteriaQuery<ThingOnLocation> cr = cb.createQuery(entityClass);
+		Root<ThingOnLocation> root = cr.from(entityClass);
 		Order idAsc = cb.asc(root.get("id"));
 		cr.select(root).where(cb.and(
 			cb.equal(root.get("action"), action),
@@ -30,8 +30,8 @@ public class LocationOneActionRepository extends AbstractRepository<LocationOneA
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	private static LocationOneActionRepository instance = new LocationOneActionRepository();
-	public static LocationOneActionRepository get() {
+	private static ThingOnLocationRepository instance = new ThingOnLocationRepository();
+	public static ThingOnLocationRepository get() {
 		return instance;
 	}
 }

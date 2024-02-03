@@ -7,15 +7,18 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
-import io.rik72.brew.engine.db.entities.CharacterOneAction;
-import io.rik72.brew.engine.db.entities.LocationOneAction;
-import io.rik72.brew.engine.db.entities.ThingOneAction;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnThing;
+import io.rik72.brew.engine.db.repositories.CharacterOnCharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterOnLocationRepository;
+import io.rik72.brew.engine.db.repositories.CharacterOnThingRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.CharacterOneActionRepository;
-import io.rik72.brew.engine.db.repositories.LocationOneActionRepository;
-import io.rik72.brew.engine.db.repositories.ThingOneActionRepository;
+import io.rik72.brew.engine.db.repositories.ThingOnCharacterRepository;
+import io.rik72.brew.engine.db.repositories.ThingOnLocationRepository;
+import io.rik72.brew.engine.db.repositories.ThingOnThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.mammoth.db.DB;
 
@@ -33,14 +36,25 @@ public class OneActionDo extends OneActionExecutor {
 		if (results != null)
 			return results;
 
-		List<ThingOneAction> thingActions =
-			ThingOneActionRepository.get().findByParts(verb.getCanonical(), complement.getStatus());
-		List<LocationOneAction> locationActions =
-			LocationOneActionRepository.get().findByParts(verb.getCanonical(), complement.getStatus());
-		List<CharacterOneAction> characterActions =
-			CharacterOneActionRepository.get().findByParts(verb.getCanonical(), complement.getStatus());
+		List<ConsequenceOnThing> consequencesOnThings = new ArrayList<>();
+		consequencesOnThings.addAll(
+			ThingOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		consequencesOnThings.addAll(
+			CharacterOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
 
-		if (!thingActions.isEmpty() || !locationActions.isEmpty() || !characterActions.isEmpty())
+		List<ConsequenceOnLocation> consequencesOnLocations = new ArrayList<>();
+		consequencesOnLocations.addAll(
+			ThingOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		consequencesOnLocations.addAll(
+			CharacterOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+
+		List<ConsequenceOnCharacter> consequencesOnCharacters = new ArrayList<>();
+		consequencesOnCharacters.addAll(
+			ThingOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		consequencesOnCharacters.addAll(
+			CharacterOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+
+		if (!consequencesOnThings.isEmpty() || !consequencesOnLocations.isEmpty() || !consequencesOnCharacters.isEmpty())
 			setDoable(true);
 
 		results = checkVerb();
@@ -50,8 +64,8 @@ public class OneActionDo extends OneActionExecutor {
 		boolean refresh = false;
 
 		List<String> texts = new ArrayList<>();
-		if (thingActions.size() > 0) {
-			for (ThingOneAction action : thingActions) {
+		if (consequencesOnThings.size() > 0) {
+			for (ConsequenceOnThing action : consequencesOnThings) {
 				Thing before = action.getBeforeStatus().getThing();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					if (action.getAfterStatus() != null)
@@ -67,8 +81,8 @@ public class OneActionDo extends OneActionExecutor {
 			}
 		}
 
-		if (locationActions.size() > 0) {
-			for (LocationOneAction action : locationActions) {
+		if (consequencesOnLocations.size() > 0) {
+			for (ConsequenceOnLocation action : consequencesOnLocations) {
 				Location before = action.getBeforeStatus().getLocation();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					before.setStatus(action.getAfterStatus().getLabel());
@@ -80,14 +94,16 @@ public class OneActionDo extends OneActionExecutor {
 			}
 		}
 
-		if (characterActions.size() > 0) {
-			for (CharacterOneAction action : characterActions) {
+		if (consequencesOnCharacters.size() > 0) {
+			for (ConsequenceOnCharacter action : consequencesOnCharacters) {
 				Character before = action.getBeforeStatus().getCharacter();
 				if (before.getStatus() == action.getBeforeStatus()) {
 					if (action.getAfterStatus() != null)
 						before.setStatus(action.getAfterStatus().getLabel());
 					if (action.getToLocation() != null)
 						before.setLocation(action.getToLocation());
+					if (action.getAfterVisibility() != null)
+						before.setVisible(action.getAfterVisibility());
 					DB.persist(before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());

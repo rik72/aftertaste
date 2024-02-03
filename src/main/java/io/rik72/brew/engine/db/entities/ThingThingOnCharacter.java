@@ -1,7 +1,8 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.repositories.CharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -17,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingTwoAction implements AbstractEntity {
+public class ThingThingOnCharacter implements AbstractEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,31 +43,27 @@ public class ThingTwoAction implements AbstractEntity {
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus beforeStatus;
+	private CharacterStatus beforeStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus afterStatus;
+	private CharacterStatus afterStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
 	private Location toLocation;
 
 	@Column
-	Boolean afterVisibility;
-
-	@Column
 	String afterText;
 
-	public ThingTwoAction(String action,
-							   Thing complement, String complementStatusLabel,
-							   String preposition,
-							   Thing supplement, String supplementStatusLabel,
-							   String beforeName, String beforeStatusLabel,
-							   String afterStatusLabel,
-							   String toLocationName,
-							   Boolean afterVisibility,
-							   String afterText) {
+	public ThingThingOnCharacter(String action,
+							       Thing complement, String complementStatusLabel,
+							       String preposition,
+							   	   Thing supplement, String supplementStatusLabel,
+							       String beforeName, String beforeStatusLabel,
+							       String afterStatusLabel,
+								   String toLocationName,
+							       String afterText) {
 		setAction(action);
 		setPreposition(preposition);
 		setComplementStatus(complement, complementStatusLabel);
@@ -76,7 +73,6 @@ public class ThingTwoAction implements AbstractEntity {
 			setAfterStatus(afterStatusLabel);
 		if (toLocationName != null)
 			setToLocation(toLocationName);
-		this.afterVisibility = afterVisibility;
 		this.afterText = afterText;
 	}
 
@@ -125,26 +121,26 @@ public class ThingTwoAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", supplementStatusLabel, "supplement", supplement.getName());
 	}
 
-	public ThingStatus getBeforeStatus() {
+	public CharacterStatus getBeforeStatus() {
 		return beforeStatus;
 	}
 
 	private void setBeforeStatus(String beforeName, String beforeStatusLabel) {
-		Thing thing = ThingRepository.get().getByName(beforeName);
-		this.beforeStatus = ThingStatusRepository.get().getByThingAndLabel(thing, beforeStatusLabel);
+		Character character = CharacterRepository.get().getByName(beforeName);
+		this.beforeStatus = CharacterStatusRepository.get().getByCharacterAndLabel(character, beforeStatusLabel);
 		if (this.beforeStatus == null)
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
-	public ThingStatus getAfterStatus() {
+	public CharacterStatus getAfterStatus() {
 		return afterStatus;
 	}
 
 	private void setAfterStatus(String afterStatusLabel) {
-		Thing thing = ThingRepository.get().getByName(beforeStatus.getThing().getName());
-		this.afterStatus = ThingStatusRepository.get().getByThingAndLabel(thing, afterStatusLabel);
+		Character character = CharacterRepository.get().getByName(beforeStatus.getCharacter().getName());
+		this.afterStatus = CharacterStatusRepository.get().getByCharacterAndLabel(character, afterStatusLabel);
 		if (this.afterStatus == null)
-			throw new EntityNotFoundException("Status", afterStatusLabel, "thing", thing.getName());
+			throw new EntityNotFoundException("Status", afterStatusLabel, "character", character.getName());
 	}
 
 	private void setToLocation(String toLocationName) {
@@ -157,17 +153,13 @@ public class ThingTwoAction implements AbstractEntity {
 		return toLocation;
 	}
 
-	public Boolean getAfterVisibility() {
-		return afterVisibility;
-	}
-
 	public String getAfterText() {
 		return afterText;
 	}
 
     @Override
     public String toString() {
-        return "{ Thing 2-Action :: " + 
+        return "{ ThingThingOnCharacter :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
 			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
@@ -175,11 +167,10 @@ public class ThingTwoAction implements AbstractEntity {
 			TextUtils.quote(preposition.getText()) + " : " + 
 			TextUtils.quote(supplementStatus.getThing().getName()) + " : " + 
 			TextUtils.quote(supplementStatus.getLabel()) + " : " + 
-			TextUtils.quote(beforeStatus.getThing().getName()) + " : " + 
+			TextUtils.quote(beforeStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
 			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
 			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
-			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
 			(afterText != null ? afterText : "-") +
 		" }";
 	}

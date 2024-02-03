@@ -41,5 +41,10 @@ characters:
         description: >
           The aquatic form of the creature - small, humanoid in the aspect, with slender limbs and a lithe body -
           glistens with iridescent scales, reflecting the hues of the surrounding flora.
-          With a mischievous glint in its eyes, the imp appears lost in its own world.
+          With a mischievous glint in its eyes, the imp appears lost in its own world...
+        actions:
+          - action: examine .
+            consequences:
+              - character: . => tower ( As you approach with interest the imp, he suddenly gets up to his "feet" and says "Follow me on the tower, Master". That said, he takes leave in a puff of spray and disappears in the direction of the distant tower. )
+              - thing: ( toolshed big hammer ) initial => lazlo inventory ( A big hammer appears in your hands )
 

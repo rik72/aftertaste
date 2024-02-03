@@ -8,5 +8,6 @@ public class CharacterStatusRaw extends Raw {
 	public String description;
 	public WordRaw word;
 	public List<PossibilityRaw> possibilities;
+	public List<ActionRaw> actions;
 	public String finale;
 }

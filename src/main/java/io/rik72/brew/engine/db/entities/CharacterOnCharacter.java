@@ -1,9 +1,9 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.entities.AbstractEntity;
@@ -18,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CharacterOneAction implements AbstractEntity {
+public class CharacterOnCharacter implements AbstractEntity, ConsequenceOnCharacter {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class CharacterOneAction implements AbstractEntity {
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus complementStatus;
+	private CharacterStatus complementStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
@@ -46,14 +46,18 @@ public class CharacterOneAction implements AbstractEntity {
 	private Location toLocation;
 
 	@Column
+	Boolean afterVisibility;
+
+	@Column
 	String afterText;
 
-	public CharacterOneAction(String action,
-							       Thing complement, String complementStatusLabel,
-							       String beforeName, String beforeStatusLabel,
-							       String afterStatusLabel,
-								   String toLocationName,
-							       String afterText) {
+	public CharacterOnCharacter(String action,
+							    Character complement, String complementStatusLabel,
+							    String beforeName, String beforeStatusLabel,
+							    String afterStatusLabel,
+								String toLocationName,
+							   	Boolean afterVisibility,
+							    String afterText) {
 		setAction(action);
 		setComplementStatus(complement, complementStatusLabel);
 		setBeforeStatus(beforeName, beforeStatusLabel);
@@ -61,6 +65,7 @@ public class CharacterOneAction implements AbstractEntity {
 			setAfterStatus(afterStatusLabel);
 		if (toLocationName != null)
 			setToLocation(toLocationName);
+		this.afterVisibility = afterVisibility;
 		this.afterText = afterText;
 	}
 
@@ -79,16 +84,17 @@ public class CharacterOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Verb", action);
 	}
 
-	public ThingStatus getComplementStatus() {
+	public CharacterStatus getComplementStatus() {
 		return complementStatus;
 	}
 
-	private void setComplementStatus(Thing complement, String complementStatusLabel) {
-		this.complementStatus = ThingStatusRepository.get().getByThingAndLabel(complement, complementStatusLabel);
+	private void setComplementStatus(Character complement, String complementStatusLabel) {
+		this.complementStatus = CharacterStatusRepository.get().getByCharacterAndLabel(complement, complementStatusLabel);
 		if (this.complementStatus == null)
 			throw new EntityNotFoundException("Status", complementStatusLabel, "complement", complement.getName());
 	}
 
+	@Override
 	public CharacterStatus getBeforeStatus() {
 		return beforeStatus;
 	}
@@ -100,6 +106,7 @@ public class CharacterOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
+	@Override
 	public CharacterStatus getAfterStatus() {
 		return afterStatus;
 	}
@@ -117,25 +124,33 @@ public class CharacterOneAction implements AbstractEntity {
 			throw new EntityNotFoundException("Location", toLocationName);
 	}
 
+	@Override
 	public Location getToLocation() {
 		return toLocation;
 	}
 
+	@Override
+	public Boolean getAfterVisibility() {
+		return afterVisibility;
+	}
+
+	@Override
 	public String getAfterText() {
 		return afterText;
 	}
 
     @Override
     public String toString() {
-        return "{ Character 1-Action :: " + 
+        return "{ CharacterOnCharacter :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
-			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
+			TextUtils.quote(complementStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(complementStatus.getLabel()) + " : " + 
 			TextUtils.quote(beforeStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
 			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
 			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
+			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
 			(afterText != null ? afterText : "-") +
 		" }";
 	}

@@ -27,6 +27,9 @@
         <mapping class="io.rik72.brew.engine.db.entities.Character" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterStatusPossibility" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterOnCharacter" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterOnLocation" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.Location" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationXLocation" />
@@ -34,12 +37,12 @@
         <mapping class="io.rik72.brew.engine.db.entities.Thing" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatusPossibility" />
-        <mapping class="io.rik72.brew.engine.db.entities.CharacterOneAction" />
-        <mapping class="io.rik72.brew.engine.db.entities.CharacterTwoAction" />
-        <mapping class="io.rik72.brew.engine.db.entities.ThingOneAction" />
-        <mapping class="io.rik72.brew.engine.db.entities.ThingTwoAction" />
-        <mapping class="io.rik72.brew.engine.db.entities.LocationOneAction" />
-        <mapping class="io.rik72.brew.engine.db.entities.LocationTwoAction" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingOnCharacter" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnCharacter" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingOnLocation" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnLocation" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingOnThing" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.Word" />
     </session-factory>
 </hibernate-configuration>

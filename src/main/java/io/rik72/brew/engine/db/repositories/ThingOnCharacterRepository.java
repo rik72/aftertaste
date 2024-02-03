@@ -3,7 +3,7 @@ package io.rik72.brew.engine.db.repositories;
 import java.util.List;
 
 import io.rik72.brew.engine.db.entities.CharacterStatus;
-import io.rik72.brew.engine.db.entities.CharacterOneAction;
+import io.rik72.brew.engine.db.entities.ThingOnCharacter;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.mammoth.db.DB;
@@ -13,16 +13,16 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Root;
 
-public class CharacterOneActionRepository extends AbstractRepository<CharacterOneAction> {
+public class ThingOnCharacterRepository extends AbstractRepository<ThingOnCharacter> {
 
-	private CharacterOneActionRepository() {
-		super(CharacterOneAction.class);
+	private ThingOnCharacterRepository() {
+		super(ThingOnCharacter.class);
 	}
 
-	public List<CharacterOneAction> findByParts(Word action, Status complementStatus) {
+	public List<ThingOnCharacter> findByParts(Word action, Status complementStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
-		CriteriaQuery<CharacterOneAction> cr = cb.createQuery(entityClass);
-		Root<CharacterOneAction> root = cr.from(entityClass);
+		CriteriaQuery<ThingOnCharacter> cr = cb.createQuery(entityClass);
+		Root<ThingOnCharacter> root = cr.from(entityClass);
 		Order idAsc = cb.asc(root.get("id"));
 		cr.select(root).where(cb.and(
 			cb.equal(root.get("action"), action),
@@ -30,10 +30,10 @@ public class CharacterOneActionRepository extends AbstractRepository<CharacterOn
 		return DB.createQuery(cr).list();
 	}
 
-	public List<CharacterOneAction> findByActionAndAfterStatus(Word action, CharacterStatus afterStatus) {
+	public List<ThingOnCharacter> findByActionAndAfterStatus(Word action, CharacterStatus afterStatus) {
 		CriteriaBuilder cb = DB.getCriteriaBuilder();
-		CriteriaQuery<CharacterOneAction> cr = cb.createQuery(entityClass);
-		Root<CharacterOneAction> root = cr.from(entityClass);
+		CriteriaQuery<ThingOnCharacter> cr = cb.createQuery(entityClass);
+		Root<ThingOnCharacter> root = cr.from(entityClass);
 		cr.select(root).where(cb.and(
 			cb.equal(root.get("action"), action),
 			cb.equal(root.get("afterStatus"), afterStatus)));
@@ -41,8 +41,8 @@ public class CharacterOneActionRepository extends AbstractRepository<CharacterOn
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	private static CharacterOneActionRepository instance = new CharacterOneActionRepository();
-	public static CharacterOneActionRepository get() {
+	private static ThingOnCharacterRepository instance = new ThingOnCharacterRepository();
+	public static ThingOnCharacterRepository get() {
 		return instance;
 	}
 }

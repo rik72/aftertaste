@@ -33,7 +33,7 @@ public class CommandLoad extends CommandExecutor {
 							Deltas.set(SaveGame.getInstance().getDeltas());
 							Story.get().applyDeltas();
 							Terminal.get().println("Game loaded.");
-							Terminal.get().consumeResults(new Results(true, true, "", true));
+							Terminal.get().consumeResults(new Results(true, true, "", false, true));
 						}
 						else {
 							Terminal.get().hilightln("Incompatible save file " + 

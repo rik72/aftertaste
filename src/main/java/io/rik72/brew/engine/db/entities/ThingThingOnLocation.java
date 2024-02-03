@@ -17,7 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class LocationTwoAction implements AbstractEntity {
+public class ThingThingOnLocation implements AbstractEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +51,7 @@ public class LocationTwoAction implements AbstractEntity {
 	@Column
 	String afterText;
 
-	public LocationTwoAction(String action,
+	public ThingThingOnLocation(String action,
 							      Thing complement, String complementStatusLabel,
 							      String preposition,
 							   	  Thing supplement, String supplementStatusLabel,
@@ -139,7 +139,7 @@ public class LocationTwoAction implements AbstractEntity {
 
     @Override
     public String toString() {
-        return "{ Location 1-Action :: " + 
+        return "{ ThingThingOnLocation :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
 			TextUtils.quote(preposition.getText()) + " : " + 
