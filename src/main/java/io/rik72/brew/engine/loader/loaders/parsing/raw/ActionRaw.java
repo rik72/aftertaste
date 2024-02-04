@@ -4,5 +4,5 @@ import java.util.List;
 
 public class ActionRaw extends Raw {
 	public String action;
-	public List<ConsequenceRaw> consequences;
+	public List<String> consequences;
 }

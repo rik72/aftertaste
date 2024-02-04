@@ -13,7 +13,7 @@ locations:
           glimpse of a vibrant garden. To the east you see a weathered door.
         possibilities:
           - impossible: fly ( The ceiling is very low. )
-      - status: door opened
+      - status: door.opened
         description: >
           The toolshed basks in the light coming mainly from the open door on the east.
           Scattered tools and cans of paint vie for space on dusty shelves that line the walls.
@@ -35,7 +35,7 @@ locations:
           To the west you see a weathered wooden toolshed. To the north you see a distant tower.
         directions:
           north: tower ( fly )
-      - status: door opened
+      - status: door.opened
         directions:
           west: toolshed
           north: tower ( fly )

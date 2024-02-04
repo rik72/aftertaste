@@ -29,14 +29,16 @@ import io.rik72.mammoth.db.DB;
 public class CharacterLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) ymlParser.parse(loadPath, "characters.yml");
 
 		// insert words for characters
 		for (CharacterRaw chItem : doc.characters) {
-			Helpers.loadWord(chItem.word, Type.name, EntityType.character);
 			Parser.checkNotEmpty("character name", chItem.name);
+			Helpers.loadEntityNameAsWord(chItem.name, Type.entity, EntityType.character);
+			Helpers.loadEntityNameAsWord(Character.inventory(chItem.name), Type.entity, EntityType.location);
+			Helpers.loadWord(chItem.word, Type.name, EntityType.character);
 			for (CharacterStatusRaw stItem : chItem.statuses)
 				Helpers.loadWord(stItem.word, Type.name, EntityType.character);
 		}
@@ -55,10 +57,18 @@ public class CharacterLoader implements Loadable {
 				CharacterRepository.get().setMainCharacterId(character.getId());
 			Parser.checkNotEmpty("character status list", chItem.statuses);
 			boolean firstStatus = true;
+			String description = null;
 			for (CharacterStatusRaw stItem : chItem.statuses) {
 				Parser.checkNotEmpty("character status label", stItem.status);
+				if (stItem.description == null) {
+					if (description == null && "initial".equals(stItem.status))
+						throw new Exception("Initial description of character \"" + character.getName() + "\" cannot be null");
+				}
+				else {
+					description = stItem.description.strip();
+				}
 				CharacterStatus status = new CharacterStatus(
-					chItem.name, stItem.status, stItem.brief, stItem.description,
+					chItem.name, stItem.status, stItem.brief, description,
 					stItem.word != null ? stItem.word.text : chItem.word.text,
 					stItem.finale != null ? stItem.finale.strip() : null);
 				DB.persist(status);

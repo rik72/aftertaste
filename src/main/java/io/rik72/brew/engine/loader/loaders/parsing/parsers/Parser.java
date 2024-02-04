@@ -14,7 +14,7 @@ public abstract class Parser {
 		throw new UnsupportedOperationException();
 	}
 
-	protected static final String wordP = " *([a-z ]+) *";
+	protected static final String wordP = " *([a-z \\.]+) *";
 	protected static final String textP = " *([^()]+) *";
 
 	protected static Pattern pattern(String pattern) {

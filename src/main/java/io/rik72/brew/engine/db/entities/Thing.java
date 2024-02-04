@@ -18,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Thing implements Complement, Deltable {
+public class Thing extends Complement implements Deltable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class Thing implements Complement, Deltable {
 	}
 
 	public Thing(String name, String locationName) {
-		this.name = name;
+		this.name = Complement.name(name);
 		setLocation(locationName);
 	}
 

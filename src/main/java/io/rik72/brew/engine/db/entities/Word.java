@@ -26,6 +26,7 @@ public class Word implements AbstractEntity {
 		name,
 		preposition,
 		number,
+		entity,
 	}
 
 	public static enum EntityType {
@@ -143,6 +144,7 @@ public class Word implements AbstractEntity {
 			id + " : " + 
 			TextUtils.quote(text) + " : " +
 			type + 
+			(entityType != EntityType.none ? " : " + entityType : "") +
 			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
 			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
 			(complement != null ? " : " + "complement in " + complement : "") +

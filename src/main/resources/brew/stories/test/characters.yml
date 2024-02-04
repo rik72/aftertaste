@@ -10,6 +10,8 @@ characters:
     statuses:
       - status: initial
         brief: You are quite well at the moment, but cannot remember a thing about yourself and your life.
+        description: >
+          You, yourself, etcetera.
         possibilities:
           - impossible: fly ( Do you think you have wings?? )
           - impossible: read ( You feel like you miss something... )
@@ -45,6 +47,9 @@ characters:
         actions:
           - action: examine .
             consequences:
-              - character: . => tower ( As you approach with interest the imp, he suddenly gets up to his "feet" and says "Follow me on the tower, Master". That said, he takes leave in a puff of spray and disappears in the direction of the distant tower. )
-              - thing: ( toolshed big hammer ) initial => lazlo inventory ( A big hammer appears in your hands )
-
+              - . => tower ( As you approach with interest the imp, he suddenly gets up to his "feet" and says "Follow me on the tower, Master". That said, he takes leave in a puff of spray and disappears in the direction of the distant tower. )
+              - . -> ready
+              - ( toolshed.big.hammer ) initial => lazlo.inventory ( A big hammer appears in your hands )
+              - ( toolshed.big.hammer ) initial -> visible
+      - status: ready
+        brief: The water imp stands quietly, waiting for your orders.

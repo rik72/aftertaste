@@ -6,6 +6,7 @@ import java.util.List;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.Word.EntityType;
 import io.rik72.brew.engine.db.entities.Word.Type;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.WordRaw;
 import io.rik72.mammoth.db.DB;
@@ -16,6 +17,11 @@ public class Helpers {
 		if (section != null)
 			for (WordRaw word : section)
 				loadWord(word, type, entityType);
+	}
+
+	public static void loadEntityNameAsWord(String name, Type type, EntityType entityType) {
+		Word word = new Word(Complement.name(name), type, entityType);
+		DB.persist(word);
 	}
 
 	public static void loadWord(WordRaw wItem, Type type, EntityType entityType) {

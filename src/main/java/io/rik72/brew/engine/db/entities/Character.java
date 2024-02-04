@@ -19,7 +19,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Character implements Complement, Deltable {
+public class Character extends Complement implements Deltable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Character implements Complement, Deltable {
 	}
 
 	public Character(String name, String locationName) {
-		this.name = name;
+		this.name = Complement.name(name);
 		setLocation(locationName);
 		setInventory();
 	}
@@ -138,7 +138,7 @@ public class Character implements Complement, Deltable {
     }
 
 	public static String inventory(String name) {
-		return name + " inventory";
+		return Complement.name(name) + ".inventory";
 	}
 
 	@Override

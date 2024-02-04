@@ -1,6 +1,6 @@
 things:
 
-  - name: garden flowers
+  - name: garden.flowers
     location: garden
     word:
       text: flowers
@@ -11,9 +11,9 @@ things:
         actions:
           - action: smell .
             consequences:
-              - character: ( lazlo ) initial => tower ( The sweet scent enthralls your brain. You fall unconscious. You finally wake up. Again... )
+              - ( lazlo ) initial => tower ( The sweet scent enthralls your brain. You fall unconscious. You finally wake up. Again... )
 
-  - name: garden pencil
+  - name: garden.pencil
     location: garden
     word:
       text: pencil
@@ -27,7 +27,7 @@ things:
         actions:
           - action: take . ( Possessing this item makes you feel more literate. )
 
-  - name: toolshed tools
+  - name: toolshed.tools
     location: toolshed
     word:
       text: tools
@@ -40,12 +40,12 @@ things:
         actions:
           - action: examine .
             consequences:
-              - thing: ( toolshed big hammer ) initial -> visible
+              - ( toolshed.big.hammer ) initial -> visible
           - action: examine .
             consequences:
-              - thing: ( toolshed small hammer ) initial -> visible
+              - ( toolshed.small.hammer ) initial -> visible
 
-  - name: toolshed big hammer
+  - name: toolshed.big.hammer
     location: toolshed
     word:
       text: big hammer
@@ -60,14 +60,14 @@ things:
         possibilities:
           - possible: fly ( You hear the hammer clanging happily as you cut through the air. )
         actions:
-          - action: put . ( on ) ( toolshed shelves ) initial
+          - action: put . ( on ) ( toolshed.shelves ) initial
             consequences:
-              - thing: . -> invisible
-          - action: put . ( on ) ( toolshed shelves ) initial
+              - . -> invisible
+          - action: put . ( on ) ( toolshed.shelves ) initial
             consequences:
-              - character: ( lazlo ) initial -> suicidal ( You suddenly feel depressed. )
+              - ( lazlo ) initial -> suicidal ( You suddenly feel depressed. )
 
-  - name: toolshed small hammer
+  - name: toolshed.small.hammer
     location: toolshed
     word:
       text: small hammer
@@ -80,17 +80,17 @@ things:
         description: >
           A small but handy hammer. It feels strangely light in your hand.
         actions:
-          - action: throw . ( through ) ( toolshed window ) initial
+          - action: throw . ( through ) ( toolshed.window ) initial
             consequences:
-              - thing: . => toolshed ( The hammer hits the window glass but falls on the ground. )
-          - action: throw . ( through ) ( toolshed window ) broken
+              - . => toolshed ( The hammer hits the window glass but falls on the ground. )
+          - action: throw . ( through ) ( toolshed.window ) broken
             consequences:
-              - thing: . -> cracked => garden ( The hammer flings out of the window. As it lands on the garden grass you hear a cracking noise. )
+              - . -> cracked => garden ( The hammer flings out of the window. As it lands on the garden grass you hear a cracking noise. )
       - status: cracked
         description: >
           A small hammer, with a bad crack in its handle.
 
-  - name: toolshed paints
+  - name: toolshed.paints
     location: toolshed
     word:
       text: cans of paint
@@ -107,12 +107,13 @@ things:
         actions:
           - action: take .
             consequences:
-              - thing: ( toolshed note ) initial -> visible ( Under one of the cans you spot a small note on paper. )
-              - thing: ( toolshed paints ) initial -> taken
-              - character: ( lazlo ) initial -> encumbered ( You feel encumbered. )
+              - ( toolshed.note ) initial -> visible ( Under one of the cans you spot a small note on paper. )
+              - ( toolshed.paints ) initial -> taken
+              - ( lazlo ) initial -> encumbered ( You feel encumbered. )
+              - ( toolshed ) initial -> door.opened
           - action: drop .
             consequences:
-              - character: ( lazlo ) encumbered -> initial ( You feel lighter now. )
+              - ( lazlo ) encumbered -> initial ( You feel lighter now. )
       - status: taken
         description: >
           Several cans of paint, their labels faded and smudged. Each can bears the marks of
@@ -120,12 +121,12 @@ things:
         actions:
           - action: take .
             consequences:
-              - character: ( lazlo ) initial -> encumbered ( You feel encumbered. )
+              - ( lazlo ) initial -> encumbered ( You feel encumbered. )
           - action: drop .
             consequences:
-              - character: ( lazlo ) encumbered -> initial ( You feel lighter now. )
+              - ( lazlo ) encumbered -> initial ( You feel lighter now. )
 
-  - name: toolshed note
+  - name: toolshed.note
     location: toolshed
     word:
       text: note
@@ -139,7 +140,7 @@ things:
         actions:
           - action: read . ( The note reads "You should try to fly with the right hammer". )
 
-  - name: toolshed shelves
+  - name: toolshed.shelves
     location: toolshed
     word:
       text: shelves
@@ -151,7 +152,7 @@ things:
           surfaces, hinting at years of undisturbed rest. Despite their age, they stand sturdy in the gloom darkness
           of the room.
 
-  - name: toolshed walls
+  - name: toolshed.walls
     location: toolshed
     word:
       text: walls
@@ -162,7 +163,7 @@ things:
           The walls, bare in spots between cluttered shelves, bear traces of forgotten projects — a patchwork of peeling
           paint, scuff marks, and faint outlines revealing where tools once hung.
   
-  - name: toolshed window
+  - name: toolshed.window
     location: toolshed
     word:
       text: window
@@ -173,15 +174,15 @@ things:
         description: >
           The small window (its glass begrimed by dust) frames a tantalizing view of the vibrant garden outside.
         actions:
-          - action: hit . ( with ) ( toolshed big hammer ) initial
+          - action: hit . ( with ) ( toolshed.big.hammer ) initial
             consequences:
-              - thing: . -> broken ( Your hit shatters the glass. )
-              - thing: ( garden glass shard ) initial -> visible ( A big shard of glass falls outside the toolshed. )
+              - . -> broken ( Your hit shatters the glass. )
+              - ( garden.glass.shard ) initial -> visible ( A big shard of glass falls outside the toolshed. )
       - status: broken
         description: >
           The glass of the small window is broken.
 
-  - name: toolshed garden
+  - name: toolshed.garden
     location: toolshed
     word:
       text: garden
@@ -191,7 +192,7 @@ things:
           Through the grimy window, a tantalizing snippet of the garden unfolds — a riot of colors hinting at nature's
           embrace. Vibrant blooms sway in a gentle breeze, verdant foliage dancing in harmony.
 
-  - name: toolshed door
+  - name: toolshed.door
     location: toolshed
     word:
       text: door
@@ -206,10 +207,10 @@ things:
         actions:
           - action: open .
             consequences:
-              - thing: . -> open
-              - thing: ( garden door ) initial -> open
-              - location: ( toolshed ) initial -> door opened
-              - location: ( garden ) initial -> door opened
+              - . -> open
+              - ( garden.door ) initial -> open
+              - ( toolshed ) initial -> door.opened
+              - ( garden ) initial -> door.opened
       - status: open
         description: >
           The weathered door on the east wall, once a barrier, now stands open, revealing the threshold to
@@ -217,12 +218,12 @@ things:
         actions:
           - action: close .
             consequences:
-              - thing: . -> initial
-              - thing: ( garden door ) open -> initial
-              - location: ( toolshed ) door opened -> initial
-              - location: ( garden ) door opened -> initial
+              - . -> initial
+              - ( garden.door ) open -> initial
+              - ( toolshed ) door.opened -> initial
+              - ( garden ) door.opened -> initial
 
-  - name: garden toolshed
+  - name: garden.toolshed
     location: garden
     word:
       text: toolshed
@@ -233,7 +234,7 @@ things:
           Its weathered walls and dark window peer out into the lush greenery like relics of the past, in
           stark contrast to the vibrant canvas of the garden's natural beauty.
 
-  - name: garden glass shard
+  - name: garden.glass.shard
     location: garden
     word:
       text: glass shard
@@ -246,7 +247,7 @@ things:
         description: >
           A glass shard from the broken toolshed window. It presents some sharp edges.
 
-  - name: garden door
+  - name: garden.door
     location: garden
     word:
       text: door
@@ -257,17 +258,17 @@ things:
         actions:
           - action: open .
             consequences:
-              - thing: . -> open
-              - thing: ( toolshed door ) initial -> open
-              - location: ( garden ) initial -> door opened
-              - location: ( toolshed ) initial -> door opened
+              - . -> open
+              - ( toolshed.door ) initial -> open
+              - ( garden ) initial -> door.opened
+              - ( toolshed ) initial -> door.opened
       - status: open
         description: >
           The door of the toolshed is open.
         actions:
           - action: close .
             consequences:
-              - thing: . -> initial
-              - thing: ( toolshed door ) open -> initial
-              - location: ( garden ) door opened -> initial
-              - location: ( toolshed ) door opened -> initial
+              - . -> initial
+              - ( toolshed.door ) open -> initial
+              - ( garden ) door.opened -> initial
+              - ( toolshed ) door.opened -> initial

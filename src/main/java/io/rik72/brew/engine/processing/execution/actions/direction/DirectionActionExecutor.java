@@ -36,11 +36,11 @@ public class DirectionActionExecutor extends ZeroActionExecutor {
 
 	@Override
 	protected String cantDoThat() {
-		return "You can't " + verb.getText() + " that way.";
+		return "You can't " + verb.getCanonical().getText() + " that way.";
 	}
 
 	@Override
 	protected String doneFeedback() {
-		return "You " + verb.getText() + " " + direction.getCanonical().getText() + ".";
+		return "You " + verb.getCanonical().getText() + " " + direction.getCanonical().getText() + ".";
 	}
 }

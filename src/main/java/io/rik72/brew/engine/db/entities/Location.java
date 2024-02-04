@@ -13,7 +13,7 @@ import io.rik72.mammoth.delta.Deltable;
 import jakarta.persistence.*;
 
 @Entity
-public class Location implements Complement, Deltable {
+public class Location extends Complement implements Deltable {
 
 	public static String INVENTORY = "inventory";
 
@@ -33,7 +33,7 @@ public class Location implements Complement, Deltable {
 	}
 
 	public Location(String name) {
-		this.name = name;
+		this.name = Complement.name(name);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class Location implements Complement, Deltable {
 		if (charactersHere.size() > 0) {
 			for (Character character : charactersHere) {
 				String name = character.getName();
-				builder.append("\n").append(name.substring(0, 1).toUpperCase()).append(name.substring(1))
+				builder.append("\n").append(Complement.ucName(name))
 				       .append(" is here. ")
 				       .append(character.getStatus().getBrief());
 			}

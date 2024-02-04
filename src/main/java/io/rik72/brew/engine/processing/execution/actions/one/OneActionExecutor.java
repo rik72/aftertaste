@@ -52,36 +52,34 @@ public class OneActionExecutor extends ZeroActionExecutor {
 	}
 
 	protected void resolveComplement() {
-		switch (cName.getEntityType()) {
 
-			case character: {
-				complement = CharacterRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
-				break;
-			}
+		complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
+		if (complement == null) {
+			complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), cName.getCanonical().getText());
+			if (complement != null)
+				complementIsInInventory = true;
+		}
 
-			case location: {
-				if (subject.getLocation().getStatus().getCanonical().equals(cName.getCanonical().getText()))
-					complement = subject.getLocation();
-				break;
-			}
+		if (complement == null) {
+			complement = CharacterRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
+		}
 
-			case thing: {
-				complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), cName.getCanonical().getText());
-				if (complement == null) {
-					complement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), cName.getCanonical().getText());
-					if (complement != null)
-						complementIsInInventory = true;
-				}
-				break;
-			}
-			
-			default: {
-				break;
-			}
+		if (complement == null) {
+			if (subject.getLocation().getStatus().getCanonical().equals(cName.getCanonical().getText()))
+				complement = subject.getLocation();
 		}
 	}
 
 	protected String noSuchThing() {
-		return "You can't see that.";
+		switch (cName.getEntityType()) {
+			case character:
+				return cName.getText() + " is not here.";
+			
+			case location:
+				return "There's no " + cName.getText() + " here.";
+
+			default:
+				return "You can't see any " + cName.getText() + " here.";
+		}
 	}
 }

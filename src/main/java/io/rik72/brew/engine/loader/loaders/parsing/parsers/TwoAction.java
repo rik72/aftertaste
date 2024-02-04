@@ -19,7 +19,7 @@ public class TwoAction extends Parser {
 		this.feedback = feedback;
 	}
 
-    // put . ( on ) ( toolshed shelves ) initial ( some optional feedback )
+    // put . ( on ) ( toolshed.shelves ) initial ( some optional feedback )
 	public static Pattern twoActionP = pattern("word *\\. *[word] *[word] *word *([text])?");
 	public static String twoActionHR = "verb . (preposition) (supplement) status [ (feedback) ]?";
 

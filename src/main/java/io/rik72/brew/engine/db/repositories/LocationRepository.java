@@ -4,22 +4,18 @@ import java.util.List;
 
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.LocationStatus;
+import io.rik72.brew.engine.db.repositories.abstractions.ComplementRepository;
 import io.rik72.mammoth.db.DB;
-import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
-public class LocationRepository extends AbstractRepository<Location> {
+public class LocationRepository extends ComplementRepository<Location> {
 
 	private LocationRepository() {
 		super(Location.class);
-	}
-
-	public Location getByName(String value) {
-		return getByField("name", value);
 	}
 
 	public Location getByStatusCanonical(String value) {

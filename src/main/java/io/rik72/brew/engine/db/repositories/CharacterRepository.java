@@ -6,9 +6,9 @@ import java.util.List;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.CharacterStatus;
 import io.rik72.brew.engine.db.entities.Location;
+import io.rik72.brew.engine.db.repositories.abstractions.ComplementRepository;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.mammoth.db.DB;
-import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -16,7 +16,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-public class CharacterRepository extends AbstractRepository<Character> {
+public class CharacterRepository extends ComplementRepository<Character>  {
 
 	private short mainCharacterId;
 
@@ -30,10 +30,6 @@ public class CharacterRepository extends AbstractRepository<Character> {
 
 	public Character getMainCharacter() {
 		return getById(mainCharacterId);
-	}
-
-	public Character getByName(String value) {
-		return getByField("name", value);
 	}
 
 	public Character getVisibleByLocationAndCanonical(Location location, String canonical) {

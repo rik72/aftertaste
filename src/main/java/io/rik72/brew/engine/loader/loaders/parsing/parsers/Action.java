@@ -5,7 +5,6 @@ import java.util.List;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.ActionRaw;
-import io.rik72.brew.engine.loader.loaders.parsing.raw.ConsequenceRaw;
 
 public class Action extends Parser {
 
@@ -31,7 +30,7 @@ public class Action extends Parser {
 		List<Consequence> consequences = new ArrayList<>();
 
 		if (raw.consequences != null) {
-			for (ConsequenceRaw cRaw : raw.consequences) {
+			for (String cRaw : raw.consequences) {
 				consequences.add(Consequence.parse(cRaw));
 			}
 		}

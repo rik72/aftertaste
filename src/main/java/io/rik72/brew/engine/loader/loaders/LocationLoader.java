@@ -38,6 +38,7 @@ public class LocationLoader implements Loadable {
 
 		for (LocationRaw locItem : doc.locations) {
 			Parser.checkNotEmpty("location name", locItem.name);
+			Helpers.loadEntityNameAsWord(locItem.name, Type.entity, EntityType.location);
 			DB.persist(new Location(locItem.name));
 		}
 
@@ -54,20 +55,20 @@ public class LocationLoader implements Loadable {
 		// second pass for statuses
 		for (LocationRaw locItem : doc.locations) {
 			Location location = LocationRepository.get().getByName(locItem.name);
-			String lastDescription = null;
+			String description = null;
 			boolean firstStatus = true;
 			for (LocationStatusRaw stItem : locItem.statuses) {
 				Parser.checkNotEmpty("location status label", stItem.status);
 				if (stItem.description == null) {
-					if (lastDescription == null && "initial".equals(stItem.status))
+					if (description == null && "initial".equals(stItem.status))
 						throw new Exception("Initial description of location \"" + location.getName() + "\" cannot be null");
 				}
 				else {
-					lastDescription = stItem.description.strip();
+					description = stItem.description.strip();
 				}
 				if (stItem.image == null)
 					stItem.image = stItem.status;
-				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, lastDescription,
+				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, description,
 					stItem.word != null ? stItem.word.text : locItem.word.text, stItem.finale != null ? stItem.finale.strip() : null);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))

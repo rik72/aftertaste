@@ -6,8 +6,8 @@ import java.util.List;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.entities.ThingStatus;
+import io.rik72.brew.engine.db.repositories.abstractions.ComplementRepository;
 import io.rik72.mammoth.db.DB;
-import io.rik72.mammoth.repositories.AbstractRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -15,14 +15,10 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-public class ThingRepository extends AbstractRepository<Thing> {
+public class ThingRepository extends ComplementRepository<Thing> {
 
 	private ThingRepository() {
 		super(Thing.class);
-	}
-
-	public Thing getByName(String value) {
-		return getByField("name", value);
 	}
 
 	public Thing getVisibleByLocationAndCanonical(Location location, String canonical) {

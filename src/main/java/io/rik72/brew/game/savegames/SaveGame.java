@@ -22,12 +22,14 @@ public class SaveGame implements Serializable {
 		FileOutputStream f = new FileOutputStream(new File(path));
 		ObjectOutputStream o = new ObjectOutputStream(f);
 		o.writeObject(getInstance());
+		o.close();
 	}
 
 	public static void loadFromFile(String path) throws Exception {
 		FileInputStream f = new FileInputStream(new File(path));
 		ObjectInputStream i = new ObjectInputStream(f);
 		setInstance((SaveGame)i.readObject());
+		i.close();
 	}
 
 	public StoryRefId getStoryRefId() {

@@ -14,6 +14,8 @@ import io.rik72.brew.engine.db.entities.ThingOnLocation;
 import io.rik72.brew.engine.db.entities.ThingThingOnLocation;
 import io.rik72.brew.engine.db.entities.ThingOnThing;
 import io.rik72.brew.engine.db.entities.ThingThingOnThing;
+import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.CharacterOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOnThingRepository;
@@ -25,6 +27,7 @@ import io.rik72.brew.engine.db.repositories.ThingThingOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnThingRepository;
+import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
@@ -32,7 +35,6 @@ import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.Action;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.Consequence;
-import io.rik72.brew.engine.loader.loaders.parsing.parsers.EntityConsequence;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.OneAction;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.TwoAction;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
@@ -67,58 +69,71 @@ public class ConsequenceLoader implements Loadable {
 							if (actData.consequences.size() > 0) {
 								if (oneActData.feedback != null && oneActData.feedback.length() > 0)
 									throw new IllegalParseException(
-										"feedback: an action may have a feedback directly set or a consequence list, " +
+										"feedback: an action may possess a feedback or a consequence list, " +
 										"but not both. Consider moving the feedback to one of the consequences. Offending context:",
 										actItem.action);
-								for (Consequence consequence : actData.consequences) {
-									Consequence conData = (Consequence) consequence;
-									if (conData.thingConsequence != null) {
-										EntityConsequence entConData = conData.thingConsequence;
+								for (Consequence conData : actData.consequences) {
 
-										Boolean afterVisibility = null;
-										if ("visible".equals(entConData.after))
-											afterVisibility = true;
-										if ("invisible".equals(entConData.after))
-											afterVisibility = false;
+									String entityName = Complement.name(conData.entity);
+									if (conData.entity == null)
+										entityName = complement.getName();
 
-										String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-										String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
-										String afterStatus = afterVisibility == null ? entConData.after : null;
+									Word entity = WordRepository.get().getByText(entityName);
+									switch (entity.getEntityType()) {
 
-										ThingOnThing action = new ThingOnThing(
-											oneActData.verb,
-											complement, 				stItem.status,
-											beforeName, 				beforeStatus,
-											afterStatus,				entConData.to,
-											afterVisibility,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.locationConsequence != null) {
-										EntityConsequence entConData = conData.locationConsequence;
+										case thing: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
 
-										ThingOnLocation action = new ThingOnLocation(
-											oneActData.verb,
-											complement, 				stItem.status,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.characterConsequence != null) {
-										EntityConsequence entConData = conData.characterConsequence;
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
 
-										Boolean afterVisibility = null;
-										if ("visible".equals(entConData.after))
-											afterVisibility = true;
-										if ("invisible".equals(entConData.after))
-											afterVisibility = false;
+											ThingOnThing action = new ThingOnThing(
+												oneActData.verb,
+												complement, 				stItem.status,
+												beforeName, 				beforeStatus,
+												afterStatus,				conData.to,
+												afterVisibility,			conData.feedback);
+											DB.persist(action);
+											break;
+										}
 
-										ThingOnCharacter action = new ThingOnCharacter(
-											oneActData.verb,
-											complement, 				stItem.status,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.to,
-											afterVisibility, 			entConData.feedback);
-										DB.persist(action);
+										case location: {
+											ThingOnLocation action = new ThingOnLocation(
+												oneActData.verb,
+												complement, 				stItem.status,
+												conData.entity, 			conData.before,
+												conData.after,				conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										case character: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
+
+											ThingOnCharacter action = new ThingOnCharacter(
+												oneActData.verb,
+												complement, 				stItem.status,
+												conData.entity, 			conData.before,
+												conData.after,			conData.to,
+												afterVisibility, 			conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										default: {
+											throw new IllegalParseException(
+												"consequence: illegal entity name",
+												conData.entity);
+										}
 									}
 								}
 							}
@@ -134,6 +149,7 @@ public class ConsequenceLoader implements Loadable {
 						}
 						else {
 							TwoAction twoActData = actData.twoAction;
+System.out.println(twoActData.supplement);
 							Thing supplement = ThingRepository.get().getByName(twoActData.supplement);
 							if (actData.consequences.size() > 0) {
 								if (twoActData.feedback != null && twoActData.feedback.length() > 0)
@@ -142,53 +158,67 @@ public class ConsequenceLoader implements Loadable {
 										"but not both. Consider moving the feedback to one of the consequences. Offending context:",
 										actItem.action);
 								for (Consequence conData : actData.consequences) {
-									if (conData.thingConsequence != null) {
-										EntityConsequence entConData = conData.thingConsequence;
 
-										Boolean afterVisibility = null;
-										if ("visible".equals(entConData.after))
-											afterVisibility = true;
-										if ("invisible".equals(entConData.after))
-											afterVisibility = false;
+									String entityName = Complement.name(conData.entity);
+									if (conData.entity == null)
+										entityName = complement.getName();
+									
+									Word entity = WordRepository.get().getByText(entityName);
+									switch (entity.getEntityType()) {
 
-										String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-										String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
-										String afterStatus = afterVisibility == null ? entConData.after : null;
+										case thing: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
 
-										ThingThingOnThing action = new ThingThingOnThing(
-											twoActData.verb,
-											complement, 				stItem.status,
-											twoActData.preposition,
-											supplement, 				twoActData.supplementStatus,
-											beforeName, 				beforeStatus,
-											afterStatus,				entConData.to,
-											afterVisibility,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.locationConsequence != null) {
-										EntityConsequence entConData = conData.locationConsequence;
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
 
-										ThingThingOnLocation action = new ThingThingOnLocation(
-											twoActData.verb,
-											complement, 				stItem.status,
-											twoActData.preposition,
-											supplement, 				twoActData.supplementStatus,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.characterConsequence != null) {
-										EntityConsequence entConData = conData.characterConsequence;
+											ThingThingOnThing action = new ThingThingOnThing(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												beforeName, 				beforeStatus,
+												afterStatus,				conData.to,
+												afterVisibility,			conData.feedback);
+											DB.persist(action);
+											break;
+										}
 
-										ThingThingOnCharacter action = new ThingThingOnCharacter(
-											twoActData.verb,
-											complement, 				stItem.status,
-											twoActData.preposition,
-											supplement, 				twoActData.supplementStatus,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.to,
-											entConData.feedback);
-										DB.persist(action);
+										case location: {
+											ThingThingOnLocation action = new ThingThingOnLocation(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												conData.entity, 			conData.before,
+												conData.after,				conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										case character: {
+											ThingThingOnCharacter action = new ThingThingOnCharacter(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												conData.entity, 			conData.before,
+												conData.after,				conData.to,
+												conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										default: {
+											throw new IllegalParseException(
+												"consequence: illegal entity name",
+												conData.entity);
+										}
 									}
 								}
 							}
@@ -231,53 +261,69 @@ public class ConsequenceLoader implements Loadable {
 										"but not both. Consider moving the feedback to one of the consequences. Offending context:",
 										actItem.action);
 								for (Consequence conData : actData.consequences) {
-									if (conData.thingConsequence != null) {
-										EntityConsequence entConData = conData.thingConsequence;
 
-										Boolean afterVisibility = null;
-										if ("visible".equals(entConData.after))
-											afterVisibility = true;
-										if ("invisible".equals(entConData.after))
-											afterVisibility = false;
+									String entityName = Complement.name(conData.entity);
+									if (conData.entity == null)
+										entityName = complement.getName();
+									
+									Word entity = WordRepository.get().getByText(entityName);
+									switch (entity.getEntityType()) {
 
-										CharacterOnThing action = new CharacterOnThing(
-											oneActData.verb,
-											complement, 				stItem.status,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.to,
-											afterVisibility,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.locationConsequence != null) {
-										EntityConsequence entConData = conData.locationConsequence;
+										case thing: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
 
-										CharacterOnLocation action = new CharacterOnLocation(
-											oneActData.verb,
-											complement, 				stItem.status,
-											entConData.entity, 			entConData.before,
-											entConData.after,			entConData.feedback);
-										DB.persist(action);
-									} else
-									if (conData.characterConsequence != null) {
-										EntityConsequence entConData = conData.characterConsequence;
+											String afterStatus = afterVisibility == null ? conData.after : null;
 
-										Boolean afterVisibility = null;
-										if ("visible".equals(entConData.after))
-											afterVisibility = true;
-										if ("invisible".equals(entConData.after))
-											afterVisibility = false;
+											CharacterOnThing action = new CharacterOnThing(
+												oneActData.verb,
+												complement, 				stItem.status,
+												conData.entity, 			conData.before,
+												afterStatus,				conData.to,
+												afterVisibility,			conData.feedback);
+											DB.persist(action);
+											break;
+										}
 
-										String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-										String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
-										String afterStatus = afterVisibility == null ? entConData.after : null;
+										case location: {
+											CharacterOnLocation action = new CharacterOnLocation(
+												oneActData.verb,
+												complement, 				stItem.status,
+												conData.entity, 			conData.before,
+												conData.after,				conData.feedback);
+											DB.persist(action);
+											break;
+										}
 
-										CharacterOnCharacter action = new CharacterOnCharacter(
-											oneActData.verb,
-											complement, 				stItem.status,
-											beforeName, 				beforeStatus,
-											afterStatus,				entConData.to,
-											afterVisibility, 			entConData.feedback);
-										DB.persist(action);
+										case character: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
+
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
+
+											CharacterOnCharacter action = new CharacterOnCharacter(
+												oneActData.verb,
+												complement, 				stItem.status,
+												beforeName, 				beforeStatus,
+												afterStatus,				conData.to,
+												afterVisibility, 			conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										default: {
+											throw new IllegalParseException(
+												"consequence: illegal entity name",
+												conData.entity);
+										}
 									}
 								}
 							}

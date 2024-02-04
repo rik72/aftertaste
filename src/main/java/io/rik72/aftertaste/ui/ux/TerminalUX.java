@@ -88,7 +88,7 @@ public class TerminalUX {
 	}
 
 	public void printLocationImage(Location location) {
-		SVGImage topImage = loadLocationStatusImage(location.getName(), location.getStatus().getImage());
+		SVGImage topImage = loadLocationStatusImage(location.getName().substring(1), location.getStatus().getImage());
 		if (topImage == null && !"initial".equals(location.getStatus().getImage()))
 			topImage = loadLocationStatusImage(location.getName(), "initial");
 		if (topImage != null) {

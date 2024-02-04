@@ -28,15 +28,16 @@ import io.rik72.mammoth.db.DB;
 public class ThingLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
 		Docs.Things doc = (Docs.Things) parser.parse(loadPath, "things.yml");
 
 		// insert words for things
 		for (ThingRaw thItem : doc.things) {
-			Helpers.loadWord(thItem.word, Type.name, EntityType.thing);
 			Parser.checkNotEmpty("thing name", thItem.name);
+			Helpers.loadEntityNameAsWord(thItem.name, Type.entity, EntityType.thing);
+			Helpers.loadWord(thItem.word, Type.name, EntityType.thing);
 			for (ThingStatusRaw stItem : thItem.statuses)
 				Helpers.loadWord(stItem.word, Type.name, EntityType.thing);
 		}
@@ -44,7 +45,6 @@ public class ThingLoader implements Loadable {
 		// 2nd pass to insert things & statuses
 		for (ThingRaw thItem : doc.things) {
 			Thing thing = new Thing(thItem.name, thItem.location);
-
 			if (!thItem.visible)
 				thing.setVisible(false);
 			if (thItem.takeable)
@@ -56,8 +56,17 @@ public class ThingLoader implements Loadable {
 			DB.persist(thing);
 			Parser.checkNotEmpty("thing status list", thItem.statuses);
 			boolean firstStatus = true;
+			String description = null;
 			for (ThingStatusRaw stItem : thItem.statuses) {
-				ThingStatus status = new ThingStatus(thing.getName(), stItem.status, stItem.description,
+				Parser.checkNotEmpty("thing status label", stItem.status);
+				if (stItem.description == null) {
+					if (description == null && "initial".equals(stItem.status))
+						throw new Exception("Initial description of thing \"" + thing.getName() + "\" cannot be null");
+				}
+				else {
+					description = stItem.description.strip();
+				}
+				ThingStatus status = new ThingStatus(thing.getName(), stItem.status, description,
 					stItem.word != null ? stItem.word.text : thItem.word.text);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
