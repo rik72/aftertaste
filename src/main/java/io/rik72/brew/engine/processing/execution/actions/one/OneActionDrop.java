@@ -43,7 +43,7 @@ public class OneActionDrop extends OneActionDo {
 	}
 
 	@Override
-	protected String noSuchThing() {
+	protected String noSuchComplement() {
 		if (complement == null)
 			return "No such thing is in your inventory.";
 		return "The " + cName.getText() + " " + (complement.isPlural() ? "are" : "is") + " not in your inventory.";

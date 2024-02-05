@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnThing;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
@@ -17,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingThingOnThing implements AbstractEntity {
+public class ThingThingOnThing implements AbstractEntity, ConsequenceOnThing {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -125,6 +126,7 @@ public class ThingThingOnThing implements AbstractEntity {
 			throw new EntityNotFoundException("Status", supplementStatusLabel, "supplement", supplement.getName());
 	}
 
+	@Override
 	public ThingStatus getBeforeStatus() {
 		return beforeStatus;
 	}
@@ -136,6 +138,7 @@ public class ThingThingOnThing implements AbstractEntity {
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
+	@Override
 	public ThingStatus getAfterStatus() {
 		return afterStatus;
 	}
@@ -153,14 +156,17 @@ public class ThingThingOnThing implements AbstractEntity {
 			throw new EntityNotFoundException("Location", toLocationName);
 	}
 
+	@Override
 	public Location getToLocation() {
 		return toLocation;
 	}
 
+	@Override
 	public Boolean getAfterVisibility() {
 		return afterVisibility;
 	}
 
+	@Override
 	public String getAfterText() {
 		return afterText;
 	}

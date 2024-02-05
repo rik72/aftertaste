@@ -17,7 +17,7 @@ import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.loader.loaders.CharacterLoader;
-import io.rik72.brew.engine.loader.loaders.ConsequenceLoader;
+import io.rik72.brew.engine.loader.loaders.ActionLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
 import io.rik72.brew.engine.loader.loaders.PrepositionLoader;
 import io.rik72.brew.engine.loader.loaders.StoryLoader;
@@ -48,7 +48,7 @@ public class Story {
 		new LocationLoader().register();
 		new CharacterLoader().register();
 		new ThingLoader().register();
-		new ConsequenceLoader().register();
+		new ActionLoader().register();
 	}
 
 	public Character getMainCharacter() {

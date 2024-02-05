@@ -8,6 +8,7 @@ import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
 import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
@@ -20,7 +21,8 @@ import io.rik72.brew.engine.db.repositories.ThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
-import io.rik72.mammoth.db.DB;
+import io.rik72.brew.engine.processing.execution.actions.ConsequenceHelper;
+import io.rik72.brew.engine.utils.TextUtils;
 
 public class OneActionDo extends OneActionExecutor {
 
@@ -62,19 +64,13 @@ public class OneActionDo extends OneActionExecutor {
 			return results;
 
 		boolean refresh = false;
-
 		List<String> texts = new ArrayList<>();
+
 		if (consequencesOnThings.size() > 0) {
 			for (ConsequenceOnThing action : consequencesOnThings) {
 				Thing before = action.getBeforeStatus().getThing();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					if (action.getAfterStatus() != null)
-						before.setStatus(action.getAfterStatus().getLabel());
-					if (action.getToLocation() != null)
-						before.setLocation(action.getToLocation());
-					if (action.getAfterVisibility() != null)
-						before.setVisible(action.getAfterVisibility());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnThing(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 				}
@@ -85,8 +81,7 @@ public class OneActionDo extends OneActionExecutor {
 			for (ConsequenceOnLocation action : consequencesOnLocations) {
 				Location before = action.getBeforeStatus().getLocation();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					before.setStatus(action.getAfterStatus().getLabel());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnLocation(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 					refresh = true;
@@ -98,13 +93,7 @@ public class OneActionDo extends OneActionExecutor {
 			for (ConsequenceOnCharacter action : consequencesOnCharacters) {
 				Character before = action.getBeforeStatus().getCharacter();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					if (action.getAfterStatus() != null)
-						before.setStatus(action.getAfterStatus().getLabel());
-					if (action.getToLocation() != null)
-						before.setLocation(action.getToLocation());
-					if (action.getAfterVisibility() != null)
-						before.setVisible(action.getAfterVisibility());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnCharacter(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 				}
@@ -124,7 +113,7 @@ public class OneActionDo extends OneActionExecutor {
 			Location locationComplement = LocationRepository.get().getByName(cName.getCanonical().getText());
 			if (locationComplement != null && subject.getLocation().getId() == locationComplement.getId())
 				return new Results(false, false, cantDoThat());
-			return new Results(false, false, noSuchThing());
+			return new Results(false, false, noSuchComplement());
 		}
 		else if (verb.getComplementPosition() == Word.Position.inventory && !complementIsInInventory)
 			return new Results(false, false, complementNotInInventory());
@@ -135,14 +124,17 @@ public class OneActionDo extends OneActionExecutor {
 
 	@Override
 	protected String doneFeedback() {
-		return "You " + verb.getText() + " the " + cName.getText() + ".";
+		String complementText = cName.getEntityType() == EntityType.character ?
+			TextUtils.ucFirst(cName.getCanonical().getText()) :
+			"the " + cName.getCanonical().getText();
+		return "You " + verb.getText() + " " + complementText + ".";
 	}
 
 	protected String complementNotInInventory() {
-		return "You do not possess the " + cName.getText();
+		return "You do not possess the " + cName.getCanonical().getText();
 	}
 
 	protected String complementNotInLocation() {
-		return "You must drop the " + cName.getText() + " first";
+		return "You must drop the " + cName.getCanonical().getText() + " first";
 	}
 }

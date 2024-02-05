@@ -5,6 +5,7 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.one.OneActionExecutor;
@@ -21,12 +22,7 @@ public class TwoActionExecutor extends OneActionExecutor {
 		super(words, toBeConfirmed);
 		this.preposition = words.get(2);
 		this.sName = words.get(3);
-		supplement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), sName.getCanonical().getText());
-		if (supplement == null) {
-			supplement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), sName.getCanonical().getText());
-			if (supplement != null)
-				supplementIsInInventory = true;
-		}
+		resolveSupplement();
 	}
 
 	protected TwoActionExecutor(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
@@ -67,4 +63,24 @@ public class TwoActionExecutor extends OneActionExecutor {
 				sName, supplement, supplementIsInInventory);
 		return action.execute();
 	}
+
+	protected void resolveSupplement() {
+
+		supplement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), sName.getCanonical().getText());
+		if (supplement == null) {
+			supplement = ThingRepository.get().getVisibleByLocationAndCanonical(subject.getInventory(), sName.getCanonical().getText());
+			if (supplement != null)
+				supplementIsInInventory = true;
+		}
+
+		if (supplement == null) {
+			supplement = CharacterRepository.get().getVisibleByLocationAndCanonical(subject.getLocation(), sName.getCanonical().getText());
+		}
+
+		if (supplement == null) {
+			if (subject.getLocation().getStatus().getCanonical().equals(sName.getCanonical().getText()))
+				supplement = subject.getLocation();
+		}
+	}
+
 }

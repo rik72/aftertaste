@@ -6,6 +6,12 @@ words:
     - text: character
     - text: characterstatus
     - text: characterstatuspossibility
+    - text: characteroncharacter
+    - text: characterthingoncharacter
+    - text: characteronlocation
+    - text: characterthingonlocation
+    - text: characteronthing
+    - text: characterthingonthing
     - text: location
     - text: locationstatus
     - text: locationxlocation
@@ -15,8 +21,11 @@ words:
     - text: thingstatuspossibility
     - text: thingoncharacter
     - text: thingthingoncharacter
+    - text: thingcharacteroncharacter
     - text: thingonlocation
     - text: thingthingonlocation
+    - text: thingcharacteronlocation
     - text: thingonthing
     - text: thingthingonthing
+    - text: thingcharacteronthing
     - text: word

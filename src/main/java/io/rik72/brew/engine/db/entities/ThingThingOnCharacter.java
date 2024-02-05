@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.db.entities;
 
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
@@ -18,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingThingOnCharacter implements AbstractEntity {
+public class ThingThingOnCharacter implements AbstractEntity, ConsequenceOnCharacter {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +55,9 @@ public class ThingThingOnCharacter implements AbstractEntity {
 	private Location toLocation;
 
 	@Column
+	Boolean afterVisibility;
+
+	@Column
 	String afterText;
 
 	public ThingThingOnCharacter(String action,
@@ -63,6 +67,7 @@ public class ThingThingOnCharacter implements AbstractEntity {
 							       String beforeName, String beforeStatusLabel,
 							       String afterStatusLabel,
 								   String toLocationName,
+								   Boolean afterVisibility,
 							       String afterText) {
 		setAction(action);
 		setPreposition(preposition);
@@ -73,6 +78,7 @@ public class ThingThingOnCharacter implements AbstractEntity {
 			setAfterStatus(afterStatusLabel);
 		if (toLocationName != null)
 			setToLocation(toLocationName);
+		this.afterVisibility = afterVisibility;
 		this.afterText = afterText;
 	}
 
@@ -121,6 +127,7 @@ public class ThingThingOnCharacter implements AbstractEntity {
 			throw new EntityNotFoundException("Status", supplementStatusLabel, "supplement", supplement.getName());
 	}
 
+	@Override
 	public CharacterStatus getBeforeStatus() {
 		return beforeStatus;
 	}
@@ -132,6 +139,7 @@ public class ThingThingOnCharacter implements AbstractEntity {
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
+	@Override
 	public CharacterStatus getAfterStatus() {
 		return afterStatus;
 	}
@@ -149,10 +157,17 @@ public class ThingThingOnCharacter implements AbstractEntity {
 			throw new EntityNotFoundException("Location", toLocationName);
 	}
 
+	@Override
 	public Location getToLocation() {
 		return toLocation;
 	}
 
+	@Override
+	public Boolean getAfterVisibility() {
+		return afterVisibility;
+	}
+
+	@Override
 	public String getAfterText() {
 		return afterText;
 	}
@@ -171,6 +186,7 @@ public class ThingThingOnCharacter implements AbstractEntity {
 			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
 			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
 			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
+			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
 			(afterText != null ? afterText : "-") +
 		" }";
 	}

@@ -1,6 +1,7 @@
 package io.rik72.brew.engine.db.entities;
 
 import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
+import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
@@ -18,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
+public class CharacterThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +32,7 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus complementStatus;
+	private CharacterStatus complementStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
@@ -52,13 +53,13 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 	@Column
 	String afterText;
 
-	public ThingThingOnLocation(String action,
-							      Thing complement, String complementStatusLabel,
-							      String preposition,
-							   	  Thing supplement, String supplementStatusLabel,
-							      String beforeName, String beforeStatusLabel,
-							      String afterStatusLabel,
-							      String afterText) {
+	public CharacterThingOnLocation(String action,
+							        Character complement, String complementStatusLabel,
+							        String preposition,
+							   	    Thing supplement, String supplementStatusLabel,
+							        String beforeName, String beforeStatusLabel,
+							        String afterStatusLabel,
+							        String afterText) {
 		setAction(action);
 		setPreposition(preposition);
 		setComplementStatus(complement, complementStatusLabel);
@@ -92,12 +93,12 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 			throw new EntityNotFoundException("Word", preposition);
 	}
 
-	public ThingStatus getComplementStatus() {
+	public CharacterStatus getComplementStatus() {
 		return complementStatus;
 	}
 
-	private void setComplementStatus(Thing complement, String complementStatusLabel) {
-		this.complementStatus = ThingStatusRepository.get().getByThingAndLabel(complement, complementStatusLabel);
+	private void setComplementStatus(Character complement, String complementStatusLabel) {
+		this.complementStatus = CharacterStatusRepository.get().getByCharacterAndLabel(complement, complementStatusLabel);
 		if (this.complementStatus == null)
 			throw new EntityNotFoundException("Status", complementStatusLabel, "complement", complement.getName());
 	}
@@ -143,11 +144,11 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 
     @Override
     public String toString() {
-        return "{ ThingThingOnLocation :: " + 
+        return "{ CharacterThingOnLocation :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
 			TextUtils.quote(preposition.getText()) + " : " + 
-			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
+			TextUtils.quote(complementStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(complementStatus.getLabel()) + " : " + 
 			TextUtils.quote(supplementStatus.getThing().getName()) + " : " + 
 			TextUtils.quote(supplementStatus.getLabel()) + " : " + 

@@ -70,16 +70,16 @@ public class OneActionExecutor extends ZeroActionExecutor {
 		}
 	}
 
-	protected String noSuchThing() {
+	protected String noSuchComplement() {
 		switch (cName.getEntityType()) {
 			case character:
-				return cName.getText() + " is not here.";
+				return cName.getCanonical().getText() + " is not here.";
 			
 			case location:
-				return "There's no " + cName.getText() + " here.";
+				return "There " + (complement.isPlural() ? "is" : "are") + " no " + cName.getCanonical().getText() + " here.";
 
 			default:
-				return "You can't see any " + cName.getText() + " here.";
+				return "You can't see any " + cName.getCanonical().getText() + " here.";
 		}
 	}
 }

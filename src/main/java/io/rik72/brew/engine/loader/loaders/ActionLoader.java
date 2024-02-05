@@ -6,15 +6,22 @@ import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.CharacterOnCharacter;
 import io.rik72.brew.engine.db.entities.CharacterOnLocation;
 import io.rik72.brew.engine.db.entities.CharacterOnThing;
+import io.rik72.brew.engine.db.entities.CharacterThingOnCharacter;
+import io.rik72.brew.engine.db.entities.CharacterThingOnLocation;
+import io.rik72.brew.engine.db.entities.CharacterThingOnThing;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Thing;
+import io.rik72.brew.engine.db.entities.ThingCharacterOnCharacter;
+import io.rik72.brew.engine.db.entities.ThingCharacterOnLocation;
+import io.rik72.brew.engine.db.entities.ThingCharacterOnThing;
 import io.rik72.brew.engine.db.entities.ThingOnCharacter;
 import io.rik72.brew.engine.db.entities.ThingThingOnCharacter;
+import io.rik72.brew.engine.db.entities.ThingThingOnThing;
 import io.rik72.brew.engine.db.entities.ThingOnLocation;
 import io.rik72.brew.engine.db.entities.ThingThingOnLocation;
 import io.rik72.brew.engine.db.entities.ThingOnThing;
-import io.rik72.brew.engine.db.entities.ThingThingOnThing;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.CharacterOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOnLocationRepository;
@@ -45,15 +52,15 @@ import io.rik72.brew.engine.loader.loaders.parsing.raw.ThingRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.ThingStatusRaw;
 import io.rik72.mammoth.db.DB;
 
-public class ConsequenceLoader implements Loadable {
+public class ActionLoader implements Loadable {
 
 	@Override
 	public void load(LoadPath loadPath) {
-		loadThingConsequences(loadPath);
-		loadCharacterConsequences(loadPath);
+		loadThingActions(loadPath);
+		loadCharacterActions(loadPath);
 	}
 
-	private void loadThingConsequences(LoadPath loadPath) {
+	private void loadThingActions(LoadPath loadPath) {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
 		Docs.Things doc = (Docs.Things) parser.parse(loadPath, "things.yml");
@@ -149,8 +156,12 @@ public class ConsequenceLoader implements Loadable {
 						}
 						else {
 							TwoAction twoActData = actData.twoAction;
-System.out.println(twoActData.supplement);
-							Thing supplement = ThingRepository.get().getByName(twoActData.supplement);
+							Complement supplement = null;
+							Word supplementWord = WordRepository.get().getByText(Complement.name(twoActData.supplement));
+							if (supplementWord.getEntityType() == EntityType.character)
+								supplement = CharacterRepository.get().getByName(twoActData.supplement);
+							else
+								supplement = ThingRepository.get().getByName(twoActData.supplement);
 							if (actData.consequences.size() > 0) {
 								if (twoActData.feedback != null && twoActData.feedback.length() > 0)
 									throw new IllegalParseException(
@@ -177,40 +188,88 @@ System.out.println(twoActData.supplement);
 											String beforeStatus = conData.before != null ? conData.before : stItem.status;
 											String afterStatus = afterVisibility == null ? conData.after : null;
 
-											ThingThingOnThing action = new ThingThingOnThing(
-												twoActData.verb,
-												complement, 				stItem.status,
-												twoActData.preposition,
-												supplement, 				twoActData.supplementStatus,
-												beforeName, 				beforeStatus,
-												afterStatus,				conData.to,
-												afterVisibility,			conData.feedback);
-											DB.persist(action);
+											if (supplementWord.getEntityType() == EntityType.character) {
+												ThingCharacterOnThing action = new ThingCharacterOnThing(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Character) supplement, 	twoActData.supplementStatus,
+													beforeName, 				beforeStatus,
+													afterStatus,				conData.to,
+													afterVisibility,			conData.feedback);
+												DB.persist(action);
+											}
+											else {
+												ThingThingOnThing action = new ThingThingOnThing(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Thing)supplement, 			twoActData.supplementStatus,
+													beforeName, 				beforeStatus,
+													afterStatus,				conData.to,
+													afterVisibility,			conData.feedback);
+												DB.persist(action);
+											}
 											break;
 										}
 
 										case location: {
-											ThingThingOnLocation action = new ThingThingOnLocation(
-												twoActData.verb,
-												complement, 				stItem.status,
-												twoActData.preposition,
-												supplement, 				twoActData.supplementStatus,
-												conData.entity, 			conData.before,
-												conData.after,				conData.feedback);
-											DB.persist(action);
+											if (supplementWord.getEntityType() == EntityType.character) {
+												ThingCharacterOnLocation action = new ThingCharacterOnLocation(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Character)supplement, 		twoActData.supplementStatus,
+													conData.entity, 			conData.before,
+													conData.after,				conData.feedback);
+												DB.persist(action);
+											}
+											else {
+												ThingThingOnLocation action = new ThingThingOnLocation(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Thing)supplement, 			twoActData.supplementStatus,
+													conData.entity, 			conData.before,
+													conData.after,				conData.feedback);
+												DB.persist(action);
+											}
 											break;
 										}
 
 										case character: {
-											ThingThingOnCharacter action = new ThingThingOnCharacter(
-												twoActData.verb,
-												complement, 				stItem.status,
-												twoActData.preposition,
-												supplement, 				twoActData.supplementStatus,
-												conData.entity, 			conData.before,
-												conData.after,				conData.to,
-												conData.feedback);
-											DB.persist(action);
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
+
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
+
+											if (supplementWord.getEntityType() == EntityType.character) {
+												ThingCharacterOnCharacter action = new ThingCharacterOnCharacter(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Character)supplement, 		twoActData.supplementStatus,
+													beforeName, 				beforeStatus,
+													afterStatus,				conData.to,
+													afterVisibility,			conData.feedback);
+												DB.persist(action);
+											}
+											else {
+												ThingThingOnCharacter action = new ThingThingOnCharacter(
+													twoActData.verb,
+													complement, 				stItem.status,
+													twoActData.preposition,
+													(Thing)supplement, 			twoActData.supplementStatus,
+													beforeName, 				beforeStatus,
+													afterStatus,				conData.to,
+													afterVisibility,			conData.feedback);
+												DB.persist(action);
+											}
 											break;
 										}
 
@@ -223,15 +282,28 @@ System.out.println(twoActData.supplement);
 								}
 							}
 							else {
-								ThingThingOnThing action = new ThingThingOnThing(
-									twoActData.verb,
-									complement, 						stItem.status,
-									twoActData.preposition,
-									supplement, 						twoActData.supplementStatus,
-									complement.getName(),				stItem.status,
-									stItem.status,						null,
-									null,				twoActData.feedback);
-								DB.persist(action);
+								if (supplementWord.getEntityType() == EntityType.character) {
+									ThingCharacterOnThing action = new ThingCharacterOnThing(
+										twoActData.verb,
+										complement, 						stItem.status,
+										twoActData.preposition,
+										(Character)supplement, 				twoActData.supplementStatus,
+										complement.getName(),				stItem.status,
+										stItem.status,						null,
+										null,				twoActData.feedback);
+									DB.persist(action);
+								}
+								else {
+									ThingThingOnThing action = new ThingThingOnThing(
+										twoActData.verb,
+										complement, 						stItem.status,
+										twoActData.preposition,
+										(Thing)supplement, 					twoActData.supplementStatus,
+										complement.getName(),				stItem.status,
+										stItem.status,						null,
+										null,				twoActData.feedback);
+									DB.persist(action);
+								}
 							}
 						}
 					}
@@ -240,7 +312,7 @@ System.out.println(twoActData.supplement);
 		}
 	}
 
-	private void loadCharacterConsequences(LoadPath loadPath) {
+	private void loadCharacterActions(LoadPath loadPath) {
 
 		YmlParser parser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) parser.parse(loadPath, "characters.yml");
@@ -337,78 +409,102 @@ System.out.println(twoActData.supplement);
 								DB.persist(action);
 							}
 						}
-						// else {
-						// 	TwoAction twoActData = actData.twoAction;
-						// 	Thing supplement = ThingRepository.get().getByName(twoActData.supplement);
-						// 	if (actData.consequences.size() > 0) {
-						// 		if (twoActData.feedback != null && twoActData.feedback.length() > 0)
-						// 			throw new IllegalParseException(
-						// 				"feedback: an action may have a feedback directly set or a consequence list, " +
-						// 				"but not both. Consider moving the feedback to one of the consequences. Offending context:",
-						// 				actItem.action);
-						// 		for (Consequence conData : actData.consequences) {
-						// 			if (conData.thingConsequence != null) {
-						// 				EntityConsequence entConData = conData.thingConsequence;
+						else {
+							TwoAction twoActData = actData.twoAction;
+							Thing supplement = ThingRepository.get().getByName(twoActData.supplement);								
+							if (actData.consequences.size() > 0) {
+								if (twoActData.feedback != null && twoActData.feedback.length() > 0)
+									throw new IllegalParseException(
+										"feedback: an action may have a feedback directly set or a consequence list, " +
+										"but not both. Consider moving the feedback to one of the consequences. Offending context:",
+										actItem.action);
+								for (Consequence conData : actData.consequences) {
 
-						// 				Boolean afterVisibility = null;
-						// 				if ("visible".equals(entConData.after))
-						// 					afterVisibility = true;
-						// 				if ("invisible".equals(entConData.after))
-						// 					afterVisibility = false;
+									String entityName = Complement.name(conData.entity);
+									if (conData.entity == null)
+										entityName = complement.getName();
+									
+									Word entity = WordRepository.get().getByText(entityName);
+									switch (entity.getEntityType()) {
 
-						// 				String beforeName = entConData.entity != null ? entConData.entity : complement.getName();
-						// 				String beforeStatus = entConData.before != null ? entConData.before : stItem.status;
-						// 				String afterStatus = afterVisibility == null ? entConData.after : null;
+										case thing: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
 
-						// 				ThingTwoAction action = new ThingTwoAction(
-						// 					twoActData.verb,
-						// 					complement, 				stItem.status,
-						// 					twoActData.preposition,
-						// 					supplement, 				twoActData.supplementStatus,
-						// 					beforeName, 				beforeStatus,
-						// 					afterStatus,				entConData.to,
-						// 					afterVisibility,			entConData.feedback);
-						// 				DB.persist(action);
-						// 			} else
-						// 			if (conData.locationConsequence != null) {
-						// 				EntityConsequence entConData = conData.locationConsequence;
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
 
-						// 				LocationTwoAction action = new LocationTwoAction(
-						// 					twoActData.verb,
-						// 					complement, 				stItem.status,
-						// 					twoActData.preposition,
-						// 					supplement, 				twoActData.supplementStatus,
-						// 					entConData.entity, 			entConData.before,
-						// 					entConData.after,			entConData.feedback);
-						// 				DB.persist(action);
-						// 			} else
-						// 			if (conData.characterConsequence != null) {
-						// 				EntityConsequence entConData = conData.characterConsequence;
+											CharacterThingOnThing action = new CharacterThingOnThing(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												beforeName, 				beforeStatus,
+												afterStatus,				conData.to,
+												afterVisibility,			conData.feedback);
+											DB.persist(action);
+											break;
+										}
 
-						// 				CharacterTwoAction action = new CharacterTwoAction(
-						// 					twoActData.verb,
-						// 					complement, 				stItem.status,
-						// 					twoActData.preposition,
-						// 					supplement, 				twoActData.supplementStatus,
-						// 					entConData.entity, 			entConData.before,
-						// 					entConData.after,			entConData.to,
-						// 					entConData.feedback);
-						// 				DB.persist(action);
-						// 			}
-						// 		}
-						// 	}
-						// 	else {
-						// 		ThingTwoAction action = new ThingTwoAction(
-						// 			twoActData.verb,
-						// 			complement, 						stItem.status,
-						// 			twoActData.preposition,
-						// 			supplement, 						twoActData.supplementStatus,
-						// 			complement.getName(),				stItem.status,
-						// 			stItem.status,						null,
-						// 			null,				twoActData.feedback);
-						// 		DB.persist(action);
-						// 	}
-						// }
+										case location: {
+											CharacterThingOnLocation action = new CharacterThingOnLocation(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												conData.entity, 			conData.before,
+												conData.after,				conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										case character: {
+											Boolean afterVisibility = null;
+											if ("visible".equals(conData.after))
+												afterVisibility = true;
+											if ("invisible".equals(conData.after))
+												afterVisibility = false;
+
+											String beforeName = conData.entity != null ? conData.entity : complement.getName();
+											String beforeStatus = conData.before != null ? conData.before : stItem.status;
+											String afterStatus = afterVisibility == null ? conData.after : null;
+
+											CharacterThingOnCharacter action = new CharacterThingOnCharacter(
+												twoActData.verb,
+												complement, 				stItem.status,
+												twoActData.preposition,
+												supplement, 				twoActData.supplementStatus,
+												beforeName, 				beforeStatus,
+												afterStatus,				conData.to,
+												afterVisibility, 			conData.feedback);
+											DB.persist(action);
+											break;
+										}
+
+										default: {
+											throw new IllegalParseException(
+												"consequence: illegal entity name",
+												conData.entity);
+										}
+									}
+								}
+							}
+							else {
+								CharacterThingOnCharacter action = new CharacterThingOnCharacter(
+									twoActData.verb,
+									complement, 						stItem.status,
+									twoActData.preposition,
+									supplement, 						twoActData.supplementStatus,
+									complement.getName(),				stItem.status,
+									stItem.status,						null,
+									null,				twoActData.feedback);
+								DB.persist(action);
+							}
+						}
 					}
 				}
 			}
@@ -449,19 +545,19 @@ System.out.println(twoActData.supplement);
 
 		Log.skip();
 		Log.debug("CHARACTER => THING 1-ACTIONS =================================");
-		List<CharacterOnThing> characterThing1Actions = CharacterOnThingRepository.get().findAll();
-		characterThing1Actions.forEach(s -> Log.debug(s));
+		List<CharacterOnThing> ThingThing1Actions = CharacterOnThingRepository.get().findAll();
+		ThingThing1Actions.forEach(s -> Log.debug(s));
 		// Log.skip();
 		// Log.debug("CHARACTER => THING 2-ACTIONS =================================");
-		// List<CharacterThingOnThing> characterThing2Actions = CharacterThingOnThingRepository.get().findAll();
-		// characterThing2Actions.forEach(s -> Log.debug(s));
+		// List<ThingThingOnThing> ThingThing2Actions = ThingThingOnThingRepository.get().findAll();
+		// ThingThing2Actions.forEach(s -> Log.debug(s));
 		Log.skip();
 		Log.debug("CHARACTER => LOCATION 1-ACTIONS ==============================");
 		List<CharacterOnLocation> characterLocation1Actions = CharacterOnLocationRepository.get().findAll();
 		characterLocation1Actions.forEach(s -> Log.debug(s));
 		// Log.skip();
 		// Log.debug("CHARACTER => LOCATION 2-ACTIONS ==============================");
-		// List<CharacterThingOnLocation> characterLocation2Actions = CharacterThingOnLocationRepository.get().findAll();
+		// List<ThingThingOnLocation> characterLocation2Actions = ThingThingOnLocationRepository.get().findAll();
 		// characterLocation2Actions.forEach(s -> Log.debug(s));
 		Log.skip();
 		Log.debug("CHARACTER => CHARACTER 1-ACTIONS ==============================");
@@ -469,7 +565,7 @@ System.out.println(twoActData.supplement);
 		characterCharacter1Actions.forEach(s -> Log.debug(s));
 		// Log.skip();
 		// Log.debug("CHARACTER => CHARACTER 2-ACTIONS ==============================");
-		// List<CharacterThingOnCharacter> characterCharacter2Actions = CharacterThingOnCharacterRepository.get().findAll();
+		// List<ThingThingOnCharacter> characterCharacter2Actions = ThingThingOnCharacterRepository.get().findAll();
 		// characterCharacter2Actions.forEach(s -> Log.debug(s));
 	}
 }

@@ -53,11 +53,13 @@ words:
     - text: lock
     - text: unlock
     - text: take
+      complement: location
       synonyms:
         - get
         - pick
         - pick up
     - text: drop
+      complement: inventory
     - text: read
       complement: inventory
     - text: smell
@@ -72,3 +74,5 @@ words:
       synonyms:
         - bash
         - break
+    - text: give
+      complement: inventory

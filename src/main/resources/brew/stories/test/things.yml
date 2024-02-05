@@ -86,9 +86,16 @@ things:
           - action: throw . ( through ) ( toolshed.window ) broken
             consequences:
               - . -> cracked => garden ( The hammer flings out of the window. As it lands on the garden grass you hear a cracking noise. )
+          - action: give . ( to ) ( nix ) initial
+            consequences:
+              - . => nix.inventory ( Nix says "Thank you master" )
       - status: cracked
         description: >
           A small hammer, with a bad crack in its handle.
+        actions:
+          - action: give . ( to ) ( nix ) initial
+            consequences:
+              - . => nix.inventory ( Nix says "Thank you master" )
 
   - name: toolshed.paints
     location: toolshed

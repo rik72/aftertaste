@@ -1,7 +1,7 @@
 story:
   artifactId: test
-  version: 1.3.0
-  saveVersion: 16
+  version: 1.4.0
+  saveVersion: 17
   title: Never let a water imp drive you home
   subtitle: A test scenario
 
@@ -12,22 +12,3 @@ story:
       a haze lifts, and the world swims into focus, revealing your own figure in a dimly lit space.
 
       Slowly, awareness seeps in, a dull ache pervading every limb.
-
-    - >
-      Disheveled and weary, you realize to be seated upon the ground, your body protesting the uncomfortable
-      slumber endured for who knows how long. The room, cloaked in shadows, offers little solace or
-      familiarity. Dim shapes and vague outlines taunt the memory, hinting at forgotten corners and
-      forgotten purposes.
-
-    - >
-      You try to shake off the heaviness of an uncertain sleep, and your muscles protest the stiffness
-      of prolonged inactivity as you gingerly rise. A distant echo, a haunting whisper of a once
-      vibrant past, urges exploration and understanding amidst the haze of confusion.
-
-    - >
-      With a cautious resolve, you begin to navigate an unfamiliar terrain of unanswerable questions.
-
-      Where am I? How long has it been?
-      
-      Your journey to unearth the truth begins,
-      in the hope to piece together the fragments of a disrupted existence...

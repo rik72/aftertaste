@@ -9,15 +9,14 @@ locations:
         description: >
           You find yourself in a cramped and cluttered toolshed.
           Scattered tools and cans of paint vie for space on dusty shelves lining the walls.
-          Sunlight struggles through a small, grimy window to the south, offering a
-          glimpse of a vibrant garden. To the east you see a weathered door.
+          To the east you see a weathered door, and, on the same wall, a grimy window.
         possibilities:
           - impossible: fly ( The ceiling is very low. )
       - status: door.opened
         description: >
           The toolshed basks in the light coming mainly from the open door on the east.
           Scattered tools and cans of paint vie for space on dusty shelves that line the walls.
-          In the north wall a small, grimy window offers a glimpse of the vibrant garden outside.
+          In the east wall a small, grimy window offers a glimpse of the world outside.
         directions:
           east: garden
         possibilities:
@@ -50,7 +49,7 @@ locations:
           You are on the top of a very high tower.
 
           Now you remember: last night you drank too much beer and well... maybe letting the water imp drive home
-          was not a good idea. At all...
+          was not a good idea.
 
         finale: >
           Your life goes back to business as usual, but every now and then you wonder

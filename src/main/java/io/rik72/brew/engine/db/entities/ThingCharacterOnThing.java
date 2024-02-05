@@ -1,8 +1,9 @@
 package io.rik72.brew.engine.db.entities;
 
-import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnThing;
+import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
-import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
+import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -18,7 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
+public class ThingCharacterOnThing implements AbstractEntity, ConsequenceOnThing {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,32 +40,46 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private ThingStatus supplementStatus;
+	private CharacterStatus supplementStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private LocationStatus beforeStatus;
+	private ThingStatus beforeStatus;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
-	private LocationStatus afterStatus;
+	private ThingStatus afterStatus;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+	private Location toLocation;
+
+	@Column
+	Boolean afterVisibility;
 
 	@Column
 	String afterText;
 
-	public ThingThingOnLocation(String action,
-							      Thing complement, String complementStatusLabel,
-							      String preposition,
-							   	  Thing supplement, String supplementStatusLabel,
-							      String beforeName, String beforeStatusLabel,
-							      String afterStatusLabel,
-							      String afterText) {
+	public ThingCharacterOnThing(String action,
+							     Thing complement, String complementStatusLabel,
+							     String preposition,
+							     Character supplement, String supplementStatusLabel,
+							     String beforeName, String beforeStatusLabel,
+							     String afterStatusLabel,
+							     String toLocationName,
+							     Boolean afterVisibility,
+							     String afterText) {
 		setAction(action);
 		setPreposition(preposition);
 		setComplementStatus(complement, complementStatusLabel);
 		setSupplementStatus(supplement, supplementStatusLabel);
 		setBeforeStatus(beforeName, beforeStatusLabel);
-		setAfterStatus(afterStatusLabel);
+		if (afterStatusLabel != null)
+			setAfterStatus(afterStatusLabel);
+		if (toLocationName != null)
+			setToLocation(toLocationName);
+		this.afterVisibility = afterVisibility;
+		this.afterText = afterText;
 	}
 
 	@Override
@@ -102,38 +117,54 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 			throw new EntityNotFoundException("Status", complementStatusLabel, "complement", complement.getName());
 	}
 
-	public ThingStatus getSupplementStatus() {
+	public CharacterStatus getSupplementStatus() {
 		return supplementStatus;
 	}
 
-	private void setSupplementStatus(Thing supplement, String supplementStatusLabel) {
-		this.supplementStatus = ThingStatusRepository.get().getByThingAndLabel(supplement, supplementStatusLabel);
+	private void setSupplementStatus(Character supplement, String supplementStatusLabel) {
+		this.supplementStatus = CharacterStatusRepository.get().getByCharacterAndLabel(supplement, supplementStatusLabel);
 		if (this.supplementStatus == null)
 			throw new EntityNotFoundException("Status", supplementStatusLabel, "supplement", supplement.getName());
 	}
 
 	@Override
-	public LocationStatus getBeforeStatus() {
+	public ThingStatus getBeforeStatus() {
 		return beforeStatus;
 	}
 
 	private void setBeforeStatus(String beforeName, String beforeStatusLabel) {
-		Location location = LocationRepository.get().getByName(beforeName);
-		this.beforeStatus = LocationStatusRepository.get().getByLocationAndLabel(location, beforeStatusLabel);
+		Thing thing = ThingRepository.get().getByName(beforeName);
+		this.beforeStatus = ThingStatusRepository.get().getByThingAndLabel(thing, beforeStatusLabel);
 		if (this.beforeStatus == null)
 			throw new EntityNotFoundException("Status", beforeStatusLabel, "thing", beforeName);
 	}
 
 	@Override
-	public LocationStatus getAfterStatus() {
+	public ThingStatus getAfterStatus() {
 		return afterStatus;
 	}
 
 	private void setAfterStatus(String afterStatusLabel) {
-		Location location = LocationRepository.get().getByName(beforeStatus.getLocation().getName());
-		this.afterStatus = LocationStatusRepository.get().getByLocationAndLabel(location, afterStatusLabel);
+		Thing thing = ThingRepository.get().getByName(beforeStatus.getThing().getName());
+		this.afterStatus = ThingStatusRepository.get().getByThingAndLabel(thing, afterStatusLabel);
 		if (this.afterStatus == null)
-			throw new EntityNotFoundException("Status", afterStatusLabel, "location", location.getName());
+			throw new EntityNotFoundException("Status", afterStatusLabel, "thing", thing.getName());
+	}
+
+	private void setToLocation(String toLocationName) {
+		this.toLocation = LocationRepository.get().getByName(toLocationName);
+		if (this.toLocation == null)
+			throw new EntityNotFoundException("Location", toLocationName);
+	}
+
+	@Override
+	public Location getToLocation() {
+		return toLocation;
+	}
+
+	@Override
+	public Boolean getAfterVisibility() {
+		return afterVisibility;
 	}
 
 	@Override
@@ -143,17 +174,19 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 
     @Override
     public String toString() {
-        return "{ ThingThingOnLocation :: " + 
+        return "{ ThingCharacterOnThing :: " + 
 			id + " : " + 
 			TextUtils.quote(action.getText()) + " : " + 
-			TextUtils.quote(preposition.getText()) + " : " + 
 			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
 			TextUtils.quote(complementStatus.getLabel()) + " : " + 
-			TextUtils.quote(supplementStatus.getThing().getName()) + " : " + 
+			TextUtils.quote(preposition.getText()) + " : " + 
+			TextUtils.quote(supplementStatus.getCharacter().getName()) + " : " + 
 			TextUtils.quote(supplementStatus.getLabel()) + " : " + 
-			TextUtils.quote(beforeStatus.getLocation().getName()) + " : " + 
+			TextUtils.quote(beforeStatus.getThing().getName()) + " : " + 
 			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
-			TextUtils.quote(afterStatus.getLabel()) + " : " + 
+			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
+			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
+			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
 			(afterText != null ? afterText : "-") +
 		" }";
 	}

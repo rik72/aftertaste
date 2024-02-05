@@ -7,17 +7,25 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
-import io.rik72.brew.engine.db.entities.ThingThingOnCharacter;
-import io.rik72.brew.engine.db.entities.ThingThingOnLocation;
-import io.rik72.brew.engine.db.entities.ThingThingOnThing;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.entities.Word.EntityType;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnCharacter;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
+import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnThing;
+import io.rik72.brew.engine.db.repositories.CharacterThingOnCharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterThingOnLocationRepository;
+import io.rik72.brew.engine.db.repositories.CharacterThingOnThingRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
+import io.rik72.brew.engine.db.repositories.ThingCharacterOnCharacterRepository;
+import io.rik72.brew.engine.db.repositories.ThingCharacterOnLocationRepository;
+import io.rik72.brew.engine.db.repositories.ThingCharacterOnThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnThingRepository;
 import io.rik72.brew.engine.processing.execution.Results;
-import io.rik72.mammoth.db.DB;
+import io.rik72.brew.engine.processing.execution.actions.ConsequenceHelper;
+import io.rik72.brew.engine.utils.TextUtils;
 
 public class TwoActionDo extends TwoActionExecutor {
 
@@ -36,17 +44,40 @@ public class TwoActionDo extends TwoActionExecutor {
 		if (results != null)
 			return results;
 
-		List<ThingThingOnThing> thingActions =
+		List<ConsequenceOnThing> consequencesOnThings = new ArrayList<>();
+		consequencesOnThings.addAll(
 			ThingThingOnThingRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
-		List<ThingThingOnLocation> locationActions =
-			ThingThingOnLocationRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
-		List<ThingThingOnCharacter> characterActions =
-			ThingThingOnCharacterRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus());
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnThings.addAll(
+			CharacterThingOnThingRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnThings.addAll(
+			ThingCharacterOnThingRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
 
-		if (!thingActions.isEmpty() || !locationActions.isEmpty() || !characterActions.isEmpty())
+		List<ConsequenceOnLocation> consequencesOnLocations = new ArrayList<>();
+		consequencesOnLocations.addAll(
+			ThingThingOnLocationRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnLocations.addAll(
+			CharacterThingOnLocationRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnLocations.addAll(
+			ThingCharacterOnLocationRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+
+		List<ConsequenceOnCharacter> consequencesOnCharacters = new ArrayList<>();
+		consequencesOnCharacters.addAll(
+			ThingThingOnCharacterRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnCharacters.addAll(
+			CharacterThingOnCharacterRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		consequencesOnCharacters.addAll(
+			ThingCharacterOnCharacterRepository.get().findByParts(
+				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+
+		if (!consequencesOnThings.isEmpty() || !consequencesOnLocations.isEmpty() || !consequencesOnCharacters.isEmpty())
 			setDoable(true);
 
 		results = checkVerb();
@@ -58,31 +89,24 @@ public class TwoActionDo extends TwoActionExecutor {
 			return results;
 
 		boolean refresh = false;
-
 		List<String> texts = new ArrayList<>();
-		if (thingActions.size() > 0) {
-			for (ThingThingOnThing action : thingActions) {
+
+		if (consequencesOnThings.size() > 0) {
+			for (ConsequenceOnThing action : consequencesOnThings) {
 				Thing before = action.getBeforeStatus().getThing();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					if (action.getAfterStatus() != null)
-						before.setStatus(action.getAfterStatus().getLabel());
-					if (action.getToLocation() != null)
-						before.setLocation(action.getToLocation());
-					if (action.getAfterVisibility() != null)
-						before.setVisible(action.getAfterVisibility());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnThing(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 				}
 			}
 		}
 
-		if (locationActions.size() > 0) {
-			for (ThingThingOnLocation action : locationActions) {
+		if (consequencesOnLocations.size() > 0) {
+			for (ConsequenceOnLocation action : consequencesOnLocations) {
 				Location before = action.getBeforeStatus().getLocation();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					before.setStatus(action.getAfterStatus().getLabel());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnLocation(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 					refresh = true;
@@ -90,15 +114,11 @@ public class TwoActionDo extends TwoActionExecutor {
 			}
 		}
 
-		if (characterActions.size() > 0) {
-			for (ThingThingOnCharacter action : characterActions) {
+		if (consequencesOnCharacters.size() > 0) {
+			for (ConsequenceOnCharacter action : consequencesOnCharacters) {
 				Character before = action.getBeforeStatus().getCharacter();
 				if (before.getStatus() == action.getBeforeStatus()) {
-					if (action.getAfterStatus() != null)
-						before.setStatus(action.getAfterStatus().getLabel());
-					if (action.getToLocation() != null)
-						before.setLocation(action.getToLocation());
-					DB.persist(before);
+					ConsequenceHelper.applyConsequenceOnCharacter(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
 				}
@@ -118,7 +138,7 @@ public class TwoActionDo extends TwoActionExecutor {
 			Location locationComplement = LocationRepository.get().getByName(cName.getCanonical().getText());
 			if (locationComplement != null && subject.getLocation().getId() == locationComplement.getId())
 				return new Results(false, false, cantDoThat());
-			return new Results(false, false, noSuchThing(cName));
+			return new Results(false, false, noSuchComplement());
 		}
 		else if (verb.getComplementPosition() == Word.Position.inventory && !complementIsInInventory)
 			return new Results(false, false, complementNotInInventory());
@@ -132,7 +152,7 @@ public class TwoActionDo extends TwoActionExecutor {
 			Location locationSupplement = LocationRepository.get().getByName(sName.getCanonical().getText());
 			if (locationSupplement != null && subject.getLocation().getId() == locationSupplement.getId())
 				return new Results(false, false, cantDoThat());
-			return new Results(false, false, noSuchThing(sName));
+			return new Results(false, false, noSuchSupplement());
 		}
 		else if (verb.getSupplementPosition() == Word.Position.inventory && !supplementIsInInventory)
 			return new Results(false, false, supplementNotInInventory());
@@ -141,28 +161,43 @@ public class TwoActionDo extends TwoActionExecutor {
 		return null;
 	}
 
-	protected String noSuchThing(Word word) {
-		return "No " + word.getText() + " can be seen here.";
-	}
-
 	@Override
 	protected String doneFeedback() {
-		return "You " + verb.getText() + " the " + cName.getText() + " " + preposition.getText() + " the " + sName.getText() + ".";
+		String complementText = cName.getEntityType() == EntityType.character ?
+			TextUtils.ucFirst(cName.getCanonical().getText()) :
+			"the " + cName.getCanonical().getText();
+		String supplementText = cName.getEntityType() == EntityType.character ?
+			TextUtils.ucFirst(sName.getCanonical().getText()) :
+			"the " + sName.getCanonical().getText();
+		return "You " + verb.getText() + " " + complementText + " " + preposition.getText() + " " + supplementText + ".";
 	}
 
 	protected String complementNotInInventory() {
-		return "You do not possess the " + cName.getText();
+		return "You do not possess the " + cName.getCanonical().getText();
 	}
 
 	protected String complementNotInLocation() {
-		return "You must drop the " + cName.getText() + " first";
+		return "You must drop the " + cName.getCanonical().getText() + " first";
 	}
 
 	protected String supplementNotInInventory() {
-		return "You do not possess the " + sName.getText();
+		return "You do not possess the " + sName.getCanonical().getText();
 	}
 
 	protected String supplementNotInLocation() {
-		return "You must drop the " + sName.getText() + " first";
+		return "You must drop the " + sName.getCanonical().getText() + " first";
+	}
+
+	protected String noSuchSupplement() {
+		switch (sName.getEntityType()) {
+			case character:
+				return sName.getCanonical().getText() + " is not here.";
+			
+			case location:
+				return "There " + (supplement.isPlural() ? "is" : "are") + " no " + sName.getCanonical().getText() + " here.";
+
+			default:
+				return "You can't see any " + sName.getCanonical().getText() + " here.";
+		}
 	}
 }

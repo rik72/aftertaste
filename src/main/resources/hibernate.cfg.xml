@@ -28,8 +28,11 @@
         <mapping class="io.rik72.brew.engine.db.entities.CharacterStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterStatusPossibility" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterOnCharacter" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterThingOnCharacter" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterOnLocation" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterThingOnLocation" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterOnThing" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterThingOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.Location" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationXLocation" />
@@ -38,10 +41,13 @@
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatusPossibility" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingOnCharacter" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingCharacterOnCharacter" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnCharacter" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingOnLocation" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingCharacterOnLocation" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnLocation" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingOnThing" />
+        <mapping class="io.rik72.brew.engine.db.entities.ThingCharacterOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingThingOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.Word" />
     </session-factory>
