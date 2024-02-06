@@ -17,6 +17,7 @@ import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.loader.loaders.CharacterLoader;
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.loaders.ActionLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
 import io.rik72.brew.engine.loader.loaders.PrepositionLoader;
@@ -79,10 +80,11 @@ public class Story {
 		return descriptor.getSubtitle();
 	}
 
-	public void restart() {
-		new ThingLoader().reset();
-		new LocationLoader().reset();
-		new CharacterLoader().reset();
+	public void restart() throws Exception {
+		LoadPath loadPath = descriptor.getLoadPath();
+		new ThingLoader().reset(loadPath);
+		new LocationLoader().reset(loadPath);
+		new CharacterLoader().reset(loadPath);
 	}
 
 	public void applyDeltas() {

@@ -8,7 +8,7 @@ import io.rik72.brew.engine.loader.loaders.parsing.docs.WordsDocLoader;
 public class VerbLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 		WordsDocLoader loader = new WordsDocLoader("verbs.yml");
 		loader.load(loadPath);
 	}

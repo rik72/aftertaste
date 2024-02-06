@@ -55,12 +55,12 @@ import io.rik72.mammoth.db.DB;
 public class ActionLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 		loadThingActions(loadPath);
 		loadCharacterActions(loadPath);
 	}
 
-	private void loadThingActions(LoadPath loadPath) {
+	private void loadThingActions(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
 		Docs.Things doc = (Docs.Things) parser.parse(loadPath, "things.yml");
@@ -312,7 +312,7 @@ public class ActionLoader implements Loadable {
 		}
 	}
 
-	private void loadCharacterActions(LoadPath loadPath) {
+	private void loadCharacterActions(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Characters.class);
 		Docs.Characters doc = (Docs.Characters) parser.parse(loadPath, "characters.yml");

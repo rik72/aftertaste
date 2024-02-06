@@ -17,7 +17,7 @@ public class WordsDocLoader implements Loadable {
 	}
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 		Docs.Words doc = (Docs.Words) parser.parse(loadPath, fileName);
 		
 		Helpers.loadWordList(doc.words.names, Type.name, EntityType.none);

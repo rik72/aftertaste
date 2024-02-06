@@ -145,10 +145,10 @@ public class LocationLoader implements Loadable {
 		Loader.get().register(this);
 	}
 
-	public void reset() {
+	public void reset(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Locations.class);
-		Docs.Locations doc = (Docs.Locations) parser.parse("brew/stories/test/locations.yml");
+		Docs.Locations doc = (Docs.Locations) parser.parse(loadPath, "locations.yml");
 
 		for (LocationRaw locItem : doc.locations) {
 			Location location = LocationRepository.get().getByName(locItem.name);

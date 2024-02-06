@@ -108,10 +108,10 @@ public class ThingLoader implements Loadable {
 		Loader.get().register(this);
 	}
 
-	public void reset() {
+	public void reset(LoadPath loadPath) throws Exception {
 
 		YmlParser parser = new YmlParser(Docs.Things.class);
-		Docs.Things doc = (Docs.Things) parser.parse("brew/stories/test/things.yml");
+		Docs.Things doc = (Docs.Things) parser.parse(loadPath, "things.yml");
 
 		for (ThingRaw thItem : doc.things) {
 			Thing thing = ThingRepository.get().getByName(thItem.name);

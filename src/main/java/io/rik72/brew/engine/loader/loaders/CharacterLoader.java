@@ -111,9 +111,9 @@ public class CharacterLoader implements Loadable {
 		Loader.get().register(this);
 	}
 
-	public void reset() {
+	public void reset(LoadPath loadPath) throws Exception {
 		YmlParser ymlParser = new YmlParser(Docs.Characters.class);
-		Docs.Characters doc = (Docs.Characters) ymlParser.parse("brew/stories/test/characters.yml");
+		Docs.Characters doc = (Docs.Characters) ymlParser.parse(loadPath, "characters.yml");
 
 		for (CharacterRaw chItem : doc.characters) {
 			Character character = CharacterRepository.get().getByName(chItem.name);

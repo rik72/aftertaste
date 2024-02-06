@@ -1,0 +1,32 @@
+characters:
+
+  - name: lazlo
+    main: true
+    word:
+      text: lazlo
+      synonyms:
+        - me
+        - myself
+    startLocation: toolshed
+    statuses:
+      - status: initial
+        brief: You are quite well at the moment, but cannot remember a thing about yourself and your life.
+        description: >
+          You, yourself, etcetera.
+        possibilities:
+          - impossible: fly ( Do you think you have wings?? )
+          - impossible: read ( You feel like you miss something... )
+      - status: encumbered
+        brief: You are carrying something that burdens you.
+        possibilities:
+          - impossible: fly ( You are carrying too much! ) !important
+          - inherit: ( initial ) read 
+      - status: suicidal
+        finale: >
+          You become tired of your stupid life, everything looks so much of nothing to you.
+          You loose interest in seeking the way home or in anything else you could do at the moment.
+          You crash your head on the first spiked object you find.
+          
+          You die.
+      - status: fatigued
+        finale: >

@@ -8,8 +8,8 @@ import io.rik72.brew.engine.loader.loaders.parsing.docs.WordsDocLoader;
 public class TerminalLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
-		WordsDocLoader loader = new WordsDocLoader("ui/commands.yml");
+	public void load(LoadPath loadPath) throws Exception {
+		WordsDocLoader loader = new WordsDocLoader("commands.yml");
 		loader.load(loadPath);
 	}
 

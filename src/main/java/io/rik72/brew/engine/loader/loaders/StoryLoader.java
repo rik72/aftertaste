@@ -16,7 +16,7 @@ import io.rik72.brew.engine.story.StoryDescriptor;
 public class StoryLoader implements Loadable {
 
 	@Override
-	public void load(LoadPath loadPath) {
+	public void load(LoadPath loadPath) throws Exception {
 		YmlParser parser = new YmlParser(Docs.Story.class);
 		Docs.Story doc = (Docs.Story) parser.parse(loadPath, "story.yml");
 		
