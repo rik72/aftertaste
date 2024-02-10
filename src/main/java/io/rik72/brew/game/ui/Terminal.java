@@ -179,9 +179,8 @@ public class Terminal extends TerminalBase {
 					}
 				});
 			}
+			DB.commitTransaction();  // begun at the start of executeInput(...)
 		}
-
-		DB.commitTransaction();  // begun at the start of executeInput(...)
 	}
 
 	///////////////////////////////////////////////////////////////////////////

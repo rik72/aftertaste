@@ -78,7 +78,7 @@ public class ZeroActionExecutor extends Executor {
 	}
 
 	private String thisCantDoThat() {
-		return "You can't do that";
+		return "You can't do that.";
 	}
 
 	protected Results checkVerb() {

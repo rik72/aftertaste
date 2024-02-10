@@ -1,5 +1,7 @@
 package io.rik72.mammoth.db;
 
+import java.util.Stack;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -12,7 +14,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 
 public class DB {
 	private static Session session;
-	private static Transaction tx;
+	private static Stack<Transaction> txs = new Stack<>();
 
 	public static void persist(Object obj) {
 		if (session != null) {
@@ -96,43 +98,49 @@ public class DB {
 	}
 
 	public static void beginTransaction() {
-		if (tx != null) {
-			if (tx.isActive())
-				return;
-			else if (tx.getStatus().isNotOneOf(TransactionStatus.COMMITTED, TransactionStatus.ROLLED_BACK))
-				throw new IllegalStateException("A transaction is already present but cannot be used nor discarded (" + tx.getStatus() + ")");
-		}
 		if (session != null) {
-			if (session.isOpen())
-				tx = session.beginTransaction();
+			if (session.isOpen()) {
+				if (!txs.empty()) {
+					Transaction tx = txs.lastElement();
+					if (tx.getStatus().isNotOneOf(TransactionStatus.ACTIVE))
+						throw new IllegalStateException("Cannot nest a transaction while another one is in state " + tx.getStatus());
+				}
+				txs.push(session.beginTransaction());
+			}
 			else
 				throw new IllegalStateException("Session is not open, impossible to open transaction");
 		}
 		else {
-			tx = getOpenSession().beginTransaction();
+			txs.push(getOpenSession().beginTransaction());
 		}
 	}
 
 	public static void commitTransaction() {
-		if (tx != null) {
+		if (!txs.empty()) {
+			Transaction tx = txs.lastElement();
 			if (tx.isActive()) {
 				tx.commit();
-				return;
+				txs.pop();
 			}
 			else
-				throw new IllegalStateException("A transaction is already present but cannot be committed (" + tx.getStatus() + ")");
+				throw new IllegalStateException("Current nested transaction cannot be committed (" + tx.getStatus() + ")");
 		}
+		else
+			throw new IllegalStateException("No transaction to commit");
 	}
 
 	public static void rollbackTransaction() {
-		if (tx != null) {
+		if (!txs.empty()) {
+			Transaction tx = txs.lastElement();
 			if (tx.isActive()) {
 				tx.rollback();
-				return;
+				txs.pop();
 			}
 			else
-				throw new IllegalStateException("A transaction is already present but cannot be rolled back (" + tx.getStatus() + ")");
+				throw new IllegalStateException("Current nested transaction cannot be rolled back (" + tx.getStatus() + ")");
 		}
+		else
+			throw new IllegalStateException("No transaction to roll back");
 	}
 
 	///////////////////////////////////////////////////////////////////////////

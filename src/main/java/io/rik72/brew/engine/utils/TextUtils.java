@@ -13,7 +13,7 @@ public class TextUtils {
 	public static String denormalize(Object obj, boolean full) {
 		return
 			(obj == null ? "null" :
-			(obj instanceof String ? (full ? quote((String) obj) : quote((String) obj, 20)) :
+			(obj instanceof String ? (full ? quote((String) obj) : quote((String) obj, 40)) :
 			(obj instanceof Boolean ? bool((Boolean) obj) :
 			obj.toString()
 		)));
