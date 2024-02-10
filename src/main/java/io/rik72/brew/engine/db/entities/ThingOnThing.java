@@ -51,6 +51,9 @@ public class ThingOnThing implements AbstractEntity, ConsequenceOnThing {
 	@Column
 	String afterText;
 
+	public ThingOnThing() {
+	}
+
 	public ThingOnThing(String action,
 							   Thing complement, String complementStatusLabel,
 							   String beforeName, String beforeStatusLabel,

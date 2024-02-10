@@ -79,6 +79,10 @@ public class LocationStatus implements AbstractEntity, Status {
 		return location;
 	}
 
+	public void unsetLocation() {
+		this.location = null;
+	}
+
 	public void setLocation(String locationName) {
 		this.location = LocationRepository.get().getByName(locationName);
 		if (this.location == null)
@@ -92,13 +96,13 @@ public class LocationStatus implements AbstractEntity, Status {
     @Override
     public String toString() {
         return "{ LocationStatus :: " + 
-			id + " : " + 
-			TextUtils.quote(location.getName()) + " : " + 
-			TextUtils.quote(label) + " : " + 
-			TextUtils.quote(canonical) + " : " + 
-			TextUtils.quote(image) + " : " + 
-			TextUtils.quote(description) + " : " +
-			(finale != null && finale.length() > 0 ? (" : " + TextUtils.quote(finale)) : "") +
+			"id=" + id + ", " + 
+			"location=" + TextUtils.denormalize(location.getName()) + ", " + 
+			"label=" + TextUtils.denormalize(label) + ", " + 
+			"canonical=" + TextUtils.denormalize(canonical) + ", " + 
+			"image=" + TextUtils.denormalize(image) + ", " + 
+			"description=" + TextUtils.denormalize(description) + ", " + 
+			"finale=" + TextUtils.denormalize(finale) +
 		" }";
     }
 }

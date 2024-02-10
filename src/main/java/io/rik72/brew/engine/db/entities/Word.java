@@ -141,14 +141,13 @@ public class Word implements AbstractEntity {
     @Override
     public String toString() {
         return "{ Word :: " + 
-			id + " : " + 
-			TextUtils.quote(text) + " : " +
-			type + 
-			(entityType != EntityType.none ? " : " + entityType : "") +
-			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
-			(canonical != null ? " : " + TextUtils.quote(canonical.getText()) : "") +
-			(complement != null ? " : " + "complement in " + complement : "") +
-			(supplement != null ? " : " + "supplement in " + supplement : "") +
+			"id=" + id + ", " + 
+			"text=" + TextUtils.denormalize(text) + ", " +
+			"type=" + type + 
+			(entityType != EntityType.none ? ", entityType=" + entityType : "") +
+			(canonical != null ? ", canonical=" + TextUtils.quote(canonical.getText()) : "") +
+			(complement != null ? ", compl. position=" + complement : "") +
+			(supplement != null ? ", suppl. position=" + supplement : "") +
 		" }";
     }
 }

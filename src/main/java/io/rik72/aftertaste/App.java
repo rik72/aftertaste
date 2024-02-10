@@ -18,9 +18,25 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static ViewManager viewManager;
+    private static Stage stage;
+    private static App instance;
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    private static void setStage(Stage stage) {
+        App.stage = stage;
+    }
+
+    private static void setApp(App app) {
+        App.instance = app;
+    }
 
     @Override
     public void start(Stage stage) {
+        setApp(this);
+        setStage(stage);
         initStage(stage);
         initViewManager(stage);
         openView("start");
@@ -47,6 +63,10 @@ public class App extends Application {
         viewManager = new ViewManager(stage);
         viewManager.getViews().put("start", new StartView(stage));
         viewManager.getViews().put("terminal", new TerminalView(stage));
+    }
+
+    public static void openURL(String url) {
+        instance.getHostServices().showDocument(url);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

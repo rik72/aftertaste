@@ -5,11 +5,14 @@ import java.io.File;
 import org.girod.javafx.svgimage.SVGImage;
 import org.girod.javafx.svgimage.SVGLoader;
 
+import io.rik72.aftertaste.App;
 import io.rik72.aftertaste.ui.Defaults;
 import io.rik72.aftertaste.ui.views.TerminalView;
+import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.game.ui.Terminal;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -62,7 +65,7 @@ public class TerminalUX {
 	}
 
 	public void confirm(String question, Future then) {
-		gui.openConfirmBox(question, then);
+		ViewHelper.openConfirmModal(question, then);
 	}
 
 	public void pressEnterTo(Future then, String action) {
@@ -70,6 +73,14 @@ public class TerminalUX {
 		hilightln("(Press ENTER to " + action + ")");
 		skip(1);
 		gui.setEnterListener(then);
+	}
+
+	public void closeTerminalView() {
+		App.openView("start");
+
+		Terminal.get().removeTopImage();
+		Terminal.get().closeInput();
+        Terminal.get().clearTextFlow();
 	}
 
 	public void pressEnterToContinue(Future then) {
@@ -83,6 +94,7 @@ public class TerminalUX {
 	}
 
 	public void closeInput() {
+		gui.getPromptField().setText("");
 		gui.getPromptField().setDisable(true);
 		gui.hidePromptPane();
 	}
@@ -98,8 +110,20 @@ public class TerminalUX {
 			gui.setTopImage(pane);
 		}
 		else {
-			gui.setTopImage(null);
+			gui.removeTopImage();
 		}
+	}
+
+	public void removeTopImage() {
+		gui.removeTopImage();
+	}
+
+	public void showMenus() {
+		gui.showMenus();
+	}
+
+	public void hideMenus() {
+		gui.hideMenus();
 	}
 
 	private SVGImage loadLocationStatusImage(String location, String image) {
@@ -115,6 +139,10 @@ public class TerminalUX {
 		}
 
 		return null;
+	}
+
+	public void clearTextFlow() {
+		gui.getTextFlow().getChildren().clear();
 	}
 
 	public File chooseOpenFile() {

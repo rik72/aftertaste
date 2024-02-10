@@ -44,6 +44,10 @@ public class CharacterOnLocation implements AbstractEntity, ConsequenceOnLocatio
 	@Column
 	String afterText;
 
+
+	public CharacterOnLocation() {
+	}
+
 	public CharacterOnLocation(String action,
 							   Character complement, String complementStatusLabel,
 							   String beforeName, String beforeStatusLabel,

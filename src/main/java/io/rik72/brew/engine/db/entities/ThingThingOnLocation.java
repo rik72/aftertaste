@@ -52,6 +52,9 @@ public class ThingThingOnLocation implements AbstractEntity, ConsequenceOnLocati
 	@Column
 	String afterText;
 
+	public ThingThingOnLocation() {
+	}
+
 	public ThingThingOnLocation(String action,
 							      Thing complement, String complementStatusLabel,
 							      String preposition,

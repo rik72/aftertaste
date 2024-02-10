@@ -62,6 +62,10 @@ public abstract class TerminalBase {
 		ux.printLocationImage(location);
 	}
 
+	public void removeTopImage() {
+		ux.removeTopImage();
+	}
+
 	public File chooseOpenFile() {
 		return ux.chooseOpenFile();
 	}
@@ -72,5 +76,21 @@ public abstract class TerminalBase {
 
 	public void setUX(TerminalUX ux) {
 		this.ux = ux;
+	}
+
+	public void showMenus() {
+		ux.showMenus();
+	}
+
+	public void hideMenus() {
+		ux.hideMenus();
+	}
+
+	public void clearTextFlow() {
+		ux.clearTextFlow();
+	}
+
+	public void close() {
+		ux.closeTerminalView();
 	}
 }

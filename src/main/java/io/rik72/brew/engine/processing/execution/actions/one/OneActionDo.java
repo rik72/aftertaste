@@ -39,22 +39,28 @@ public class OneActionDo extends OneActionExecutor {
 			return results;
 
 		List<ConsequenceOnThing> consequencesOnThings = new ArrayList<>();
-		consequencesOnThings.addAll(
-			ThingOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
-		consequencesOnThings.addAll(
-			CharacterOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing)
+			consequencesOnThings.addAll(
+				ThingOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character)
+			consequencesOnThings.addAll(
+				CharacterOnThingRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
 
 		List<ConsequenceOnLocation> consequencesOnLocations = new ArrayList<>();
-		consequencesOnLocations.addAll(
-			ThingOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
-		consequencesOnLocations.addAll(
-			CharacterOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing)
+			consequencesOnLocations.addAll(
+				ThingOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character)
+			consequencesOnLocations.addAll(
+				CharacterOnLocationRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
 
 		List<ConsequenceOnCharacter> consequencesOnCharacters = new ArrayList<>();
-		consequencesOnCharacters.addAll(
-			ThingOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
-		consequencesOnCharacters.addAll(
-			CharacterOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing)
+			consequencesOnCharacters.addAll(
+				ThingOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character)
+			consequencesOnCharacters.addAll(
+				CharacterOnCharacterRepository.get().findByParts(verb.getCanonical(), complement.getStatus()));
 
 		if (!consequencesOnThings.isEmpty() || !consequencesOnLocations.isEmpty() || !consequencesOnCharacters.isEmpty())
 			setDoable(true);

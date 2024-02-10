@@ -45,37 +45,46 @@ public class TwoActionDo extends TwoActionExecutor {
 			return results;
 
 		List<ConsequenceOnThing> consequencesOnThings = new ArrayList<>();
-		consequencesOnThings.addAll(
-			ThingThingOnThingRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnThings.addAll(
-			CharacterThingOnThingRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnThings.addAll(
-			ThingCharacterOnThingRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.thing)
+			consequencesOnThings.addAll(
+				ThingThingOnThingRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character && sName.getEntityType() == EntityType.thing)
+			consequencesOnThings.addAll(
+				CharacterThingOnThingRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.character)
+			consequencesOnThings.addAll(
+				ThingCharacterOnThingRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
 
 		List<ConsequenceOnLocation> consequencesOnLocations = new ArrayList<>();
-		consequencesOnLocations.addAll(
-			ThingThingOnLocationRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnLocations.addAll(
-			CharacterThingOnLocationRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnLocations.addAll(
-			ThingCharacterOnLocationRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.thing)
+			consequencesOnLocations.addAll(
+				ThingThingOnLocationRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character && sName.getEntityType() == EntityType.thing)
+			consequencesOnLocations.addAll(
+				CharacterThingOnLocationRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.character)
+			consequencesOnLocations.addAll(
+				ThingCharacterOnLocationRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
 
 		List<ConsequenceOnCharacter> consequencesOnCharacters = new ArrayList<>();
-		consequencesOnCharacters.addAll(
-			ThingThingOnCharacterRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnCharacters.addAll(
-			CharacterThingOnCharacterRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
-		consequencesOnCharacters.addAll(
-			ThingCharacterOnCharacterRepository.get().findByParts(
-				verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.thing)
+			consequencesOnCharacters.addAll(
+				ThingThingOnCharacterRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.character && sName.getEntityType() == EntityType.thing)
+			consequencesOnCharacters.addAll(
+				CharacterThingOnCharacterRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
+		else if (cName.getEntityType() == EntityType.thing && sName.getEntityType() == EntityType.character)
+			consequencesOnCharacters.addAll(
+				ThingCharacterOnCharacterRepository.get().findByParts(
+					verb.getCanonical(), complement.getStatus(), preposition.getCanonical(), supplement.getStatus()));
 
 		if (!consequencesOnThings.isEmpty() || !consequencesOnLocations.isEmpty() || !consequencesOnCharacters.isEmpty())
 			setDoable(true);

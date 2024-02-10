@@ -25,6 +25,21 @@ public class LocationStatusRepository extends AbstractRepository<LocationStatus>
 		return list.size() >= 1 ? list.get(0) : null;
 	}
 
+	@Override
+	public void deleteAll() {
+		List<Location> allL = LocationRepository.get().findAll();
+		for (Location c : allL) {
+			c.unsetStatus();
+			DB.persist(c);
+		}
+		List<LocationStatus> allLS = findAll();
+		for (LocationStatus l : allLS) {
+			l.unsetLocation();
+			DB.persist(l);
+		}
+		super.deleteAll();
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	private static LocationStatusRepository instance = new LocationStatusRepository();
 	public static LocationStatusRepository get() {

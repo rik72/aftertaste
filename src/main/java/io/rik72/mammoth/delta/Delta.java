@@ -1,18 +1,18 @@
 package io.rik72.mammoth.delta;
 
-import io.rik72.mammoth.entities.AbstractEntity;
+import io.rik72.brew.engine.db.entities.abstractions.Complement;
 
 public abstract class Delta {
 
-	protected short id;
+	protected String name;
 
 	public Delta() {}
 
-	protected  <T extends AbstractEntity> Delta(T entity) {
-		this.id = entity.getId();
+	protected  <T extends Complement> Delta(T entity) {
+		this.name = entity.getName();
 	}	
 
-	public short getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 }

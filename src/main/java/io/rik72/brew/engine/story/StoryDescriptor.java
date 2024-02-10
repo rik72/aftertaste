@@ -1,10 +1,12 @@
 package io.rik72.brew.engine.story;
 
+import java.io.Serializable;
+
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 
-public class StoryDescriptor {
+public class StoryDescriptor implements Serializable {
 	private LoadPath loadPath;
 	private StoryRefId refId;
 	private String version;

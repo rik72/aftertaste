@@ -51,6 +51,9 @@ public class CharacterOnCharacter implements AbstractEntity, ConsequenceOnCharac
 	@Column
 	String afterText;
 
+	public CharacterOnCharacter() {
+	}
+
 	public CharacterOnCharacter(String action,
 							    Character complement, String complementStatusLabel,
 							    String beforeName, String beforeStatusLabel,

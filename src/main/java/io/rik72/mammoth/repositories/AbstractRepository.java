@@ -42,4 +42,10 @@ public abstract class AbstractRepository <T> {
 		cr.select(root).where(cb.equal(root.get(field), value));
 		return DB.createQuery(cr).list();
 	}
+
+	public void deleteAll() {
+		DB.executeMutationQuery("DELETE " + entityClass.getSimpleName());
+		// DB.executeNativeMutationQuery("ALTER TABLE " + entityClass.getSimpleName() + " ALTER COLUMN id RESTART WITH 1");
+	}
+
 }

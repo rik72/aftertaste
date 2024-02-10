@@ -111,6 +111,10 @@ public class Character extends Complement implements Deltable {
 			throw new EntityNotFoundException("Status", statusLabel, "character", name);
 	}
 
+	public void unsetStatus() {
+		this.status = null;
+	}
+
 	@Override
 	public boolean isPlural() {
 		return false;
@@ -129,11 +133,11 @@ public class Character extends Complement implements Deltable {
     @Override
     public String toString() {
         return "{ Character :: " + 
-			id + " : " + 
-			TextUtils.quote(name) + " : " + 
-			TextUtils.quote(location.getName()) + " : " +
-			(visible ? "visible" : "invisible") + " : " +
-			TextUtils.quote(status.getLabel()) +
+			"id=" + id + ", " + 
+			"name=" + TextUtils.denormalize(name) + ", " + 
+			"location=" + TextUtils.denormalize(location.getName()) + ", " +
+			"visible=" + TextUtils.denormalize(visible) + ", " +
+			"status=" + TextUtils.denormalize(status.getLabel()) +
 		" }";
     }
 

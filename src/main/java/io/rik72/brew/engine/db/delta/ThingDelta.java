@@ -12,18 +12,18 @@ public class ThingDelta extends Delta implements Serializable {
 	private boolean visible;
 	private boolean takeable;
 	private boolean droppable;
-	private Short locationId;
-	private Short statusId;
+	private String locationName;
+	private String statusLabel;
 
 	public ThingDelta() {}
 
 	public ThingDelta(Thing thing) {
 		super(thing);
-		this.visible 	= thing.isVisible();
-		this.takeable 	= thing.isTakeable();
-		this.droppable 	= thing.isDroppable();
-		this.locationId = thing.getLocation() != null ? thing.getLocation().getId() : null;
-		this.statusId 	= thing.getStatus() != null ? thing.getStatus().getId() : null;
+		this.visible 		= thing.isVisible();
+		this.takeable 		= thing.isTakeable();
+		this.droppable 		= thing.isDroppable();
+		this.locationName	= thing.getLocation() != null ? thing.getLocation().getName() : null;
+		this.statusLabel 	= thing.getStatus() != null ? thing.getStatus().getLabel() : null;
 	}
 
 	public boolean isVisible() {
@@ -38,17 +38,17 @@ public class ThingDelta extends Delta implements Serializable {
 		return droppable;
 	}
 
-	public short getLocationId() {
-		return locationId;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	public short getStatusId() {
-		return statusId;
+	public String getStatusLabel() {
+		return statusLabel;
 	}
 
 	@Override
 	public String toString() {
-		return "[ id=" + id + ", visible=" + visible + ", takeable=" + takeable + ", droppable=" + droppable
-				+ ", locationId=" + locationId + ", statusId=" + statusId + " ]";
+		return "[ name=" + name + ", visible=" + visible + ", takeable=" + takeable + ", droppable=" + droppable
+				+ ", locationName=" + locationName + ", statusLabel=" + statusLabel + " ]";
 	}
 }

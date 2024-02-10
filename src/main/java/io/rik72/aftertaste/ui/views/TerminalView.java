@@ -1,43 +1,36 @@
 package io.rik72.aftertaste.ui.views;
 
 import java.io.File;
-import java.util.Map.Entry;
-
 import io.rik72.aftertaste.ui.Defaults;
 import io.rik72.aftertaste.ui.ux.TerminalUX;
+import io.rik72.aftertaste.ui.views.menu.TopMenu;
 import io.rik72.bottlerack.view.AbstractView;
-import io.rik72.brew.engine.finder.Finder;
-import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
-import io.rik72.brew.engine.story.StoryDescriptor;
-import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.ui.Terminal;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+// import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+// import javafx.scene.layout.Background;
+// import javafx.scene.layout.BackgroundImage;
+// import javafx.scene.layout.BackgroundPosition;
+// import javafx.scene.layout.BackgroundRepeat;
+// import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class TerminalView extends AbstractView {
@@ -49,10 +42,12 @@ public class TerminalView extends AbstractView {
 	private ScrollPane textPane;
 	private TextField promptField;
 	private HBox promptPane;
-	private BorderPane allPane;
+	private BorderPane rootPane;
+	private BorderPane mainPane;
 	private boolean scrollToBottom = false;
 	private Future enterListener;
 	private FileChooser fileChooser = new FileChooser();
+	private boolean menuShown = false;
 
 	public TerminalView(Stage stage) {
 		super(stage);
@@ -74,22 +69,18 @@ public class TerminalView extends AbstractView {
 		promptField.setPrefColumnCount(50);
 		promptField.setFont(Defaults.FONT_NORMAL);
 		promptField.setDisable(true);
-		promptField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				KeyCode kc = event.getCode();
-				String text = promptField.getText();
-				if (kc == KeyCode.ENTER) {
-					if (text.length() > 0) {
-						try {
-							Terminal.get().hilightln("> " + text);
-							promptField.clear();
-							Results results = Terminal.get().executeInput(text);
-							if (results != null)
-								Terminal.get().consumeResults(results);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+		promptField.setOnKeyPressed(event -> {
+			KeyCode kc = event.getCode();
+			String text = promptField.getText();
+			if (kc == KeyCode.ENTER) {
+				if (text.length() > 0) {
+					try {
+						Terminal.get().hilightln("> " + text);
+						promptField.clear();
+						Results results = Terminal.get().executeInput(text);
+						Terminal.get().consumeResults(results);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -110,6 +101,10 @@ public class TerminalView extends AbstractView {
 				}
             }
         });
+		// URL backgroundImageURL = getClass().getClassLoader().getResource("images/folio.jpg");
+		// BackgroundImage backgroundImage = new BackgroundImage(new Image(backgroundImageURL.toString(), 720, 480, true, true),
+        // 	BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		// textFlow.setBackground(new Background(backgroundImage));
 		
 		// user input pane
 		promptPane = new HBox(promptLabel, promptField);
@@ -117,102 +112,55 @@ public class TerminalView extends AbstractView {
 		promptPane.setPadding(new Insets(10));
 
 		// main pane
-		allPane = new BorderPane();
+		mainPane = new BorderPane();
 		// - top will be used for location images
 		// - bottom will be used for user input
-		allPane.setCenter(textPane);
+		mainPane.setCenter(textPane);
+
+		// root pane
+		rootPane = new BorderPane();
+		// - top will be used for menus
+		// - bottom will be used for status bar (if any)
+		rootPane.setCenter(mainPane);
 
 		// set GUI view on terminal
         Terminal.get().setUX(new TerminalUX(this));
 
-		return allPane;
+		return rootPane;
 	}
 
 	public void onOpen() {
 		// Build and show scene
-		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				KeyCode kc = event.getCode();
-				if (kc == KeyCode.ENTER) {
-					if (enterListener != null) {
-						Future then = enterListener;
-						enterListener = null;
-						then.onSuccess();
-					}
+		stage.getScene().setOnKeyPressed(event -> {
+			KeyCode kc = event.getCode();
+			if (kc == KeyCode.ENTER) {
+				if (enterListener != null) {
+					Future then = enterListener;
+					enterListener = null;
+					then.onSuccess();
 				}
 			}
+			else if (kc == KeyCode.ESCAPE) {
+				if (!menuShown)
+					showMenus();
+				else
+					hideMenus();
+			}
 		});
+	}
 
-		Entry<LoadPath, StoryDescriptor> storyData = Finder.get().getFirstStory();
-		try {
-			BrewController.load(storyData.getKey());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void showMenus() {
+		menuShown = true;
+		((BorderPane)stage.getScene().getRoot()).setTop(new TopMenu());
+	}
 
-		Terminal.get().intro();
+	public void hideMenus() {
+		menuShown = false;
+		((BorderPane)stage.getScene().getRoot()).setTop(null);
 	}
 
 	public void onClose() {
 		stage.getScene().setOnKeyPressed(null);
-	}
-
-	public void openConfirmBox(String question, Future then) {
-		Stage dialog = new Stage();
-		dialog.initModality(Modality.APPLICATION_MODAL);
-		dialog.setResizable(false); 
-		dialog.initOwner(stage);
-
-		VBox dialogVbox = new VBox();
-		dialogVbox.setPadding(new Insets(20));
-		HBox dialogButtonsBox = new HBox();
-		dialogButtonsBox.setSpacing(20);
-
-		Region spacerv = new Region();
-        VBox.setVgrow(spacerv, Priority.ALWAYS);     
-        spacerv.setMinWidth(Region.USE_PREF_SIZE);
-		
-		Button yesButton = new Button("Yes");
-		yesButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				dialog.close();
-				then.onSuccess();
-			}
-		});
-		Region spacerl = new Region();
-        HBox.setHgrow(spacerl, Priority.ALWAYS);     
-        spacerl.setMinWidth(Region.USE_PREF_SIZE);
-		Region spacerr = new Region();
-        HBox.setHgrow(spacerr, Priority.ALWAYS);     
-        spacerr.setMinWidth(Region.USE_PREF_SIZE);
-		Button noButton = new Button("No");
-		noButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				dialog.close();
-				then.onFailure();
-			}
-		});
-
-		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
-		dialogVbox.getChildren().addAll(new Text(question), spacerv, dialogButtonsBox);
-
-		Scene dialogScene = new Scene(dialogVbox, 240, 120);
-		dialog.setScene(dialogScene);
-
-        dialogScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					Node node = dialogScene.focusOwnerProperty().get();
-					if (node instanceof Button)
-						((Button)node).fire();
-				}
-            }
-        });		
-		dialog.show();		
 	}
 
 	public TextFlow getTextFlow() {
@@ -240,23 +188,23 @@ public class TerminalView extends AbstractView {
 	}
 
 	public void showPromptPane() {
-		allPane.setBottom(promptPane);
-		allPane.layout();
+		mainPane.setBottom(promptPane);
+		mainPane.layout();
 	}
 
 	public void hidePromptPane() {
-		allPane.setBottom(null);
-		allPane.layout();
+		mainPane.setBottom(null);
+		mainPane.layout();
 	}
 
 	public void setTopImage(Node imageNode) {
-		allPane.setTop(imageNode);
-		allPane.layout();
+		mainPane.setTop(imageNode);
+		mainPane.layout();
 	}
 
 	public void removeTopImage() {
-		allPane.setTop(null);
-		allPane.layout();
+		mainPane.setTop(null);
+		mainPane.layout();
 	}
 
 	public File chooseOpenFile() {

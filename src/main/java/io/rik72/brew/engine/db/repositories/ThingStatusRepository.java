@@ -25,6 +25,21 @@ public class ThingStatusRepository extends AbstractRepository<ThingStatus> {
 		return list.size() >= 1 ? list.get(0) : null;
 	}
 
+	@Override
+	public void deleteAll() {
+		List<Thing> allT = ThingRepository.get().findAll();
+		for (Thing t : allT) {
+			t.unsetStatus();
+			DB.persist(t);
+		}
+		List<ThingStatus> allTS = findAll();
+		for (ThingStatus s : allTS) {
+			s.unsetThing();
+			DB.persist(s);
+		}
+		super.deleteAll();
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	private static ThingStatusRepository instance = new ThingStatusRepository();
 	public static ThingStatusRepository get() {

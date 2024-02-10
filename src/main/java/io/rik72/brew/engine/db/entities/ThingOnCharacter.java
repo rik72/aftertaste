@@ -52,6 +52,9 @@ public class ThingOnCharacter implements AbstractEntity, ConsequenceOnCharacter 
 	@Column
 	String afterText;
 
+	public ThingOnCharacter() {
+	}
+
 	public ThingOnCharacter(String action,
 							Thing complement, String complementStatusLabel,
 							String beforeName, String beforeStatusLabel,

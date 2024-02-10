@@ -1,6 +1,8 @@
 package io.rik72.brew.engine.loader;
 
-public class LoadPath {
+import java.io.Serializable;
+
+public class LoadPath implements Serializable {
 	private String path;
 	private LoadType loadType;
 	

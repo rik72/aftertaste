@@ -6,8 +6,33 @@ import io.rik72.brew.engine.db.entities.Word;
 
 public class TextUtils {
 
+	public static String denormalize(Object obj) {
+		return denormalize(obj, false);
+	}
+
+	public static String denormalize(Object obj, boolean full) {
+		return
+			(obj == null ? "null" :
+			(obj instanceof String ? (full ? quote((String) obj) : quote((String) obj, 20)) :
+			(obj instanceof Boolean ? bool((Boolean) obj) :
+			obj.toString()
+		)));
+	}
+
+	public static String bool(Boolean var) {
+		return var != null ? (var ? "true" : "false" ) : "null";
+	}
+
 	public static String quote(String str) {
-		return str != null ? "\"" + str + "\"" : null;
+		return quote(str, Integer.MAX_VALUE);
+	}
+
+	public static String quote(String str, int maxLength) {
+		return
+			(str == null ? "null" :
+			(str.length() > maxLength ? ("\"" + str.substring(0, maxLength) + "\"") + "..." :
+			"\"" + str + "\""
+		));
 	}
 
 	public static String ucFirst(String str) {

@@ -9,27 +9,27 @@ public class CharacterDelta extends Delta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Short locationId;
-	private Short statusId;
+	private String locationName;
+	private String statusLabel;
 
 	public CharacterDelta() {}
 
 	public CharacterDelta(Character character) {
 		super(character);
-		this.locationId = character.getLocation() != null ? character.getLocation().getId() : null;
-		this.statusId = character.getStatus() != null ? character.getStatus().getId() : null;
+		this.locationName = character.getLocation() != null ? character.getLocation().getName() : null;
+		this.statusLabel = character.getStatus() != null ? character.getStatus().getLabel() : null;
 	}
 
-	public short getLocationId() {
-		return locationId;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	public Short getStatusId() {
-		return statusId;
+	public String getStatusLabel() {
+		return statusLabel;
 	}
 
 	@Override
 	public String toString() {
-		return "[ id=" + id + ", locationId=" + locationId + ", statusId=" + statusId + " ]";
+		return "[ name=" + name + ", locationName=" + locationName + ", statusLabel=" + statusLabel + " ]";
 	}
 }

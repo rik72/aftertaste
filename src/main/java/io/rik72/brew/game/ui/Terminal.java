@@ -9,6 +9,7 @@ import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.base.TerminalBase;
 import io.rik72.brew.game.ui.base.TextPlayer;
 import io.rik72.brew.game.ui.loader.TerminalLoader;
+import io.rik72.mammoth.db.DB;
 
 public class Terminal extends TerminalBase {
 
@@ -16,13 +17,29 @@ public class Terminal extends TerminalBase {
 
 	private String lastLocationDescription;
 
+	private boolean inGame = false;
+
 	private Terminal() {}
+
+	public boolean isInGame() {
+		return inGame;
+	}
+
+	public void setInGame(boolean inGame) {
+		this.inGame = inGame;
+	}
 
 	public void init() {
 		new TerminalLoader().register();
 	}
 
 	public void intro() {
+		intro(null);
+	}
+
+	public void intro(String forcedIntro) {
+		setInGame(true);
+
 		TextPlayer player = new TextPlayer();
 
 		String title = Story.get().getTitle();
@@ -31,7 +48,10 @@ public class Terminal extends TerminalBase {
 		player.getHeader().add(title);
 		player.getHeader().add(" ( " + subtitle + " )");
 		player.getHeader().add("=======================================");
-		player.getPages().addAll(Story.get().getIntro());
+		if (forcedIntro == null)
+			player.getPages().addAll(Story.get().getIntro());
+		else
+			player.getPages().add(forcedIntro);
 		player.setOnFinish(new Future() {
 			@Override
 			public void onSuccess() {
@@ -58,10 +78,11 @@ public class Terminal extends TerminalBase {
 		player.setOnFinish(new Future() {
 			@Override
 			public void onSuccess() {
-				System.exit(0);
+				setInGame(false);
+				close();
 			}			
 		});
-		player.setFinishAction("exit");
+		player.setFinishAction("finish game");
 
 		player.start();
 	}
@@ -76,6 +97,9 @@ public class Terminal extends TerminalBase {
 	}
 
 	public Results executeInput(String input) throws Exception {
+
+		DB.beginTransaction(); // committed at the end of consumeResults(...)
+
 		Executor executor = InputParser.get().parse(input);
 		Results results = null;
 
@@ -103,57 +127,61 @@ public class Terminal extends TerminalBase {
 
 	public void consumeResults(Results results) {
 
-		if (results.getFeedback() != null && results.getFeedback().length() > 0 || results.getTexts().size() > 0) {
-			if (results.getFeedback().length() > 0)
-				if (results.isEmphasis())
-					emphasisLongText(results.getFeedback());
-				else
-					printLongText(results.getFeedback());
-			if (results.getTexts().size() > 0)
-				for (String text : results.getTexts())
-					printLongText(text);
+		if (results != null) {
+			if (results.getFeedback() != null && results.getFeedback().length() > 0 || results.getTexts().size() > 0) {
+				if (results.getFeedback().length() > 0)
+					if (results.isEmphasis())
+						emphasisLongText(results.getFeedback());
+					else
+						printLongText(results.getFeedback());
+				if (results.getTexts().size() > 0)
+					for (String text : results.getTexts())
+						printLongText(text);
+			}
+
+			boolean lastLineSkipped = false;
+			if (results.isRefresh() && !Story.get().getMainCharacter().getLocation().getDescription().equals(lastLocationDescription)) {
+				Terminal.get().showLocation();
+				lastLineSkipped = true;
+			}
+			
+			String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
+			String locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
+			
+			finale = null;
+			if (characterFinale != null && characterFinale.length() > 0)
+				finale = characterFinale;
+			else if (locationFinale != null && locationFinale.length() > 0)
+				finale = locationFinale;
+
+			if (finale != null) {
+				if (!lastLineSkipped)
+					skip(1);
+				Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+				closeInput();
+				// dummy - required since the bubbling of last ENTER keypress is not done yet
+				pressEnterToContinue(new Future() {
+					@Override
+					public void onSuccess() {
+						pull(2);
+						printLongText(
+							"It seems your story has come to an end.\n" +
+							"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
+						// start finale text slideshow
+						pressEnterToContinue(new Future() {
+							@Override
+							public void onSuccess() {
+								pull(2);
+								skip(1);
+								finale(finale);
+							}
+						});
+					}
+				});
+			}
 		}
 
-		boolean lastLineSkipped = false;
-		if (results.isRefresh() && !Story.get().getMainCharacter().getLocation().getDescription().equals(lastLocationDescription)) {
-			Terminal.get().showLocation();
-			lastLineSkipped = true;
-		}
-		
-		String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
-		String locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
-		
-		finale = null;
-		if (characterFinale != null && characterFinale.length() > 0)
-			finale = characterFinale;
-		else if (locationFinale != null && locationFinale.length() > 0)
-			finale = locationFinale;
-
-		if (finale != null) {
-			if (!lastLineSkipped)
-				skip(1);
-			Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-			closeInput();
-			// dummy - required since the bubbling of last ENTER keypress is not done yet
-			pressEnterToContinue(new Future() {
-				@Override
-				public void onSuccess() {
-					pull(2);
-					printLongText(
-						"It seems your story has come to an end.\n" +
-						"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
-					// start finale text slideshow
-					pressEnterToContinue(new Future() {
-						@Override
-						public void onSuccess() {
-							pull(2);
-							skip(1);
-							finale(finale);
-						}
-					});
-				}
-			});
-		}
+		DB.commitTransaction();  // begun at the start of executeInput(...)
 	}
 
 	///////////////////////////////////////////////////////////////////////////

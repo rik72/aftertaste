@@ -85,6 +85,10 @@ public class Thing extends Complement implements Deltable {
 			throw new EntityNotFoundException("Location", locationName);
 	}
 
+	public void unsetLocation() {
+		this.location = null;
+	}
+
 	public boolean isVisible() {
 		return visible;
 	}
@@ -133,16 +137,20 @@ public class Thing extends Complement implements Deltable {
 		this.status = ThingStatusRepository.get().getByThingAndLabel(this, statusLabel);
 	}
 
+	public void unsetStatus() {
+		this.status = null;
+	}
+
     @Override
     public String toString() {
         return "{ Thing :: " + 
-			id + " : " + 
-			TextUtils.quote(name) + " : " +
-			TextUtils.quote(location.getName()) + " : " +
-			(visible ? "visible" : "invisible") + " : " +
-			(takeable ? "takeable" : "untakeable") + 
-			(takeable ? " : " + (droppable ? "droppable" : "undroppable") : "") + " : " +
-			TextUtils.quote(status != null ? status.getLabel() : "-") +
+			"id=" + id + ", " + 
+			"name=" + TextUtils.denormalize(name) + ", " +
+			"location=" + TextUtils.denormalize(location.getName()) + ", " +
+			"visible=" + TextUtils.denormalize(visible) + ", " +
+			"takeable=" + TextUtils.denormalize(takeable) + ", " +
+			"droppable=" + TextUtils.denormalize(droppable) + ", " +
+			"status=" + TextUtils.denormalize(status.getLabel()) +
 		" }";
     }
 

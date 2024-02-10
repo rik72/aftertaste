@@ -67,6 +67,10 @@ public class ThingStatus implements AbstractEntity, Status {
 		return thing;
 	}
 
+	public void unsetThing() {
+		this.thing = null;
+	}
+
 	public void setThing(String thingName) {
 		this.thing = ThingRepository.get().getByName(thingName);
 		if (this.thing == null)
@@ -76,10 +80,12 @@ public class ThingStatus implements AbstractEntity, Status {
     @Override
     public String toString() {
         return "{ ThingStatus :: " + 
-			id + " : " + 
-			TextUtils.quote(thing.getName()) + " : " + 
-			TextUtils.quote(label) + " : " + 
 			TextUtils.quote(canonical) +
+			"id=" + id + ", " + 
+			"thing=" + TextUtils.denormalize(thing.getName()) + ", " + 
+			"label=" + TextUtils.denormalize(label) + ", " + 
+			"canonical=" + TextUtils.denormalize(canonical) + ", " + 
+			"description=" + TextUtils.denormalize(description) +
 		" }";
     }
 }

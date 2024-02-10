@@ -28,7 +28,7 @@ public class CommandLoad extends CommandExecutor {
 					File file = Terminal.get().chooseOpenFile();
                     if (file != null) {
 						SaveGame.loadFromFile(file.getPath());
-						if (SaveGame.getInstance().checkStoryCompatibility(Story.get())) {
+						if (SaveGame.getInstance().checkStoryCompatibility(Story.get().getRefId())) {
 							Story.get().restart();
 							Deltas.set(SaveGame.getInstance().getDeltas());
 							Story.get().applyDeltas();
@@ -37,7 +37,7 @@ public class CommandLoad extends CommandExecutor {
 						}
 						else {
 							Terminal.get().hilightln("Incompatible save file " + 
-								"('" + SaveGame.getInstance().getStoryRefId() + "' format vs '" + Story.get().getRefId() + "'" +
+								"('" + SaveGame.getInstance().getStoryDescriptor().getRefId() + "' format vs '" + Story.get().getRefId() + "'" +
 								" required by current story)");
 							Terminal.get().consumeResults(new Results(false, false, ""));
 						}

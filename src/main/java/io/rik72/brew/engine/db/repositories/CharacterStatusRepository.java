@@ -27,6 +27,21 @@ public class CharacterStatusRepository extends AbstractRepository<CharacterStatu
 		return list.size() >= 1 ? list.get(0) : null;
 	}
 
+	@Override
+	public void deleteAll() {
+		List<Character> allC = CharacterRepository.get().findAll();
+		for (Character c : allC) {
+			c.unsetStatus();
+			DB.persist(c);
+		}
+		List<CharacterStatus> allCS = findAll();
+		for (CharacterStatus s : allCS) {
+			s.unsetCharacter();
+			DB.persist(s);
+		}
+		super.deleteAll();
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	private static CharacterStatusRepository instance = new CharacterStatusRepository();
 	public static CharacterStatusRepository get() {

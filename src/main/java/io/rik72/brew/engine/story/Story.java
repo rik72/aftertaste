@@ -12,6 +12,7 @@ import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
@@ -88,36 +89,37 @@ public class Story {
 	}
 
 	public void applyDeltas() {
-		Map<Class<? extends Delta>, Map<Short, Delta>> deltas = Deltas.get().getAll();
-		for (Entry<Class<? extends Delta>, Map<Short, Delta>> mapEntry : deltas.entrySet()) {
+		Map<Class<? extends Delta>, Map<String, Delta>> deltas = Deltas.get().getAll();
+		for (Entry<Class<? extends Delta>, Map<String, Delta>> mapEntry : deltas.entrySet()) {
 			if (mapEntry.getKey() == ThingDelta.class) {
-				for (Entry<Short, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
-					Short id = deltaEntry.getKey();
+				for (Entry<String, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
+					String name = deltaEntry.getKey();
 					ThingDelta delta = (ThingDelta)deltaEntry.getValue();
-					Thing thing = ThingRepository.get().getById(id);
+					Thing thing = ThingRepository.get().getByName(name);
 					thing.setVisible(delta.isVisible());
 					thing.setTakeable(delta.isTakeable());
 					thing.setDroppable(delta.isDroppable());
-					thing.setLocation(LocationRepository.get().getById(delta.getLocationId()));
-					thing.setStatus(ThingStatusRepository.get().getById(delta.getStatusId()));
+					thing.setLocation(LocationRepository.get().getByName(delta.getLocationName()));
+					thing.setStatus(ThingStatusRepository.get().getByThingAndLabel(thing, delta.getStatusLabel()));
 					DB.persist(thing);
 				}
 			}
 			else if (mapEntry.getKey() == LocationDelta.class) {
-				for (Entry<Short, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
-					Short id = deltaEntry.getKey();
+				for (Entry<String, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
+					String name = deltaEntry.getKey();
 					LocationDelta delta = (LocationDelta)deltaEntry.getValue();
-					Location location = LocationRepository.get().getById(id);
-					location.setStatus(LocationStatusRepository.get().getById(delta.getStatusId()));
+					Location location = LocationRepository.get().getByName(name);
+					location.setStatus(LocationStatusRepository.get().getByLocationAndLabel(location, delta.getStatusLabel()));
 					DB.persist(location);
 				}
 			}
 			else if (mapEntry.getKey() == CharacterDelta.class) {
-				for (Entry<Short, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
-					Short id = deltaEntry.getKey();
+				for (Entry<String, Delta> deltaEntry : mapEntry.getValue().entrySet()) {
+					String name = deltaEntry.getKey();
 					CharacterDelta delta = (CharacterDelta)deltaEntry.getValue();
-					Character character = CharacterRepository.get().getById(id);
-					character.setLocation(LocationRepository.get().getById(delta.getLocationId()));
+					Character character = CharacterRepository.get().getByName(name);
+					character.setLocation(LocationRepository.get().getByName(delta.getLocationName()));
+					character.setStatus(CharacterStatusRepository.get().getByCharacterAndLabel(character, delta.getStatusLabel()));
 					DB.persist(character);
 				}
 			}

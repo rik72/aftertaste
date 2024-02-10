@@ -70,6 +70,10 @@ public class CharacterStatus implements AbstractEntity, Status {
 		return character;
 	}
 
+	public void unsetCharacter() {
+		this.character = null;
+	}
+
 	public void setCharacter(String characterName) {
 		this.character = CharacterRepository.get().getByName(characterName);
 		if (this.character == null)
@@ -92,12 +96,13 @@ public class CharacterStatus implements AbstractEntity, Status {
     @Override
     public String toString() {
         return "{ CharacterStatus :: " + 
-			id + " : " + 
-			TextUtils.quote(character.getName()) + " : " + 
-			TextUtils.quote(canonical) + " : " + 
-			TextUtils.quote(brief) + " : " + 
-			TextUtils.quote(description) + " : " + 
-			(finale != null && finale.length() > 0 ? (" : " + TextUtils.quote(finale)) : "") +
+			"id=" + id + ", " + 
+			"character=" + TextUtils.denormalize(character.getName()) + ", " + 
+			"label=" + TextUtils.denormalize(label) + ", " + 
+			"canonical=" + TextUtils.denormalize(canonical) + ", " + 
+			"brief=" + TextUtils.denormalize(brief) + ", " + 
+			"description=" + TextUtils.denormalize(description) + ", " + 
+			"finale=" + TextUtils.denormalize(finale) +
 		" }";
     }
 }

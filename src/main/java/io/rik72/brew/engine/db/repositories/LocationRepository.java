@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.LocationStatus;
+import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.repositories.abstractions.ComplementRepository;
 import io.rik72.mammoth.db.DB;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -28,6 +29,16 @@ public class LocationRepository extends ComplementRepository<Location> {
 		return list.size() >= 1 ? list.get(0) : null;
 	}
 
+	@Override
+	public void deleteAll() {
+		List<Thing> allT = ThingRepository.get().findAll();
+		for (Thing t : allT) {
+			t.unsetLocation();
+			DB.persist(t);
+		}
+		super.deleteAll();
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	private static LocationRepository instance = new LocationRepository();
 	public static LocationRepository get() {

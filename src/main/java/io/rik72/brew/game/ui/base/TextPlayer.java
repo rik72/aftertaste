@@ -39,9 +39,10 @@ public class TextPlayer {
 
 		if (header.size() > 0) {
 			Terminal.get().skip(1);
-			for (String line : header)
+			for (String line : header) {
 				Terminal.get().println(line);
-			if (pages.size() > 0)
+			}
+			if (pages.size() > 0) {
 				Terminal.get().pressEnterToContinue(new Future() {
 					@Override
 					public void onSuccess() {
@@ -49,6 +50,10 @@ public class TextPlayer {
 						next();
 					}
 				});
+			}
+			else {
+				finish();
+			}
 		}
 		else if (pages.size() > 0) {
 			Terminal.get().pull(1);

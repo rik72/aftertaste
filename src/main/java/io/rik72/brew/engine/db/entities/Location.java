@@ -59,6 +59,10 @@ public class Location extends Complement implements Deltable {
 		this.status = LocationStatusRepository.get().getByLocationAndLabel(this, statusLabel);
 	}
 
+	public void unsetStatus() {
+		this.status = null;
+	}
+
 	public String getDescription() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(status.getDescription());
@@ -102,9 +106,9 @@ public class Location extends Complement implements Deltable {
     @Override
     public String toString() {
         return "{ Location :: " + 
-			id + " : " + 
-			TextUtils.quote(name) +
-			(status != null ? " : " + TextUtils.quote(status.getLabel()) : "") +
+			"id=" + id + ", " + 
+			"name=" + TextUtils.denormalize(name) + ", " +
+			"status=" + (status != null ? TextUtils.denormalize(status.getLabel()) : "null") +
 		" }";
     }
 

@@ -9,21 +9,21 @@ public class LocationDelta extends Delta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Short statusId;
+	private String statusLabel;
 
 	public LocationDelta() {}
 
 	public LocationDelta(Location location) {
 		super(location);
-		this.statusId = location.getStatus() != null ? location.getStatus().getId() : null;
+		this.statusLabel = location.getStatus() != null ? location.getStatus().getLabel() : null;
 	}
 
-	public short getStatusId() {
-		return statusId;
+	public String getStatusLabel() {
+		return statusLabel;
 	}
 
 	@Override
 	public String toString() {
-		return "[ id=" + id + ", statusId=" + statusId + " ]";
+		return "[ name=" + name + ", statusLabel=" + statusLabel + " ]";
 	}
 }

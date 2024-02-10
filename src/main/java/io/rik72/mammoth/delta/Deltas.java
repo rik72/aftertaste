@@ -8,20 +8,20 @@ public class Deltas implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Class<? extends Delta>, Map<Short, Delta>> deltas;
+	private Map<Class<? extends Delta>, Map<String, Delta>> deltas;
 
 	private Deltas() {
 		this.deltas = new HashMap<>();
 	}
 
-	public Map<Class<? extends Delta>, Map<Short, Delta>> getAll() {
+	public Map<Class<? extends Delta>, Map<String, Delta>> getAll() {
 		return deltas;
 	}
 
 	public void set(Delta delta) {
 		if (!deltas.containsKey(delta.getClass()))
 			deltas.put(delta.getClass(), new HashMap<>());
-		deltas.get(delta.getClass()).put(delta.getId(), delta);
+		deltas.get(delta.getClass()).put(delta.getName(), delta);
 	}
 
 	public void clear() {

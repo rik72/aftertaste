@@ -18,18 +18,18 @@ import jakarta.persistence.criteria.Root;
 
 public class CharacterRepository extends ComplementRepository<Character>  {
 
-	private short mainCharacterId;
+	private String mainCharacterName;
 
 	private CharacterRepository() {
 		super(Character.class);
 	}
 
-	public void setMainCharacterId(short mainCharacterId) {
-		this.mainCharacterId = mainCharacterId;
+	public void setMainCharacterName(String mainCharacterName) {
+		this.mainCharacterName = mainCharacterName;
 	}
 
 	public Character getMainCharacter() {
-		return getById(mainCharacterId);
+		return getByName(mainCharacterName);
 	}
 
 	public Character getVisibleByLocationAndCanonical(Location location, String canonical) {

@@ -54,7 +54,7 @@ public class CharacterLoader implements Loadable {
 				character.setVisible(false);
 			DB.persist(character);
 			if (chItem.main)
-				CharacterRepository.get().setMainCharacterId(character.getId());
+				CharacterRepository.get().setMainCharacterName(character.getName());
 			Parser.checkNotEmpty("character status list", chItem.statuses);
 			boolean firstStatus = true;
 			String description = null;

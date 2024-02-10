@@ -44,6 +44,9 @@ public class ThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
 	@Column
 	String afterText;
 
+	public ThingOnLocation() {
+	}
+
 	public ThingOnLocation(String action,
 							      Thing complement, String complementStatusLabel,
 							      String beforeName, String beforeStatusLabel,

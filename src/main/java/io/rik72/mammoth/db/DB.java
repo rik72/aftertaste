@@ -51,6 +51,28 @@ public class DB {
 		return session.createQuery(queryString, resultClass);
 	}
 
+	public static int executeMutationQuery(String queryString)  {
+		if (session != null) {
+			if (!session.isOpen())
+				throw new IllegalStateException("Session is not open, impossible to create query");
+		}
+		else
+			throw new IllegalStateException("No session is present, impossible to create query");
+
+		return session.createMutationQuery(queryString).executeUpdate();
+	}
+
+	public static int executeNativeMutationQuery(String queryString)  {
+		if (session != null) {
+			if (!session.isOpen())
+				throw new IllegalStateException("Session is not open, impossible to create query");
+		}
+		else
+			throw new IllegalStateException("No session is present, impossible to create query");
+
+		return session.createNativeMutationQuery(queryString).executeUpdate();
+	}
+
 	public static <R> Query<R> createQuery(CriteriaQuery<R> criteriaQuery)  {
 		if (session != null) {
 			if (!session.isOpen())
@@ -87,7 +109,7 @@ public class DB {
 				throw new IllegalStateException("Session is not open, impossible to open transaction");
 		}
 		else {
-			getOpenSession().beginTransaction();
+			tx = getOpenSession().beginTransaction();
 		}
 	}
 
@@ -121,4 +143,11 @@ public class DB {
 		}
 		return session;
 	}
+
+	// private static void closeSession() {
+	// 	if (session != null) {
+	// 		session.close();
+	// 		session = null;
+	// 	}
+	// }
 }
