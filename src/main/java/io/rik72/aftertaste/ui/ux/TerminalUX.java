@@ -15,6 +15,7 @@ import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class TerminalUX {
@@ -38,6 +39,8 @@ public class TerminalUX {
 	public void print(String text) {
 		Text textItem = new Text(text);
 		textItem.setFont(Defaults.FONT_NORMAL);
+		textItem.setFill(Color.GRAY);
+		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
 	}
@@ -49,6 +52,8 @@ public class TerminalUX {
 	public void hilightln(String text) {
 		Text textItem = new Text(text.strip() + "\n");
 		textItem.setFont(Defaults.FONT_BOLD);
+		textItem.setFill(Color.WHITE);
+		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
 	}
@@ -60,6 +65,8 @@ public class TerminalUX {
 	public void emphasisLongText(String text) {
 		Text textItem = new Text(text.strip() + "\n");
 		textItem.setFont(Defaults.FONT_ITALIC);
+		textItem.setFill(Color.GREEN);
+		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
 	}
@@ -145,11 +152,15 @@ public class TerminalUX {
 		gui.getTextFlow().getChildren().clear();
 	}
 
-	public File chooseOpenFile() {
-		return gui.chooseOpenFile();
+	public File chooseOpenFile(String dialogTitle) {
+		return gui.chooseOpenFile(dialogTitle);
 	}
 
-	public File chooseSaveFile() {
-		return gui.chooseSaveFile();
+	public File chooseSaveFile(String dialogTitle) {
+		return gui.chooseSaveFile(dialogTitle);
+	}
+
+	public File chooseDirectory(String dialogTitle) {
+		return gui.chooseDirectory(dialogTitle);
 	}
 }

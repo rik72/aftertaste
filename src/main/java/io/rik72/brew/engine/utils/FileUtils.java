@@ -5,12 +5,17 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtils {
 
@@ -113,13 +118,19 @@ public class FileUtils {
 		return resultSet.toArray(new String[resultSet.size()]);
 	}
 
-	// public static Set<String> listFilesInDir(String dir) throws IOException {
-	// 	try (Stream<Path> stream = Files.list(Paths.get(dir))) {
-	// 		return stream
-	// 		.filter(file -> !Files.isDirectory(file))
-	// 		.map(Path::getFileName)
-	// 		.map(Path::toString)
-	// 		.collect(Collectors.toSet());
-	// 	}
-	// }
+	public static Set<String> listFilesInDir(String dir) throws IOException {
+		try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+			return stream
+				.filter(file -> !Files.isDirectory(file))
+				.map(java.nio.file.Path::getFileName)
+				.map(Path::toString)
+				.collect(Collectors.toSet());
+		}
+	}
+
+	public static Set<String> findFilesInDir(String fileName, String path) throws IOException {
+		return listFilesInDir(path).stream()
+			.filter(file -> file.endsWith(fileName))
+			.collect(Collectors.toSet());
+	}
 }

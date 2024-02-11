@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('fonts/PressStart2P-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('fonts/PixelifySans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'VT323';
+    src: url('fonts/VT323-Regular.ttf');
+}
+
+.label {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 16;
+	-fx-text-fill: white;
+}
+
+.button {
+    -fx-width: 40;
+    -fx-height: 20;
+    -fx-background-color: #808080;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.button:hover {
+    -fx-background-color: #A0A0A0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.button .text {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 16;
+    -fx-fill: white;
+}
+
+.menu-bar, .menu, .menu-item, .separator-menu-item, .separator:horizontal, .context-menu {
+    -fx-background-color: #181818;
+}
+
+.menu-bar, .menu, .menu-item {
+	-fx-padding: 2 6 2 6;
+}
+
+.menu:hover {
+    -fx-background-color: #404040;
+}
+
+.menu:showing {
+    -fx-background-color: #404040;
+}
+
+.menu-item:focused {
+    -fx-background-color: #404040;
+}
+
+/* .separator:horizontal .line {
+    -fx-border-color: white, transparent;
+	-fx-border-insets: 1, 0;
+} */
+
+.separator:horizontal .line {
+    -fx-border-color: transparent transparent transparent transparent,
+        #404040 transparent transparent transparent;
+    -fx-border-insets: 0, 1 0 0 0;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color:black;
+	-fx-width: 30;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: gray;
+    -fx-background-insets: 6;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 7 0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0 7;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: black;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-field{
+   -fx-border-color: black;
+   -fx-border-width: 0;
+   -fx-background-color: black;
+   -fx-text-fill: white;
+}

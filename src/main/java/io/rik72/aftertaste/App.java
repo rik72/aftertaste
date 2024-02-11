@@ -53,6 +53,8 @@ public class App extends Application {
 		stage.setMinHeight(Defaults.WINDOW_HEIGHT);
 		stage.setMaxHeight(Defaults.WINDOW_HEIGHT);
         stage.setScene(new Scene(new BorderPane()));
+		stage.getScene().getStylesheets().add(getClass().getResource("/css/custom.css").toExternalForm());
+		stage.getScene().getRoot().setStyle("-fx-background-color: black;");
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - Defaults.WINDOW_WIDTH) / 2);
         stage.setY((primScreenBounds.getHeight() - Defaults.WINDOW_HEIGHT) / 2);

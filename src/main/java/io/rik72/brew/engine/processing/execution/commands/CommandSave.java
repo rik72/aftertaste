@@ -8,6 +8,7 @@ import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.mammoth.db.DB;
 
 public class CommandSave extends CommandExecutor {
 
@@ -22,7 +23,7 @@ public class CommandSave extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					File file = Terminal.get().chooseSaveFile();
+					File file = Terminal.get().chooseSaveFile("Save game");
                     if (file != null) {
 						SaveGame.saveToFile(file.getPath());
 						Terminal.get().println("Game saved.");
@@ -40,6 +41,7 @@ public class CommandSave extends CommandExecutor {
 			
 		});
 
+		DB.commitTransaction();  // begun at the start of executeInput(...)
 		return null;
 	}
 }

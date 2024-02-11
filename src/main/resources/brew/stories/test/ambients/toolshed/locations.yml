@@ -8,15 +8,15 @@ locations:
       - status: initial
         description: >
           You find yourself in a cramped and cluttered toolshed.
-          Scattered tools and cans of paint vie for space on dusty shelves lining the walls.
-          To the east you see a weathered door, and, on the same wall, a grimy window.
+          Scattered tools and cans of paint vie for space on dusty shelves.
+          To the east you see a weathered door, and a grimy window.
         possibilities:
           - impossible: fly ( The ceiling is very low. )
       - status: door.opened
         description: >
-          The toolshed basks in the light coming mainly from the open door on the east.
+          The toolshed basks in the light coming mainly from the open door to the east.
           Scattered tools and cans of paint vie for space on dusty shelves that line the walls.
-          In the east wall a small, grimy window offers a glimpse of the world outside.
+          A small window offers a glimpse of the world outside.
         directions:
           east: garden
         possibilities:

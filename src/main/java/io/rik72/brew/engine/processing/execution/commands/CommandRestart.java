@@ -7,6 +7,7 @@ import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.mammoth.db.DB;
 
 public class CommandRestart extends CommandExecutor {
 
@@ -37,6 +38,7 @@ public class CommandRestart extends CommandExecutor {
 			
 		});
 
+		DB.commitTransaction();  // begun at the start of executeInput(...)
 		return null;
 	}
 }

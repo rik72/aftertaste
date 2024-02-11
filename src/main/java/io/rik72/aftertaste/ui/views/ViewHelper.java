@@ -3,8 +3,10 @@ package io.rik72.aftertaste.ui.views;
 import java.io.File;
 
 import io.rik72.aftertaste.App;
+import io.rik72.aftertaste.ui.Defaults;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.story.Story;
+import io.rik72.brew.engine.story.registry.StoryRegistry;
 import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
@@ -18,9 +20,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ViewHelper {
 
@@ -42,25 +46,33 @@ public class ViewHelper {
         	Terminal.get().intro();
     }
 
+	public static void addStoryFolder() throws Exception {
+		File file = Terminal.get().chooseDirectory("Add story folder");
+		if (file != null) {
+			StoryRegistry.get().addUserStoryFolder(file.getAbsolutePath());
+		}
+	}
+
+
 	public static void load() throws Exception {
-		File file = Terminal.get().chooseOpenFile();
+		File file = Terminal.get().chooseOpenFile("Load game");
 		if (file != null) {
 			SaveGame.loadFromFile(file.getPath());
-			if (SaveGame.getInstance().checkStoryCompatibility(BrewController.getCurrentStory().getValue().getRefId())) {
+			if (SaveGame.getInstance().checkStoryCompatibility(BrewController.getCurrentStory().getRefId())) {
 				restart(true);
 				Deltas.set(SaveGame.getInstance().getDeltas());
 				Story.get().applyDeltas();
 	        	Terminal.get().intro("Game loaded from " + file.getPath());
 			}
 			else {
-				openErrorModal("Incompatible save file " + 
+				openAlertModal("Incompatible save file " + 
 					"('" + SaveGame.getInstance().getStoryDescriptor().getRefId() + "' format vs '" + Story.get().getRefId() + "'" +
 					" required by current story)", 320, 200);
 			}
 		}
 	}
 
-	public static void openErrorModal(String msg, int width , int height) {
+	public static void openAlertModal(String msg, int width , int height) {
 		Stage modal = createModal(width, height, 20);
 		VBox vBox = (VBox) modal.getScene().getRoot();
 		vBox.getChildren().add(new Text(msg));
@@ -74,14 +86,18 @@ public class ViewHelper {
 		dialog.initOwner(App.getStage());
 		VBox dialogVbox = new VBox();
 		dialogVbox.setPadding(new Insets(padding));
+		// dialogVbox.setStyle("-fx-background-color: black;");
 		Scene dialogScene = new Scene(dialogVbox, width, height);
 		dialog.setScene(dialogScene);
+		dialog.getScene().getStylesheets().add(ViewHelper.class.getResource("/css/custom.css").toExternalForm());
+		dialog.getScene().getRoot().setStyle("-fx-background-color: black;");
         return dialog;
     }
 
 	public static void openConfirmModal(String question, Future then) {
 		Stage dialog = new Stage();
 		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initStyle((StageStyle.UNDECORATED));
 		dialog.setResizable(false); 
 		dialog.initOwner(App.getStage());
 
@@ -112,18 +128,23 @@ public class ViewHelper {
 		});
 
 		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
-		dialogVbox.getChildren().addAll(new Text(question), spacerv, dialogButtonsBox);
+		Text questionText = new Text(question);
+		questionText.setFont(Defaults.FONT_NORMAL);
+		questionText.setFill(Color.WHITE);
+		dialogVbox.getChildren().addAll(questionText, spacerv, dialogButtonsBox);
 
 		Scene dialogScene = new Scene(dialogVbox, 240, 120);
+		dialogScene.getStylesheets().add(ViewHelper.class.getResource("/css/custom.css").toExternalForm());
+		dialogScene.getRoot().setStyle("-fx-background-color: #404040;");
 		dialog.setScene(dialogScene);
-
         dialogScene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
 				Node node = dialogScene.focusOwnerProperty().get();
 				if (node instanceof Button)
 					((Button)node).fire();
 			}
-		});		
+		});
+
 		dialog.show();		
 	}
 }

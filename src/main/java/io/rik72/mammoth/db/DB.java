@@ -125,8 +125,8 @@ public class DB {
 			else
 				throw new IllegalStateException("Current nested transaction cannot be committed (" + tx.getStatus() + ")");
 		}
-		else
-			throw new IllegalStateException("No transaction to commit");
+		// else
+		// 	throw new IllegalStateException("No transaction to commit");
 	}
 
 	public static void rollbackTransaction() {

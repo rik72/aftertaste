@@ -6,6 +6,7 @@ import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.mammoth.db.DB;
 
 public class CommandQuit extends CommandExecutor {
 
@@ -32,6 +33,7 @@ public class CommandQuit extends CommandExecutor {
 			
 		});
 
+		DB.commitTransaction();  // begun at the start of executeInput(...)
 		return null;
 	}
 }

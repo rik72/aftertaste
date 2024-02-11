@@ -1,5 +1,6 @@
-target
+/target
 .DS_Store
 dependency-reduced-pom.xml
 *.save
-local docs
+/local docs
+/stories

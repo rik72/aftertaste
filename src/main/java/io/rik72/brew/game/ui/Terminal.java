@@ -1,5 +1,6 @@
 package io.rik72.brew.game.ui;
 
+import io.rik72.aftertaste.config.Config;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.Future;
@@ -44,10 +45,24 @@ public class Terminal extends TerminalBase {
 
 		String title = Story.get().getTitle();
 		String subtitle = Story.get().getSubtitle().toLowerCase().strip();
-		player.getHeader().add("=======================================");
+
+
+		player.getHeader().add(".");
+		player.getHeader().add("...");
+		player.getHeader().add("....." );
+		player.getHeader().add(".......");
+		player.getHeader().add(".........");
+		player.getHeader().add("...........");
+		player.getHeader().add(".............");
+		player.getHeader().add("...............");
+		player.getHeader().add(".................");
+		player.getHeader().add("...................");
+		player.getHeader().add(". Aftertaste v" + Config.get().get("application.version") + " .");
+		player.getHeader().add("");
+		player.getHeader().add("========================================");
 		player.getHeader().add(title);
 		player.getHeader().add(" ( " + subtitle + " )");
-		player.getHeader().add("=======================================");
+		player.getHeader().add("========================================");
 		if (forcedIntro == null)
 			player.getPages().addAll(Story.get().getIntro());
 		else
@@ -98,6 +113,7 @@ public class Terminal extends TerminalBase {
 
 	public Results executeInput(String input) throws Exception {
 
+		DB.commitTransaction(); // for safety
 		DB.beginTransaction(); // committed at the end of consumeResults(...)
 
 		Executor executor = InputParser.get().parse(input);
@@ -120,6 +136,7 @@ public class Terminal extends TerminalBase {
 		}
 		else {
 			println("I can't understand.");
+			DB.commitTransaction();  // begun at the start of executeInput(...)
 		}
 
 		return results;

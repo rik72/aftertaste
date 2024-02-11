@@ -19,7 +19,7 @@ public class GameLoad extends MenuItem {
                             ViewHelper.load();
                         } catch (Exception e) {
                             e.printStackTrace();
-                            ViewHelper.openErrorModal("An error occurred, impossible\nto load this saved game.", 210, 80);
+                            ViewHelper.openAlertModal("An error occurred, impossible\nto load this saved game.", 210, 80);
                         }
                     }
 
@@ -30,12 +30,11 @@ public class GameLoad extends MenuItem {
                 });
             }
             else {
-                Terminal.get().hideMenus();
                 try {
                     ViewHelper.load();
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    ViewHelper.openErrorModal("An error occurred, impossible\nto load this saved game.", 210, 80);
+                    ViewHelper.openAlertModal("An error occurred, impossible\nto load this saved game.", 210, 80);
                 }
             }
         });

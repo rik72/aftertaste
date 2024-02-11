@@ -18,18 +18,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
-// import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-// import javafx.scene.layout.Background;
-// import javafx.scene.layout.BackgroundImage;
-// import javafx.scene.layout.BackgroundPosition;
-// import javafx.scene.layout.BackgroundRepeat;
-// import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -46,6 +41,7 @@ public class TerminalView extends AbstractView {
 	private BorderPane mainPane;
 	private boolean scrollToBottom = false;
 	private Future enterListener;
+	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private FileChooser fileChooser = new FileChooser();
 	private boolean menuShown = false;
 
@@ -58,15 +54,18 @@ public class TerminalView extends AbstractView {
 
 		// Elements ===========================================================
 		textFlow = new TextFlow();
-		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 20);
+		textFlow.setMinWidth(Defaults.WINDOW_WIDTH - 22);
+		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 22);
+		textFlow.setPrefHeight(Defaults.WINDOW_HEIGHT);
 		textFlow.setPadding(new Insets(0, 20, 0, 20));
+		textFlow.setStyle("-fx-background-color: #0D0D0D;");
 
 		Label promptLabel = new Label("Your action:");
-		promptLabel.setFont(Defaults.FONT_NORMAL);
+		promptLabel.setPadding(new Insets(0, 0, 0, 10));
 		promptLabel.setMinWidth(90);
 		promptLabel.setMaxWidth(90);
 		promptField = new TextField();
-		promptField.setPrefColumnCount(50);
+		promptField.setPrefColumnCount(100);
 		promptField.setFont(Defaults.FONT_NORMAL);
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(event -> {
@@ -91,7 +90,6 @@ public class TerminalView extends AbstractView {
 		textPane = new ScrollPane(textFlow);
 		textPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         VBox.setVgrow(textPane, Priority.ALWAYS);     
-        // textPane.setMinWidth(Region.USE_PREF_SIZE);
 		textFlow.heightProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -101,27 +99,25 @@ public class TerminalView extends AbstractView {
 				}
             }
         });
-		// URL backgroundImageURL = getClass().getClassLoader().getResource("images/folio.jpg");
-		// BackgroundImage backgroundImage = new BackgroundImage(new Image(backgroundImageURL.toString(), 720, 480, true, true),
-        // 	BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-		// textFlow.setBackground(new Background(backgroundImage));
 		
 		// user input pane
 		promptPane = new HBox(promptLabel, promptField);
 		promptPane.setAlignment(Pos.CENTER_RIGHT);
-		promptPane.setPadding(new Insets(10));
+		promptPane.setPadding(new Insets(0, 10, 5, 10));
 
 		// main pane
 		mainPane = new BorderPane();
 		// - top will be used for location images
 		// - bottom will be used for user input
 		mainPane.setCenter(textPane);
+		mainPane.setStyle("-fx-background-color: black;");
 
 		// root pane
 		rootPane = new BorderPane();
 		// - top will be used for menus
 		// - bottom will be used for status bar (if any)
 		rootPane.setCenter(mainPane);
+		rootPane.setStyle("-fx-background-color: black;");
 
 		// set GUI view on terminal
         Terminal.get().setUX(new TerminalUX(this));
@@ -207,19 +203,24 @@ public class TerminalView extends AbstractView {
 		mainPane.layout();
 	}
 
-	public File chooseOpenFile() {
-		fileChooser.setTitle("Load game");
+	public File chooseOpenFile(String dialogTitle) {
+		fileChooser.setTitle(dialogTitle);
 		fileChooser.getExtensionFilters().addAll(
 			new FileChooser.ExtensionFilter("Savegame", "*.save")
 		);
 		return fileChooser.showOpenDialog(stage);
 	}
 
-	public File chooseSaveFile() {
-		fileChooser.setTitle("Save game");
+	public File chooseSaveFile(String dialogTitle) {
+		fileChooser.setTitle(dialogTitle);
 		fileChooser.getExtensionFilters().addAll(
 			new FileChooser.ExtensionFilter("Savegame", "*.save")
 		);
 		return fileChooser.showSaveDialog(stage);
+	}
+
+	public File chooseDirectory(String dialogTitle) {
+		directoryChooser.setTitle(dialogTitle);
+		return directoryChooser.showDialog(stage);
 	}
 }

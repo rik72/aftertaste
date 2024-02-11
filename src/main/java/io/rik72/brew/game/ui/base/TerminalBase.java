@@ -66,12 +66,16 @@ public abstract class TerminalBase {
 		ux.removeTopImage();
 	}
 
-	public File chooseOpenFile() {
-		return ux.chooseOpenFile();
+	public File chooseOpenFile(String dialogTitle) {
+		return ux.chooseOpenFile(dialogTitle);
 	}
 
-	public File chooseSaveFile() {
-		return ux.chooseSaveFile();
+	public File chooseSaveFile(String dialogTitle) {
+		return ux.chooseSaveFile(dialogTitle);
+	}
+
+	public File chooseDirectory(String dialogTitle) {
+		return ux.chooseDirectory(dialogTitle);
 	}
 
 	public void setUX(TerminalUX ux) {

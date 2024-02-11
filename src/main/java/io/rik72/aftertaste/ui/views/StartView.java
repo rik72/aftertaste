@@ -24,7 +24,8 @@ public class StartView extends AbstractView {
 	protected Parent create() {
 
 		BorderPane pane = new BorderPane();
-		URL backgroundImageURL = getClass().getClassLoader().getResource("images/adventure-awaits.jpg");
+		// URL backgroundImageURL = getClass().getClassLoader().getResource("images/adventure-awaits.jpg");
+		URL backgroundImageURL = getClass().getClassLoader().getResource("images/marble.jpg");
 		BackgroundImage backgroundImage = new BackgroundImage(new Image(backgroundImageURL.toString(), 720, 480, true, true),
         	BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		pane.setBackground(new Background(backgroundImage));
