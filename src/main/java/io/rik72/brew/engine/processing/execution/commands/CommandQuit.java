@@ -27,7 +27,6 @@ public class CommandQuit extends CommandExecutor {
 					BrewController.clear();
 					BrewController.setCurrentStory(null);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				Terminal.get().close();
