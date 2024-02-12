@@ -2,18 +2,14 @@ package io.rik72.aftertaste.ui.views.menu;
 
 import io.rik72.brew.engine.story.StoryDescriptor;
 import io.rik72.brew.engine.story.registry.StoryRegistry;
-import io.rik72.brew.game.BrewController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.ToggleGroup;
 
 public class TopMenu extends MenuBar {
 
     private Menu storyMenu;
-    private ToggleGroup storyToggleGroup = new ToggleGroup();
 
 	public TopMenu() {
 
@@ -25,38 +21,30 @@ public class TopMenu extends MenuBar {
 
         // Story menu
         storyMenu = new Menu("Story");
-        StoryDescriptor currentStory = BrewController.getCurrentStory();
-        if (currentStory == null) {
-		    currentStory = StoryRegistry.get().getEmbeddedStory();
-            BrewController.setCurrentStory(currentStory);
-        }
-        RadioMenuItem storyDefault = new RadioMenuItem(currentStory.getTitle());
-        storyDefault.setToggleGroup(storyToggleGroup);
-        storyDefault.setSelected(true);
-        MenuItem gameNew = new GameNew("New game");
-        MenuItem gameLoad = new GameLoad("Load saved game...");
-        SeparatorMenuItem storySep1 = new SeparatorMenuItem();
-        SeparatorMenuItem storySep2 = new SeparatorMenuItem();
+        SeparatorMenuItem storySep = new SeparatorMenuItem();
         MenuItem storyLoad = new AddStory("Add a story...");
-        storyMenu.getItems().addAll(storyDefault, storySep1, gameNew, gameLoad, storySep2, storyLoad);
+        storyMenu.getItems().addAll(storySep, storyLoad);
 
+        // add stories
+        int storyPosition = 1;
+        addStory(storyPosition++, StoryRegistry.get().getEmbeddedStory());
         for (StoryDescriptor descriptor : StoryRegistry.get().getUserStories()) {
-            addUserStory(descriptor);
+            addStory(storyPosition++, descriptor);
         }
-
-        storyDefault.setOnAction(e -> {
-            BrewController.setCurrentStory(StoryRegistry.get().getEmbeddedStory());
-        });
+        // storyDefault.setOnAction(e -> {
+        //     BrewController.setCurrentStory(StoryRegistry.get().getEmbeddedStory());
+        // });
 
         // add menus
         this.getMenus().add(aftertasteMenu);
         this.getMenus().add(storyMenu);
     }	
 
-    public void addUserStory(StoryDescriptor descriptor) {
-        RadioMenuItem userStoryRadio = new RadioMenuItem(descriptor.getTitle());
-        userStoryRadio.setToggleGroup(storyToggleGroup);
-        storyMenu.getItems().add(1, userStoryRadio);
-        userStoryRadio.setSelected(true);
+    public void addStory(int position, StoryDescriptor descriptor) {
+        MenuItem gameNew = new GameNew("New game", descriptor);
+        MenuItem gameLoad = new GameLoad("Load saved game...", descriptor);
+        Menu thisStoryMenu = new Menu(descriptor.getTitle());
+        thisStoryMenu.getItems().addAll(gameNew, gameLoad);
+        storyMenu.getItems().add(position, thisStoryMenu);
     }
 }

@@ -5,6 +5,7 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.db.DB;
 
@@ -22,8 +23,14 @@ public class CommandQuit extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				Terminal.get().println("Quitting...");
-				Terminal.get().skip(1);
-				System.exit(0);
+				try {
+					BrewController.clear();
+					BrewController.setCurrentStory(null);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Terminal.get().close();
 			}
 
 			@Override

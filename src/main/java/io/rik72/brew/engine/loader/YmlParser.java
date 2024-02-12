@@ -44,7 +44,7 @@ public class YmlParser {
 			Log.skip();
 			Log.debug(" >>>> " + paths);
 			for (String path : paths)
-				inputStreams.add(new FileInputStream(loadPath.getPath() + "/" + path));
+				inputStreams.add(new FileInputStream(path));
 		}
 
 		for (InputStream inputStream : inputStreams)

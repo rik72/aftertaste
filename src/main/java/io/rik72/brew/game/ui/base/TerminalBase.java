@@ -5,6 +5,7 @@ import java.io.File;
 import io.rik72.aftertaste.ui.ux.TerminalUX;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.game.ui.Terminal;
 
 public abstract class TerminalBase {
 
@@ -95,6 +96,7 @@ public abstract class TerminalBase {
 	}
 
 	public void close() {
+		Terminal.get().setInGame(false);
 		ux.closeTerminalView();
 	}
 }

@@ -37,9 +37,11 @@ public class StoryRegistry {
 		userStories.add(StoryDescriptor.load(loadPath));
 	}
 
-	public void addUserStoryFolder(String folder) throws Exception {
-		initUserStoryFromFolder(folder);
-		UserStoryFolders.get().addFolder(folder);
+	public boolean addUserStoryFolder(String folder) throws Exception {
+		boolean wasAdded = UserStoryFolders.get().addFolder(folder);
+		if (wasAdded)
+			initUserStoryFromFolder(folder);
+		return wasAdded;
 	}
 
 	public void removeUserStoryFolder(String folder) throws Exception {

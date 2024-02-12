@@ -28,9 +28,21 @@ import javafx.stage.StageStyle;
 
 public class ViewHelper {
 
+	public static void openTerminalView() {
+		App.openView("terminal");
+	}
+
+	public static void closeTerminalView() {
+		App.openView("start");
+
+		Terminal.get().removeTopImage();
+		Terminal.get().closeInput();
+        Terminal.get().clearTextFlow();
+	}
+
     public static void restart(boolean skipIntro) {
 
-        App.openView("terminal");
+        openTerminalView();
 
         Terminal.get().removeTopImage();
         Terminal.get().closeInput();
@@ -49,7 +61,11 @@ public class ViewHelper {
 	public static void addStoryFolder() throws Exception {
 		File file = Terminal.get().chooseDirectory("Add story folder");
 		if (file != null) {
-			StoryRegistry.get().addUserStoryFolder(file.getAbsolutePath());
+			boolean wasAdded = StoryRegistry.get().addUserStoryFolder(file.getAbsolutePath());
+			if (!wasAdded)
+				openAlertModal("This story was already added.", 360, 120);
+			else
+				openAlertModal("Story added successfully", 360, 120);
 		}
 	}
 
@@ -75,7 +91,10 @@ public class ViewHelper {
 	public static void openAlertModal(String msg, int width , int height) {
 		Stage modal = createModal(width, height, 20);
 		VBox vBox = (VBox) modal.getScene().getRoot();
-		vBox.getChildren().add(new Text(msg));
+		Text msgText = new Text(msg);
+		msgText.setFont(Defaults.FONT_NORMAL);
+		msgText.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+		vBox.getChildren().add(msgText);
 		modal.show();
 	}
 
@@ -130,7 +149,7 @@ public class ViewHelper {
 		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
 		Text questionText = new Text(question);
 		questionText.setFont(Defaults.FONT_NORMAL);
-		questionText.setFill(Color.WHITE);
+		questionText.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
 		dialogVbox.getChildren().addAll(questionText, spacerv, dialogButtonsBox);
 
 		Scene dialogScene = new Scene(dialogVbox, 240, 120);

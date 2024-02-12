@@ -24,10 +24,11 @@ public class UserStoryFolders {
 		return folders;
 	}
 
-	public void addFolder(String folder) {
+	public boolean addFolder(String folder) {
 		boolean wasAdded = folders.add(folder);
 		if (wasAdded)
 			putPref();
+		return wasAdded;
 	}
 
 	public void removeFolder(String folder) {

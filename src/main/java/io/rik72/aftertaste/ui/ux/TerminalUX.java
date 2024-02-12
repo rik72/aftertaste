@@ -82,6 +82,10 @@ public class TerminalUX {
 		gui.setEnterListener(then);
 	}
 
+	public void openTerminalView() {
+		App.openView("terminal");
+	}
+
 	public void closeTerminalView() {
 		App.openView("start");
 

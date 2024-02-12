@@ -119,11 +119,12 @@ public class FileUtils {
 	}
 
 	public static Set<String> listFilesInDir(String dir) throws IOException {
-		try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+		try (Stream<Path> stream = Files.walk(Paths.get(dir))) {
 			return stream
 				.filter(file -> !Files.isDirectory(file))
-				.map(java.nio.file.Path::getFileName)
-				.map(Path::toString)
+				.map(p -> {
+					return p.getParent().toString() + "/" + p.getFileName().toString();
+				})
 				.collect(Collectors.toSet());
 		}
 	}

@@ -2,11 +2,13 @@ package io.rik72.aftertaste.ui.views.menu;
 
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.engine.story.StoryDescriptor;
+import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.ui.Terminal;
 import javafx.scene.control.MenuItem;
 
 public class GameNew extends MenuItem {
-	public GameNew(String text) {
+	public GameNew(String text, StoryDescriptor story) {
 		setText(text);
 		setOnAction(e -> {
             if (Terminal.get().isInGame()) {
@@ -15,6 +17,7 @@ public class GameNew extends MenuItem {
                     @Override
                     public void onSuccess() {
                         Terminal.get().hideMenus();
+                        BrewController.setCurrentStory(story);
                         ViewHelper.restart(false);
                     }
 
@@ -25,6 +28,7 @@ public class GameNew extends MenuItem {
                 });
             }
             else {
+                BrewController.setCurrentStory(story);
                 ViewHelper.restart(false);
             }
         });		
