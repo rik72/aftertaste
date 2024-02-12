@@ -111,9 +111,9 @@ public class TerminalUX {
 		if (topImage == null && !"initial".equals(location.getStatus().getImage()))
 			topImage = loadLocationStatusImage(location.getName(), "initial");
 		if (topImage != null) {
-			topImage.scaleTo(480);
 			BorderPane pane = new BorderPane(topImage);
 			pane.setPadding(new Insets(20));
+			pane.setMinHeight(360);
 			gui.setTopImage(pane);
 		}
 		else {

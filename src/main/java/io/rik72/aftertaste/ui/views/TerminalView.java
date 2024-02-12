@@ -54,18 +54,18 @@ public class TerminalView extends AbstractView {
 
 		// Elements ===========================================================
 		textFlow = new TextFlow();
-		textFlow.setMinWidth(Defaults.WINDOW_WIDTH - 22);
-		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 22);
+		textFlow.setMinWidth(Defaults.WINDOW_WIDTH - 42);
+		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 42);
 		textFlow.setPrefHeight(Defaults.WINDOW_HEIGHT);
-		textFlow.setPadding(new Insets(0, 20, 0, 20));
+		textFlow.setPadding(new Insets(0, 20, 0, 10));
 		textFlow.setStyle("-fx-background-color: #0D0D0D;");
 
 		Label promptLabel = new Label("Your action:");
 		promptLabel.setPadding(new Insets(0, 0, 0, 10));
-		promptLabel.setMinWidth(90);
-		promptLabel.setMaxWidth(90);
+		promptLabel.setMinWidth(120);
+		promptLabel.setMaxWidth(120);
 		promptField = new TextField();
-		promptField.setPrefColumnCount(100);
+		promptField.setPrefColumnCount(110);
 		promptField.setFont(Defaults.FONT_NORMAL);
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(event -> {
@@ -89,6 +89,7 @@ public class TerminalView extends AbstractView {
 		// scrollable text pane
 		textPane = new ScrollPane(textFlow);
 		textPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		BorderPane.setMargin(textPane, new Insets(0, 0, 0, 20));
         VBox.setVgrow(textPane, Priority.ALWAYS);     
 		textFlow.heightProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -103,7 +104,7 @@ public class TerminalView extends AbstractView {
 		// user input pane
 		promptPane = new HBox(promptLabel, promptField);
 		promptPane.setAlignment(Pos.CENTER_RIGHT);
-		promptPane.setPadding(new Insets(0, 10, 5, 10));
+		promptPane.setPadding(new Insets(0, 20, 5, 20));
 
 		// main pane
 		mainPane = new BorderPane();

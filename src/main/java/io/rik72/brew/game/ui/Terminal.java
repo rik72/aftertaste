@@ -47,6 +47,8 @@ public class Terminal extends TerminalBase {
 		String subtitle = Story.get().getSubtitle().toLowerCase().strip();
 
 
+		player.getHeader().add("");
+		player.getHeader().add("");
 		player.getHeader().add(".");
 		player.getHeader().add("...");
 		player.getHeader().add("....." );
@@ -57,12 +59,23 @@ public class Terminal extends TerminalBase {
 		player.getHeader().add("...............");
 		player.getHeader().add(".................");
 		player.getHeader().add("...................");
-		player.getHeader().add(". Aftertaste v" + Config.get().get("application.version") + " .");
+		player.getHeader().add(".....................");
+		player.getHeader().add(".. Aftertaste .........");
+		player.getHeader().add(".........................");
+		player.getHeader().add("........ v" + Config.get().get("application.version") + " ...........");
+		player.getHeader().add(".............................");
+		player.getHeader().add("...............................");
+		player.getHeader().add(".................................");
+		player.getHeader().add("...................................");
+		player.getHeader().add(".....................................");
+		player.getHeader().add(".......................................");
 		player.getHeader().add("");
-		player.getHeader().add("========================================");
+		player.getHeader().add("");
+		player.getHeader().add("");
+		player.getHeader().add("===============================================");
 		player.getHeader().add(title);
 		player.getHeader().add(" ( " + subtitle + " )");
-		player.getHeader().add("========================================");
+		player.getHeader().add("===============================================");
 		if (forcedIntro == null)
 			player.getPages().addAll(Story.get().getIntro());
 		else
@@ -70,8 +83,9 @@ public class Terminal extends TerminalBase {
 		player.setOnFinish(new Future() {
 			@Override
 			public void onSuccess() {
-				Terminal.get().pull(2);
-				Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+				Terminal.get().pull(1);
+				Terminal.get().skip(1);
+				Terminal.get().hilightln("\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 				Terminal.get().showLocation();
 				Terminal.get().openInput();
 			}			

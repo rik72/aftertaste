@@ -2,6 +2,7 @@ package io.rik72.aftertaste.ui.views;
 
 import java.net.URL;
 
+import io.rik72.aftertaste.ui.Defaults;
 import io.rik72.aftertaste.ui.views.menu.TopMenu;
 import io.rik72.bottlerack.view.AbstractView;
 import javafx.scene.Parent;
@@ -26,7 +27,8 @@ public class StartView extends AbstractView {
 		BorderPane pane = new BorderPane();
 		// URL backgroundImageURL = getClass().getClassLoader().getResource("images/adventure-awaits.jpg");
 		URL backgroundImageURL = getClass().getClassLoader().getResource("images/marble.jpg");
-		BackgroundImage backgroundImage = new BackgroundImage(new Image(backgroundImageURL.toString(), 720, 480, true, true),
+		BackgroundImage backgroundImage = new BackgroundImage(
+			new Image(backgroundImageURL.toString(), Defaults.WINDOW_WIDTH * 1.25, Defaults.WINDOW_HEIGHT, true, true),
         	BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		pane.setBackground(new Background(backgroundImage));
 
