@@ -13,23 +13,41 @@
     src: url('fonts/VT323-Regular.ttf');
 }
 
+/*****************************************************************************/
+/* L O O K E D - U P   C O L O R S *******************************************/
+/*****************************************************************************/
+
+.root {
+    -aft-color-menu-bg: #181818;
+    -aft-color-menu-hilight: #404040;
+    -aft-color-menu-separator: #404040;
+    -aft-color-windows-bg: black;
+    -aft-color-windows-text: #E0E0E0;
+    -aft-color-windows-button: #808080;
+    -aft-color-windows-hover: #A0A0A0;
+}
+
+/*****************************************************************************/
+/* C U S T O M   S T Y L E S *************************************************/
+/*****************************************************************************/
+
 .label {
     -fx-font-family: 'VT323';
     -fx-font-size: 20;
-	-fx-text-fill: #E0E0E0;
+	-fx-text-fill: -aft-color-windows-text;
 }
 
 .button {
     -fx-width: 40;
     -fx-height: 20;
-    -fx-background-color: #808080;
+    -fx-background-color: -aft-color-windows-button;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-border-width: 0;
 }
 
 .button:hover {
-    -fx-background-color: #A0A0A0;
+    -fx-background-color: -aft-color-windows-hover;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-border-width: 0;
@@ -38,11 +56,11 @@
 .button .text {
     -fx-font-family: 'VT323';
     -fx-font-size: 20;
-    -fx-fill: #E0E0E0;
+    -fx-fill: -aft-color-windows-text;
 }
 
 .menu-bar, .menu, .menu-item, .separator-menu-item, .separator:horizontal, .context-menu {
-    -fx-background-color: #181818;
+    -fx-background-color: -aft-color-menu-bg;
 }
 
 .menu-bar, .menu, .menu-item {
@@ -50,25 +68,25 @@
 }
 
 .menu:hover {
-    -fx-background-color: #404040;
+    -fx-background-color: -aft-color-menu-hilight;
 }
 
 .menu:showing {
-    -fx-background-color: #404040;
+    -fx-background-color: -aft-color-menu-hilight;
 }
 
 .menu-item:focused {
-    -fx-background-color: #404040;
+    -fx-background-color: -aft-color-menu-hilight;
 }
 
 .separator:horizontal .line {
     -fx-border-color: transparent transparent transparent transparent,
-        #404040 transparent transparent transparent;
+        -aft-color-menu-separator transparent transparent transparent;
     -fx-border-insets: 0, 1 0 0 0;
 }
 
 .scroll-bar:vertical {
-    -fx-background-color:black;
+    -fx-background-color: -aft-color-windows-bg;
 	-fx-width: 30;
 }
 
@@ -91,7 +109,7 @@
 }
 
 .scroll-pane .viewport {
-    -fx-background-color: black;
+    -fx-background-color: -aft-color-windows-bg;
 }
 
 .scroll-pane {
@@ -99,8 +117,8 @@
 }
 
 .text-field{
-   -fx-border-color: black;
+   -fx-border-color: -aft-color-windows-bg;
    -fx-border-width: 0;
-   -fx-background-color: black;
-   -fx-text-fill: #E0E0E0;
+   -fx-background-color: -aft-color-windows-bg;
+   -fx-text-fill: -aft-color-windows-text;
 }

@@ -58,7 +58,7 @@ public class TerminalView extends AbstractView {
 		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 42);
 		textFlow.setPrefHeight(Defaults.WINDOW_HEIGHT);
 		textFlow.setPadding(new Insets(0, 20, 0, 10));
-		textFlow.setStyle("-fx-background-color: #0D0D0D;");
+		textFlow.setStyle("-fx-background-color: " + Defaults.COLOR_TEXT_FLOW_BG + ";");
 
 		Label promptLabel = new Label("Your action:");
 		promptLabel.setPadding(new Insets(0, 0, 0, 10));
@@ -111,14 +111,14 @@ public class TerminalView extends AbstractView {
 		// - top will be used for location images
 		// - bottom will be used for user input
 		mainPane.setCenter(textPane);
-		mainPane.setStyle("-fx-background-color: black;");
+		mainPane.setStyle("-fx-background-color: -aft-color-windows-bg;");
 
 		// root pane
 		rootPane = new BorderPane();
 		// - top will be used for menus
 		// - bottom will be used for status bar (if any)
 		rootPane.setCenter(mainPane);
-		rootPane.setStyle("-fx-background-color: black;");
+		rootPane.setStyle("-fx-background-color: -aft-color-windows-bg;");
 
 		// set GUI view on terminal
         Terminal.get().setUX(new TerminalUX(this));

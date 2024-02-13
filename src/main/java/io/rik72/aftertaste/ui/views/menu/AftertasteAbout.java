@@ -29,7 +29,7 @@ public class AftertasteAbout extends MenuItem {
 			VBox vBox = (VBox)modal.getScene().getRoot();
 			HBox topHBox = new HBox();
 			Text versionText = new Text("Aftertaste v" + version);
-			versionText.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			versionText.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			versionText.setFont(Defaults.FONT_NORMAL);
 			topHBox.getChildren().addAll(logo, versionText);
 			topHBox.setSpacing(10);
@@ -46,16 +46,16 @@ public class AftertasteAbout extends MenuItem {
 				App.openURL("https://github.com/rik72/aftertaste");
 			});
 			Text t1 = new Text("Aftertaste is an open source project under the ");
-			t1.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			t1.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			t1.setFont(Defaults.FONT_NORMAL);
 			Text t2 = new Text(".\n");
-			t2.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			t2.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			t2.setFont(Defaults.FONT_NORMAL);
 			Text t3 = new Text("See ");
-			t3.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			t3.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			t3.setFont(Defaults.FONT_NORMAL);
 			Text t4 = new Text(".\n");
-			t4.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			t4.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			t4.setFont(Defaults.FONT_NORMAL);
 			Hyperlink attribHL = new Hyperlink("Image on main screen by tirachard");
 			attribHL.setFont(Defaults.FONT_NORMAL);
@@ -63,7 +63,7 @@ public class AftertasteAbout extends MenuItem {
 				App.openURL("https://www.freepik.com/free-photo/black-marble-patterned-texture-background-marble-thailand-abstract-natural-marble-black-white-design_1174373.htm#query=black%20texture&position=2&from_view=keyword&track=ais&uuid=e5dcdb0b-fe2d-462c-93ca-514de6205f66");
 			});
 			Text t5 = new Text(" on Freepik.");
-			t5.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
+			t5.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
 			t5.setFont(Defaults.FONT_NORMAL);
 			description.getChildren().addAll(
 				t1, licenseHL, t2, t3, githubHL, t4, attribHL, t5);

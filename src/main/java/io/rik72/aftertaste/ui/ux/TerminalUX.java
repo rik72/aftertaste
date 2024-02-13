@@ -39,7 +39,7 @@ public class TerminalUX {
 	public void print(String text) {
 		Text textItem = new Text(text);
 		textItem.setFont(Defaults.FONT_NORMAL);
-		textItem.setFill(Color.GRAY);
+		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_NORMAL));
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -51,8 +51,8 @@ public class TerminalUX {
 
 	public void hilightln(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(Defaults.FONT_BOLD);
-		textItem.setFill(Color.WHITE);
+		textItem.setFont(Defaults.FONT_HILIGHT);
+		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_HILIGHT));
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -64,8 +64,8 @@ public class TerminalUX {
 
 	public void emphasisLongText(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(Defaults.FONT_ITALIC);
-		textItem.setFill(Color.GREEN);
+		textItem.setFont(Defaults.FONT_EMPHASIS);
+		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_EMPHASIS));
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -117,7 +117,9 @@ public class TerminalUX {
 		if (topImage != null) {
 			BorderPane pane = new BorderPane(topImage);
 			pane.setPadding(new Insets(20));
+			pane.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_LOCATION_IMAGE_BG + ";");
 			pane.setMinHeight(360);
+			BorderPane.setMargin(pane, new Insets(10, 22, 10, 20));
 			gui.setTopImage(pane);
 		}
 		else {

@@ -7,6 +7,7 @@ import io.rik72.bottlerack.view.ViewManager;
 import io.rik72.brew.game.BrewController;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
@@ -33,6 +34,10 @@ public class App extends Application {
         App.instance = app;
     }
 
+    public static Parent getRoot() {
+        return getStage().getScene().getRoot();
+    }
+
     @Override
     public void start(Stage stage) {
         setApp(this);
@@ -54,7 +59,7 @@ public class App extends Application {
 		stage.setMaxHeight(Defaults.WINDOW_HEIGHT);
         stage.setScene(new Scene(new BorderPane()));
 		stage.getScene().getStylesheets().add(getClass().getResource("/css/custom.css").toExternalForm());
-		stage.getScene().getRoot().setStyle("-fx-background-color: black;");
+		stage.getScene().getRoot().setStyle("-fx-background-color: -aft-color-windows-bg;");
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - Defaults.WINDOW_WIDTH) / 2);
         stage.setY((primScreenBounds.getHeight() - Defaults.WINDOW_HEIGHT) / 2);

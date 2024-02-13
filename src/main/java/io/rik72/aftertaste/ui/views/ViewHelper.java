@@ -11,20 +11,8 @@ import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.delta.Deltas;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class ViewHelper {
 
@@ -54,9 +42,23 @@ public class ViewHelper {
             e.printStackTrace();
         }
 
+		applySkin();
+
 		if (!skipIntro)
         	Terminal.get().intro();
     }
+
+	private static void applySkin() {
+    	App.getRoot().setStyle(
+			"-aft-color-menu-bg: " + Defaults.COLOR_MENU_BG + ";" + 
+    		"-aft-color-menu-hilight: " + Defaults.COLOR_MENU_HILIGHT + ";" + 
+    		"-aft-color-menu-separator: " + Defaults.COLOR_MENU_SEPARATOR + ";" + 
+    		"-aft-color-windows-bg: " + Defaults.COLOR_WINDOWS_BG + ";" + 
+    		"-aft-color-windows-text: " + Defaults.COLOR_WINDOWS_TEXT + ";" + 
+    		"-aft-color-windows-button: " + Defaults.COLOR_WINDOWS_BUTTON + ";" + 
+    		"-aft-color-windows-hover: " + Defaults.COLOR_WINDOWS_HOVER + ";"
+		);
+	}
 
 	public static void addStoryFolder() throws Exception {
 		File file = Terminal.get().chooseDirectory("Add story folder");
@@ -89,81 +91,19 @@ public class ViewHelper {
 	}
 
 	public static void openAlertModal(String msg, int width , int height) {
-		Stage modal = createModal(width, height, 20);
-		VBox vBox = (VBox) modal.getScene().getRoot();
+		AlertModal modal = createModal(width, height, 20);
 		Text msgText = new Text(msg);
 		msgText.setFont(Defaults.FONT_NORMAL);
-		msgText.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
-		vBox.getChildren().add(msgText);
+		msgText.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
+		modal.getVBox().getChildren().add(msgText);
 		modal.show();
 	}
 
-    public static Stage createModal(int width, int height, int padding) {
-		Stage dialog = new Stage();
-		dialog.initModality(Modality.APPLICATION_MODAL);
-		dialog.setResizable(false); 
-		dialog.initOwner(App.getStage());
-		VBox dialogVbox = new VBox();
-		dialogVbox.setPadding(new Insets(padding));
-		// dialogVbox.setStyle("-fx-background-color: black;");
-		Scene dialogScene = new Scene(dialogVbox, width, height);
-		dialog.setScene(dialogScene);
-		dialog.getScene().getStylesheets().add(ViewHelper.class.getResource("/css/custom.css").toExternalForm());
-		dialog.getScene().getRoot().setStyle("-fx-background-color: black;");
-        return dialog;
+    public static AlertModal createModal(int width, int height, int padding) {
+		return new AlertModal(width, height, padding);
     }
 
 	public static void openConfirmModal(String question, Future then) {
-		Stage dialog = new Stage();
-		dialog.initModality(Modality.APPLICATION_MODAL);
-		dialog.initStyle((StageStyle.UNDECORATED));
-		dialog.setResizable(false); 
-		dialog.initOwner(App.getStage());
-
-		VBox dialogVbox = new VBox();
-		dialogVbox.setPadding(new Insets(20));
-		HBox dialogButtonsBox = new HBox();
-		dialogButtonsBox.setSpacing(20);
-
-		Region spacerv = new Region();
-        VBox.setVgrow(spacerv, Priority.ALWAYS);     
-        spacerv.setMinWidth(Region.USE_PREF_SIZE);
-		
-		Button yesButton = new Button("Yes");
-		yesButton.setOnAction(e -> {
-			dialog.close();
-			then.onSuccess();
-		});
-		Region spacerl = new Region();
-        HBox.setHgrow(spacerl, Priority.ALWAYS);     
-        spacerl.setMinWidth(Region.USE_PREF_SIZE);
-		Region spacerr = new Region();
-        HBox.setHgrow(spacerr, Priority.ALWAYS);     
-        spacerr.setMinWidth(Region.USE_PREF_SIZE);
-		Button noButton = new Button("No");
-		noButton.setOnAction(e -> {
-			dialog.close();
-			then.onFailure();
-		});
-
-		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
-		Text questionText = new Text(question);
-		questionText.setFont(Defaults.FONT_NORMAL);
-		questionText.setFill(Color.rgb(0xD0, 0xD0, 0xD0));
-		dialogVbox.getChildren().addAll(questionText, spacerv, dialogButtonsBox);
-
-		Scene dialogScene = new Scene(dialogVbox, 240, 120);
-		dialogScene.getStylesheets().add(ViewHelper.class.getResource("/css/custom.css").toExternalForm());
-		dialogScene.getRoot().setStyle("-fx-background-color: #404040;");
-		dialog.setScene(dialogScene);
-        dialogScene.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.ENTER) {
-				Node node = dialogScene.focusOwnerProperty().get();
-				if (node instanceof Button)
-					((Button)node).fire();
-			}
-		});
-
-		dialog.show();		
+		new ConfirmModal(question, then).show();		
 	}
 }
