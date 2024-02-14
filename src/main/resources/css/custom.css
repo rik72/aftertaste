@@ -21,10 +21,15 @@
     -aft-color-menu-bg: #181818;
     -aft-color-menu-hilight: #404040;
     -aft-color-menu-separator: #404040;
-    -aft-color-windows-bg: black;
-    -aft-color-windows-text: #E0E0E0;
-    -aft-color-windows-button: #808080;
-    -aft-color-windows-hover: #A0A0A0;
+    -aft-color-text-flow-bg: #202020;
+    -aft-color-text-flow-scrollbar: #202020;
+    -aft-color-window-bg: black;
+    -aft-color-window-location-image-bg: black;
+    -aft-color-window-modal-bg: black;
+    -aft-color-window-modal-border: gray;
+    -aft-color-window-text: #E0E0E0;
+    -aft-color-window-button: #808080;
+    -aft-color-window-hover: #A0A0A0;
 }
 
 /*****************************************************************************/
@@ -34,20 +39,20 @@
 .label {
     -fx-font-family: 'VT323';
     -fx-font-size: 20;
-	-fx-text-fill: -aft-color-windows-text;
+	-fx-text-fill: -aft-color-window-text;
 }
 
 .button {
     -fx-width: 40;
     -fx-height: 20;
-    -fx-background-color: -aft-color-windows-button;
+    -fx-background-color: -aft-color-window-button;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-border-width: 0;
 }
 
 .button:hover {
-    -fx-background-color: -aft-color-windows-hover;
+    -fx-background-color: -aft-color-window-hover;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-border-width: 0;
@@ -56,7 +61,7 @@
 .button .text {
     -fx-font-family: 'VT323';
     -fx-font-size: 20;
-    -fx-fill: -aft-color-windows-text;
+    -fx-fill: -aft-color-window-text;
 }
 
 .menu-bar, .menu, .menu-item, .separator-menu-item, .separator:horizontal, .context-menu {
@@ -86,12 +91,12 @@
 }
 
 .scroll-bar:vertical {
-    -fx-background-color: -aft-color-windows-bg;
+    -fx-background-color: -aft-color-window-bg;
 	-fx-width: 30;
 }
 
 .scroll-bar:vertical .thumb {
-    -fx-background-color: gray;
+    -fx-background-color: -aft-color-text-flow-scrollbar;
     -fx-background-insets: 6;
     -fx-background-radius: 0;
 }
@@ -109,7 +114,7 @@
 }
 
 .scroll-pane .viewport {
-    -fx-background-color: -aft-color-windows-bg;
+    -fx-background-color: -aft-color-window-bg;
 }
 
 .scroll-pane {
@@ -117,8 +122,8 @@
 }
 
 .text-field{
-   -fx-border-color: -aft-color-windows-bg;
+   -fx-border-color: -aft-color-window-bg;
    -fx-border-width: 0;
-   -fx-background-color: -aft-color-windows-bg;
-   -fx-text-fill: -aft-color-windows-text;
+   -fx-background-color: -aft-color-window-bg;
+   -fx-text-fill: -aft-color-window-text;
 }

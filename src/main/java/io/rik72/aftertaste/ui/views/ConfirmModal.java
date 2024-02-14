@@ -1,7 +1,7 @@
 package io.rik72.aftertaste.ui.views;
 
 import io.rik72.aftertaste.App;
-import io.rik72.aftertaste.ui.Defaults;
+import io.rik72.aftertaste.ui.skin.CurrentSkin;
 import io.rik72.brew.engine.processing.execution.Future;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,7 +27,7 @@ public class ConfirmModal extends Stage {
 		initOwner(App.getStage());
 
 		VBox vBox = new VBox();
-		vBox.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_MODAL_BG + ";");
+		vBox.setStyle("-fx-background-color: -aft-color-window-modal-bg;");
 		vBox.setPadding(new Insets(20));
 		HBox dialogButtonsBox = new HBox();
 		dialogButtonsBox.setSpacing(20);
@@ -56,13 +55,13 @@ public class ConfirmModal extends Stage {
 
 		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
 		Text questionText = new Text(question);
-		questionText.setFont(Defaults.FONT_NORMAL);
-		questionText.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
+		questionText.setFont(CurrentSkin.FONT_NORMAL);
+		questionText.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_WINDOW_TEXT);
 		vBox.getChildren().addAll(questionText, spacerv, dialogButtonsBox);
 		BorderPane.setMargin(vBox, new Insets(10));
 
 		BorderPane body = new BorderPane(vBox);
-		body.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_MODAL_BORDER + ";");
+		body.setStyle("-fx-background-color: -aft-color-window-modal-border;");
 
 		Scene dialogScene = new Scene(body, 240, 120);
 		setScene(dialogScene);

@@ -43,8 +43,8 @@ public class Terminal extends TerminalBase {
 
 		TextPlayer player = new TextPlayer();
 
-		String title = Story.get().getTitle();
-		String subtitle = Story.get().getSubtitle().toLowerCase().strip();
+		String title = Story.get().getDescriptor().getTitle();
+		String subtitle = Story.get().getDescriptor().getSubtitle().toLowerCase().strip();
 
 
 		player.getHeader().add("");

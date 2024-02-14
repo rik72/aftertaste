@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import io.rik72.aftertaste.ui.skin.Skin;
+import io.rik72.aftertaste.ui.skin.SkinData;
 import io.rik72.brew.engine.db.delta.CharacterDelta;
 import io.rik72.brew.engine.db.delta.LocationDelta;
 import io.rik72.brew.engine.db.delta.ThingDelta;
@@ -33,6 +35,8 @@ import io.rik72.mammoth.delta.Deltas;
 public class Story {
 	private StoryDescriptor descriptor;
 	private List<String> intro = new ArrayList<>();
+	private Skin skin;
+	private SkinData skinData;
 
 	private Story() {
 	}
@@ -57,10 +61,6 @@ public class Story {
 		return CharacterRepository.get().getMainCharacter();
 	}
 
-	public List<String> getIntro() {
-		return intro;
-	}
-
 	public StoryDescriptor getDescriptor() {
 		return descriptor;
 	}
@@ -69,16 +69,25 @@ public class Story {
 		this.descriptor = descriptor;
 	}
 
-	public StoryRefId getRefId() {
-		return descriptor.getRefId();
+	public List<String> getIntro() {
+		return intro;
 	}
 
-	public String getTitle() {
-		return descriptor.getTitle();
+	public Skin getSkin() {
+		return skin;
 	}
 
-	public String getSubtitle() {
-		return descriptor.getSubtitle();
+	public void setSkin(Skin skin, SkinData overrides) {
+		this.skin = skin != null ? skin : Skin.CUSTOM;
+		this.skinData = this.skin.data;
+		if (this.skinData != null)
+			this.skinData.applyOverrides(overrides);
+		else
+			this.skinData = overrides;
+	}
+
+	public SkinData getSkinData() {
+		return skinData;
 	}
 
 	public void restart() throws Exception {

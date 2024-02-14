@@ -1,7 +1,6 @@
 package io.rik72.aftertaste.ui.views;
 
 import io.rik72.aftertaste.App;
-import io.rik72.aftertaste.ui.Defaults;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -20,12 +19,12 @@ public class AlertModal extends Stage {
 		initOwner(App.getStage());
 
 		vBox = new VBox();
-		vBox.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_MODAL_BG + ";");
+		vBox.setStyle("-fx-background-color: -aft-color-window-modal-bg;");
 		vBox.setPadding(new Insets(padding));
 		BorderPane.setMargin(vBox, new Insets(10));
 
 		BorderPane body = new BorderPane(vBox);
-		body.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_MODAL_BORDER + ";");
+		body.setStyle("-fx-background-color: -aft-color-window-modal-border;");
 
 		Scene dialogScene = new Scene(body, width, height);
 		setScene(dialogScene);

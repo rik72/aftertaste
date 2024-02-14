@@ -24,5 +24,6 @@ public class ViewManager {
 		openView = views.get(label);
 		openView.onOpen();
 		stage.getScene().setRoot(openView.getRoot());
+//        ViewHelper.applySkin();
 	}
 }

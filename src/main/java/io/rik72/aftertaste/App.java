@@ -1,6 +1,5 @@
 package io.rik72.aftertaste;
 
-import io.rik72.aftertaste.ui.Defaults;
 import io.rik72.aftertaste.ui.views.StartView;
 import io.rik72.aftertaste.ui.views.TerminalView;
 import io.rik72.bottlerack.view.ViewManager;
@@ -17,6 +16,9 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+
+	public static final int WINDOW_WIDTH = 1024;
+	public static final int WINDOW_HEIGHT = 768;
 
     private static ViewManager viewManager;
     private static Stage stage;
@@ -53,16 +55,16 @@ public class App extends Application {
 
     private void initStage(Stage stage) {
 		stage.setTitle("Aftertaste");
-		stage.setMinWidth(Defaults.WINDOW_WIDTH);
-		stage.setMaxWidth(Defaults.WINDOW_WIDTH);
-		stage.setMinHeight(Defaults.WINDOW_HEIGHT);
-		stage.setMaxHeight(Defaults.WINDOW_HEIGHT);
+		stage.setMinWidth(WINDOW_WIDTH);
+		stage.setMaxWidth(WINDOW_WIDTH);
+		stage.setMinHeight(WINDOW_HEIGHT);
+		stage.setMaxHeight(WINDOW_HEIGHT);
         stage.setScene(new Scene(new BorderPane()));
 		stage.getScene().getStylesheets().add(getClass().getResource("/css/custom.css").toExternalForm());
-		stage.getScene().getRoot().setStyle("-fx-background-color: -aft-color-windows-bg;");
+		stage.getScene().getRoot().setStyle("-fx-background-color: -aft-color-window-bg;");
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((primScreenBounds.getWidth() - Defaults.WINDOW_WIDTH) / 2);
-        stage.setY((primScreenBounds.getHeight() - Defaults.WINDOW_HEIGHT) / 2);
+        stage.setX((primScreenBounds.getWidth() - WINDOW_WIDTH) / 2);
+        stage.setY((primScreenBounds.getHeight() - WINDOW_HEIGHT) / 2);
         stage.show();
     }
 

@@ -6,7 +6,7 @@ import org.girod.javafx.svgimage.SVGImage;
 import org.girod.javafx.svgimage.SVGLoader;
 
 import io.rik72.aftertaste.App;
-import io.rik72.aftertaste.ui.Defaults;
+import io.rik72.aftertaste.ui.skin.CurrentSkin;
 import io.rik72.aftertaste.ui.views.TerminalView;
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.amber.logger.Log;
@@ -15,7 +15,6 @@ import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class TerminalUX {
@@ -38,8 +37,8 @@ public class TerminalUX {
 
 	public void print(String text) {
 		Text textItem = new Text(text);
-		textItem.setFont(Defaults.FONT_NORMAL);
-		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_NORMAL));
+		textItem.setFont(CurrentSkin.FONT_NORMAL);
+		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_NORMAL);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -51,8 +50,8 @@ public class TerminalUX {
 
 	public void hilightln(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(Defaults.FONT_HILIGHT);
-		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_HILIGHT));
+		textItem.setFont(CurrentSkin.FONT_HILIGHT);
+		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_HILIGHT);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -64,8 +63,8 @@ public class TerminalUX {
 
 	public void emphasisLongText(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(Defaults.FONT_EMPHASIS);
-		textItem.setFill(Color.web(Defaults.COLOR_TEXT_FLOW_EMPHASIS));
+		textItem.setFont(CurrentSkin.FONT_EMPHASIS);
+		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_EMPHASIS);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
 		gui.setScrollToBottom();
@@ -117,7 +116,7 @@ public class TerminalUX {
 		if (topImage != null) {
 			BorderPane pane = new BorderPane(topImage);
 			pane.setPadding(new Insets(20));
-			pane.setStyle("-fx-background-color: " + Defaults.COLOR_WINDOWS_LOCATION_IMAGE_BG + ";");
+			pane.setStyle("-fx-background-color: -aft-color-window-location-image-bg;");
 			pane.setMinHeight(360);
 			BorderPane.setMargin(pane, new Insets(10, 22, 10, 20));
 			gui.setTopImage(pane);

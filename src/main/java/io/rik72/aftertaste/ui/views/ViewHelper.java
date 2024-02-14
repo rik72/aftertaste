@@ -3,7 +3,7 @@ package io.rik72.aftertaste.ui.views;
 import java.io.File;
 
 import io.rik72.aftertaste.App;
-import io.rik72.aftertaste.ui.Defaults;
+import io.rik72.aftertaste.ui.skin.CurrentSkin;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.registry.StoryRegistry;
@@ -11,7 +11,6 @@ import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.delta.Deltas;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class ViewHelper {
@@ -30,33 +29,37 @@ public class ViewHelper {
 
     public static void restart(boolean skipIntro) {
 
-        openTerminalView();
-
-        Terminal.get().removeTopImage();
-        Terminal.get().closeInput();
-        Terminal.get().clearTextFlow();
-
         try {
             BrewController.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-		applySkin();
+        openTerminalView();
+
+        Terminal.get().removeTopImage();
+        Terminal.get().closeInput();
+        Terminal.get().clearTextFlow();
 
 		if (!skipIntro)
         	Terminal.get().intro();
     }
 
-	private static void applySkin() {
+	public static void applySkin() {
+		CurrentSkin.setSkin(Story.get().getSkin(), Story.get().getSkinData());
     	App.getRoot().setStyle(
-			"-aft-color-menu-bg: " + Defaults.COLOR_MENU_BG + ";" + 
-    		"-aft-color-menu-hilight: " + Defaults.COLOR_MENU_HILIGHT + ";" + 
-    		"-aft-color-menu-separator: " + Defaults.COLOR_MENU_SEPARATOR + ";" + 
-    		"-aft-color-windows-bg: " + Defaults.COLOR_WINDOWS_BG + ";" + 
-    		"-aft-color-windows-text: " + Defaults.COLOR_WINDOWS_TEXT + ";" + 
-    		"-aft-color-windows-button: " + Defaults.COLOR_WINDOWS_BUTTON + ";" + 
-    		"-aft-color-windows-hover: " + Defaults.COLOR_WINDOWS_HOVER + ";"
+			"-aft-color-menu-bg: " + CurrentSkin.data.COLOR_MENU_BG + ";" +
+			"-aft-color-menu-hilight: " + CurrentSkin.data.COLOR_MENU_HILIGHT + ";" +
+			"-aft-color-menu-separator: " + CurrentSkin.data.COLOR_MENU_SEPARATOR + ";" +
+			"-aft-color-text-flow-bg: " + CurrentSkin.data.COLOR_TEXT_FLOW_BG + ";" +
+			"-aft-color-text-flow-scrollbar: " + CurrentSkin.data.COLOR_TEXT_FLOW_SCROLLBAR + ";" +
+			"-aft-color-window-bg: " + CurrentSkin.data.COLOR_WINDOW_BG + ";" +
+			"-aft-color-window-location-image-bg: " + CurrentSkin.data.COLOR_WINDOW_LOCATION_IMAGE_BG + ";" +
+			"-aft-color-window-modal-bg: " + CurrentSkin.data.COLOR_WINDOW_MODAL_BG + ";" +
+			"-aft-color-window-modal-border: " + CurrentSkin.data.COLOR_WINDOW_MODAL_BORDER + ";" +
+			"-aft-color-window-text: " + CurrentSkin.data.COLOR_WINDOW_TEXT + ";" +
+			"-aft-color-window-button: " + CurrentSkin.data.COLOR_WINDOW_BUTTON + ";" +
+			"-aft-color-window-hover: " + CurrentSkin.data.COLOR_WINDOW_HOVER + ";"
 		);
 	}
 
@@ -84,7 +87,7 @@ public class ViewHelper {
 			}
 			else {
 				openAlertModal("Incompatible save file " + 
-					"('" + SaveGame.getInstance().getStoryDescriptor().getRefId() + "' format vs '" + Story.get().getRefId() + "'" +
+					"('" + SaveGame.getInstance().getStoryDescriptor().getRefId() + "' format vs '" + Story.get().getDescriptor().getRefId() + "'" +
 					" required by current story)", 320, 200);
 			}
 		}
@@ -93,8 +96,8 @@ public class ViewHelper {
 	public static void openAlertModal(String msg, int width , int height) {
 		AlertModal modal = createModal(width, height, 20);
 		Text msgText = new Text(msg);
-		msgText.setFont(Defaults.FONT_NORMAL);
-		msgText.setFill(Color.web(Defaults.COLOR_WINDOWS_TEXT));
+		msgText.setFont(CurrentSkin.FONT_NORMAL);
+		msgText.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_WINDOW_TEXT);
 		modal.getVBox().getChildren().add(msgText);
 		modal.show();
 	}

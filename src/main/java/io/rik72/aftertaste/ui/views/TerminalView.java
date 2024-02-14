@@ -1,7 +1,9 @@
 package io.rik72.aftertaste.ui.views;
 
 import java.io.File;
-import io.rik72.aftertaste.ui.Defaults;
+
+import io.rik72.aftertaste.App;
+import io.rik72.aftertaste.ui.skin.CurrentSkin;
 import io.rik72.aftertaste.ui.ux.TerminalUX;
 import io.rik72.aftertaste.ui.views.menu.TopMenu;
 import io.rik72.bottlerack.view.AbstractView;
@@ -54,11 +56,11 @@ public class TerminalView extends AbstractView {
 
 		// Elements ===========================================================
 		textFlow = new TextFlow();
-		textFlow.setMinWidth(Defaults.WINDOW_WIDTH - 42);
-		textFlow.setMaxWidth(Defaults.WINDOW_WIDTH - 42);
-		textFlow.setPrefHeight(Defaults.WINDOW_HEIGHT);
+		textFlow.setMinWidth(App.WINDOW_WIDTH - 42);
+		textFlow.setMaxWidth(App.WINDOW_WIDTH - 42);
+		textFlow.setPrefHeight(App.WINDOW_HEIGHT);
 		textFlow.setPadding(new Insets(0, 20, 0, 10));
-		textFlow.setStyle("-fx-background-color: " + Defaults.COLOR_TEXT_FLOW_BG + ";");
+		textFlow.setStyle("-fx-background-color: -aft-color-text-flow-bg;");
 
 		Label promptLabel = new Label("Your action:");
 		promptLabel.setPadding(new Insets(0, 0, 0, 10));
@@ -66,7 +68,7 @@ public class TerminalView extends AbstractView {
 		promptLabel.setMaxWidth(120);
 		promptField = new TextField();
 		promptField.setPrefColumnCount(110);
-		promptField.setFont(Defaults.FONT_NORMAL);
+		promptField.setFont(CurrentSkin.FONT_NORMAL);
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(event -> {
 			KeyCode kc = event.getCode();
@@ -111,14 +113,14 @@ public class TerminalView extends AbstractView {
 		// - top will be used for location images
 		// - bottom will be used for user input
 		mainPane.setCenter(textPane);
-		mainPane.setStyle("-fx-background-color: -aft-color-windows-bg;");
+		mainPane.setStyle("-fx-background-color: -aft-color-window-bg;");
 
 		// root pane
 		rootPane = new BorderPane();
 		// - top will be used for menus
 		// - bottom will be used for status bar (if any)
 		rootPane.setCenter(mainPane);
-		rootPane.setStyle("-fx-background-color: -aft-color-windows-bg;");
+		rootPane.setStyle("-fx-background-color: -aft-color-window-bg;");
 
 		// set GUI view on terminal
         Terminal.get().setUX(new TerminalUX(this));

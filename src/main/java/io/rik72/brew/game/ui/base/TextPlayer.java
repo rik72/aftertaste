@@ -3,6 +3,7 @@ package io.rik72.brew.game.ui.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
 
@@ -36,6 +37,8 @@ public class TextPlayer {
 	}
 
 	public void start() {
+
+		ViewHelper.applySkin();
 
 		if (header.size() > 0) {
 			Terminal.get().skip(1);
