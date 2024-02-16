@@ -25,7 +25,7 @@ public class CommandLoad extends CommandExecutor {
 			@Override
 			public void onSuccess() {
 				try {
-					File file = Terminal.get().chooseOpenFile("Load game");
+					File file = Terminal.get().chooseOpenFile("Load game", "Savegame", "*.save");
                     if (file != null) {
 						SaveGame.loadFromFile(file.getPath());
 						if (SaveGame.getInstance().checkStoryCompatibility(Story.get().getDescriptor().getRefId())) {

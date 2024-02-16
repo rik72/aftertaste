@@ -64,9 +64,20 @@ public class ViewHelper {
 	}
 
 	public static void addStoryFolder() throws Exception {
-		File file = Terminal.get().chooseDirectory("Add story folder");
+		File file = Terminal.get().chooseDirectory("Add story from folder");
 		if (file != null) {
-			boolean wasAdded = StoryRegistry.get().addUserStoryFolder(file.getAbsolutePath());
+			boolean wasAdded = StoryRegistry.get().addStoryFolder(file.getAbsolutePath());
+			if (!wasAdded)
+				openAlertModal("This story was already added.", 360, 120);
+			else
+				openAlertModal("Story added successfully", 360, 120);
+		}
+	}
+
+	public static void addStoryCan() throws Exception {
+		File file = Terminal.get().chooseOpenFile("Add story from .can file", "Story", "*.can");
+		if (file != null) {
+			boolean wasAdded = StoryRegistry.get().addStoryCan(file.getAbsolutePath());
 			if (!wasAdded)
 				openAlertModal("This story was already added.", 360, 120);
 			else
@@ -76,7 +87,7 @@ public class ViewHelper {
 
 
 	public static void load() throws Exception {
-		File file = Terminal.get().chooseOpenFile("Load game");
+		File file = Terminal.get().chooseOpenFile("Load game", "Savegame", "*.save");
 		if (file != null) {
 			SaveGame.loadFromFile(file.getPath());
 			if (SaveGame.getInstance().checkStoryCompatibility(BrewController.getCurrentStory().getRefId())) {

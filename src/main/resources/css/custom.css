@@ -18,18 +18,18 @@
 /*****************************************************************************/
 
 .root {
-    -aft-color-menu-bg: #181818;
+    -aft-color-menu-bg: #090909;
     -aft-color-menu-hilight: #404040;
     -aft-color-menu-separator: #404040;
     -aft-color-text-flow-bg: #202020;
     -aft-color-text-flow-scrollbar: #202020;
-    -aft-color-window-bg: black;
+    -aft-color-window-bg: #090909;
     -aft-color-window-location-image-bg: black;
     -aft-color-window-modal-bg: black;
     -aft-color-window-modal-border: gray;
-    -aft-color-window-text: #E0E0E0;
-    -aft-color-window-button: #808080;
-    -aft-color-window-hover: #A0A0A0;
+    -aft-color-window-text: #B0B0B0;
+    -aft-color-window-button: #505050;
+    -aft-color-window-hover: #808080;
 }
 
 /*****************************************************************************/

@@ -9,7 +9,7 @@ import javafx.scene.control.SeparatorMenuItem;
 
 public class TopMenu extends MenuBar {
 
-    private Menu storyMenu;
+    private Menu storiesMenu;
 
 	public TopMenu() {
 
@@ -20,31 +20,26 @@ public class TopMenu extends MenuBar {
         aftertasteMenu.getItems().addAll(aftertasteAbout, aftertasteExit);
 
         // Story menu
-        storyMenu = new Menu("Story");
-        SeparatorMenuItem storySep = new SeparatorMenuItem();
-        MenuItem storyLoad = new AddStory("Add a story...");
-        storyMenu.getItems().addAll(storySep, storyLoad);
+        storiesMenu = new Menu("Stories");
+        MenuItem addStoryFolder = new AddStoryFolder("Add story from folder...");
+        MenuItem addStoryCan = new AddStoryCan("Add story from .can file...");
+        storiesMenu.getItems().addAll(new SeparatorMenuItem(), addStoryFolder, addStoryCan);
 
         // add stories
-        int storyPosition = 1;
-        addStory(storyPosition++, StoryRegistry.get().getEmbeddedStory());
-        for (StoryDescriptor descriptor : StoryRegistry.get().getUserStories()) {
-            addStory(storyPosition++, descriptor);
-        }
-        // storyDefault.setOnAction(e -> {
-        //     BrewController.setCurrentStory(StoryRegistry.get().getEmbeddedStory());
-        // });
+        int i = 1;
+        for (StoryDescriptor descriptor : StoryRegistry.get().getAll())
+            addStory(i++, descriptor);
 
         // add menus
         this.getMenus().add(aftertasteMenu);
-        this.getMenus().add(storyMenu);
+        this.getMenus().add(storiesMenu);
     }	
 
     public void addStory(int position, StoryDescriptor descriptor) {
+        Menu thisStoryMenu = new Menu(descriptor.getTitle());
         MenuItem gameNew = new GameNew("New game", descriptor);
         MenuItem gameLoad = new GameLoad("Load saved game...", descriptor);
-        Menu thisStoryMenu = new Menu(descriptor.getTitle());
         thisStoryMenu.getItems().addAll(gameNew, gameLoad);
-        storyMenu.getItems().add(position, thisStoryMenu);
+        storiesMenu.getItems().add(position, thisStoryMenu);
     }
 }

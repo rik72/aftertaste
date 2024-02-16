@@ -67,8 +67,8 @@ public abstract class TerminalBase {
 		ux.removeTopImage();
 	}
 
-	public File chooseOpenFile(String dialogTitle) {
-		return ux.chooseOpenFile(dialogTitle);
+	public File chooseOpenFile(String dialogTitle, String description, String extension) {
+		return ux.chooseOpenFile(dialogTitle, description, extension);
 	}
 
 	public File chooseSaveFile(String dialogTitle) {

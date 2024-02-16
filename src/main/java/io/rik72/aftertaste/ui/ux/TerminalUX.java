@@ -157,8 +157,8 @@ public class TerminalUX {
 		gui.getTextFlow().getChildren().clear();
 	}
 
-	public File chooseOpenFile(String dialogTitle) {
-		return gui.chooseOpenFile(dialogTitle);
+	public File chooseOpenFile(String dialogTitle, String description, String extension) {
+		return gui.chooseOpenFile(dialogTitle, description, extension);
 	}
 
 	public File chooseSaveFile(String dialogTitle) {

@@ -1,7 +1,11 @@
 package io.rik72.brew.engine.story.registry;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.LoadType;
@@ -10,56 +14,75 @@ import io.rik72.brew.engine.utils.FileUtils;
 
 public class StoryRegistry {
 
-	private static final String STORY_ROOT_RESOURCE_FOLDER = "brew/stories";
+	private static final LoadPath STORY_RESOURCE_LOAD_PATH = new LoadPath("brew/stories", LoadType.RESOURCES);
 
 	private StoryDescriptor embeddedStory;
-	private List<StoryDescriptor> userStories = new ArrayList<>();
+	private Map<String, StoryDescriptor> storyFolders = new HashMap<>();
+	private Map<String, StoryDescriptor> storyCans = new HashMap<>();
 
 	public void init() throws Exception {
 		initEmbeddedStory();
-		initUserStories();
+		initStoryFolders();
+		initStoryCans();
+		// Collection<String> files = FileUtils.findFiles("story.yml", new LoadPath("/Users/riccardo/Projects/rik/c64/aftertaste/stories/test-zipped.can", LoadType.CAN));
 	}
 
 	private void initEmbeddedStory() throws Exception {
-		String[] files = FileUtils.getResourceListing(getClass(), STORY_ROOT_RESOURCE_FOLDER);
-		String path = STORY_ROOT_RESOURCE_FOLDER + "/" + files[0];
-		LoadPath loadPath = new LoadPath(path, LoadType.RESOURCES);
+		Collection<String> files = FileUtils.findFiles("story.yml", STORY_RESOURCE_LOAD_PATH);
+		LoadPath loadPath = new LoadPath(new File((String)files.toArray()[0]).toPath().getParent().toString(), LoadType.RESOURCES);
 		embeddedStory = StoryDescriptor.load(loadPath);
 	}
 
-	private void initUserStories() throws Exception {
-		for (String folder : UserStoryFolders.get().getFolders())
-			initUserStoryFromFolder(folder);
+	private void initStoryFolders() throws Exception {
+		for (String path : StoryFolders.get().getAll())
+			initStoryFolder(path);
 	}
 
-	private void initUserStoryFromFolder(String folder) throws Exception {
-		LoadPath loadPath = new LoadPath(folder, LoadType.FILESYSTEM);
-		userStories.add(StoryDescriptor.load(loadPath));
+	private void initStoryCans() throws Exception {
+		for (String path : StoryCans.get().getAll())
+			initStoryCan(path);
 	}
 
-	public boolean addUserStoryFolder(String folder) throws Exception {
-		boolean wasAdded = UserStoryFolders.get().addFolder(folder);
+	private void initStoryFolder(String path) throws Exception {
+		LoadPath loadPath = new LoadPath(path, LoadType.FOLDER);
+		storyFolders.put(path, StoryDescriptor.load(loadPath));
+	}
+
+	private void initStoryCan(String path) throws Exception {
+		LoadPath loadPath = new LoadPath(path, LoadType.CAN);
+		storyCans.put(path, StoryDescriptor.load(loadPath));
+	}
+
+	public boolean addStoryFolder(String path) throws Exception {
+		boolean wasAdded = StoryFolders.get().add(path);
 		if (wasAdded)
-			initUserStoryFromFolder(folder);
+			initStoryFolder(path);
 		return wasAdded;
 	}
 
-	public void removeUserStoryFolder(String folder) throws Exception {
-		for (StoryDescriptor descriptor : userStories) {
-			if (descriptor.getLoadPath().getPath().equals(folder) && descriptor.getLoadPath().getLoadType() == LoadType.FILESYSTEM) {
-				userStories.remove(descriptor);
-				UserStoryFolders.get().removeFolder(folder);
-				break;
-			}
-		}
+	public boolean addStoryCan(String path) throws Exception {
+		boolean wasAdded = StoryCans.get().add(path);
+		if (wasAdded)
+			initStoryCan(path);
+		return wasAdded;
 	}
 
-	public StoryDescriptor getEmbeddedStory() {
-		return embeddedStory;
+	public void removeStoryFolder(String path) throws Exception {
+		StoryFolders.get().remove(path);
+		storyFolders.remove(path);
 	}
 
-	public List<StoryDescriptor> getUserStories() {
-		return userStories;
+	public void removeStoryCan(String path) throws Exception {
+		StoryCans.get().remove(path);
+		storyCans.remove(path);
+	}
+
+	public List<StoryDescriptor> getAll() {
+		ArrayList<StoryDescriptor> stories = new ArrayList<StoryDescriptor>();
+		stories.add(embeddedStory);
+		stories.addAll(storyFolders.values());
+		stories.addAll(storyCans.values());
+		return stories;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

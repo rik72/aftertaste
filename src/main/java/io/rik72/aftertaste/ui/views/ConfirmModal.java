@@ -36,22 +36,22 @@ public class ConfirmModal extends Stage {
         VBox.setVgrow(spacerv, Priority.ALWAYS);     
         spacerv.setMinWidth(Region.USE_PREF_SIZE);
 		
+		Region spacerl = new Region();
+        HBox.setHgrow(spacerl, Priority.ALWAYS);     
+        spacerl.setMinWidth(Region.USE_PREF_SIZE);
 		Button yesButton = new Button("Yes");
 		yesButton.setOnAction(e -> {
 			close();
 			then.onSuccess();
 		});
-		Region spacerl = new Region();
-        HBox.setHgrow(spacerl, Priority.ALWAYS);     
-        spacerl.setMinWidth(Region.USE_PREF_SIZE);
-		Region spacerr = new Region();
-        HBox.setHgrow(spacerr, Priority.ALWAYS);     
-        spacerr.setMinWidth(Region.USE_PREF_SIZE);
 		Button noButton = new Button("No");
 		noButton.setOnAction(e -> {
 			close();
 			then.onFailure();
 		});
+		Region spacerr = new Region();
+        HBox.setHgrow(spacerr, Priority.ALWAYS);     
+        spacerr.setMinWidth(Region.USE_PREF_SIZE);
 
 		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
 		Text questionText = new Text(question);
@@ -63,7 +63,7 @@ public class ConfirmModal extends Stage {
 		BorderPane body = new BorderPane(vBox);
 		body.setStyle("-fx-background-color: -aft-color-window-modal-border;");
 
-		Scene dialogScene = new Scene(body, 240, 120);
+		Scene dialogScene = new Scene(body, 350, 140);
 		setScene(dialogScene);
 		getScene().getStylesheets().add(ViewHelper.class.getResource("/css/custom.css").toExternalForm());
         getScene().setOnKeyPressed(event -> {

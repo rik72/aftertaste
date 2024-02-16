@@ -206,10 +206,10 @@ public class TerminalView extends AbstractView {
 		mainPane.layout();
 	}
 
-	public File chooseOpenFile(String dialogTitle) {
+	public File chooseOpenFile(String dialogTitle, String description, String extension) {
 		fileChooser.setTitle(dialogTitle);
 		fileChooser.getExtensionFilters().addAll(
-			new FileChooser.ExtensionFilter("Savegame", "*.save")
+			new FileChooser.ExtensionFilter(description, extension)
 		);
 		return fileChooser.showOpenDialog(stage);
 	}
