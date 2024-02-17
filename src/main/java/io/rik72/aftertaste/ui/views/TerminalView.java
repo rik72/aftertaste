@@ -64,10 +64,10 @@ public class TerminalView extends AbstractView {
 
 		Label promptLabel = new Label("Your action:");
 		promptLabel.setPadding(new Insets(0, 0, 0, 10));
-		promptLabel.setMinWidth(120);
-		promptLabel.setMaxWidth(120);
+		promptLabel.setMinWidth(110);
+		promptLabel.setMaxWidth(110);
 		promptField = new TextField();
-		promptField.setPrefColumnCount(110);
+		promptField.setPrefColumnCount(200);
 		promptField.setFont(CurrentSkin.FONT_NORMAL);
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(event -> {

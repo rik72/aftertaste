@@ -14,10 +14,10 @@ public class WordLoader implements Loadable {
 
 	@Override
 	public void load(LoadPath loadPath) throws Exception {
-		WordsDocLoader loader = new WordsDocLoader("other_names.yml");
-		loader.load(loadPath);
-
-		// Additional loading is delegated to other loaders in the same package
+		for (String fileName : List.of("commands.yml", "prepositions.yml", "verbs.yml", "stop_words.yml", "other_names.yml")) {
+			WordsDocLoader loader = new WordsDocLoader(fileName);
+			loader.load(loadPath);
+		}
 	}
 
 	@Override

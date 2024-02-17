@@ -9,7 +9,6 @@ import io.rik72.brew.engine.processing.parsing.InputParser;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.base.TerminalBase;
 import io.rik72.brew.game.ui.base.TextPlayer;
-import io.rik72.brew.game.ui.loader.TerminalLoader;
 import io.rik72.mammoth.db.DB;
 
 public class Terminal extends TerminalBase {
@@ -28,10 +27,6 @@ public class Terminal extends TerminalBase {
 
 	public void setInGame(boolean inGame) {
 		this.inGame = inGame;
-	}
-
-	public void init() {
-		new TerminalLoader().register();
 	}
 
 	public void intro() {

@@ -5,7 +5,6 @@ import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.StoryDescriptor;
 import io.rik72.brew.engine.story.registry.StoryRegistry;
-import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.delta.Deltas;
 
 public class BrewController 
@@ -23,7 +22,6 @@ public class BrewController
     public static void init() throws Exception {
         StoryRegistry.get().init();
         Story.get().init();
-        Terminal.get().init();
     }
 
     public static void clear() throws Exception {

@@ -1,5 +1,6 @@
 package io.rik72.brew.engine.processing.parsing;
 
+import java.util.List;
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
@@ -13,6 +14,9 @@ import io.rik72.mammoth.MultipleResultsException;
 public class InputParser {
 
 	private Vector<Word> tokens;
+	private Vector<Word> ambiguousWords;
+	private Vector<Word> stopWords;
+	private List<String> unknownTokens;
 	private boolean toBeConfirmed;
 
 	private InputParser() {}
@@ -20,17 +24,23 @@ public class InputParser {
 	public Executor parse(String str) throws Exception {
 		try {
 			tokenize(str);
+			if (unknownTokens.size() > 0)
+				return ExecutorFactory.getUnknownTokensExecutor(unknownTokens);
+			if (ambiguousWords.size() > 0)
+				return ExecutorFactory.getAmbiguousTokenExecutor(ambiguousWords.get(0).getText());
 			return ExecutorFactory.get(tokens, toBeConfirmed);
 		}
 		catch (MultipleResultsException ex) {
-			return ExecutorFactory.getAmbiguousExecutor(tokens, ex.getOffendingValue());
+			return ExecutorFactory.getAmbiguousTokenExecutor(ex.getOffendingValue());
 		}
 	}
 
 	private void tokenize(String str) {
 		toBeConfirmed = false;
 		tokens = new Vector<>();
-		// for (String token : str.split(" ")) {
+		ambiguousWords = new Vector<>();
+		stopWords = new Vector<>();
+		unknownTokens = new Vector<>();
 		String[] inputTokens = str.split(" ");
 		for (int i = 0; i < inputTokens.length; i++) {
 			Word word = null;
@@ -64,13 +74,15 @@ public class InputParser {
 				word = WordRepository.get().getByTokens(inputTokens[i]);
 			}
 			if (word != null) {
-				if (word.getCanonical() != null)
+				if (word.getType() == Type.stop_word)
+					stopWords.add(word);
+				else if (word.getCanonical() != null)
 					tokens.add(word);
 				else
-					throw new MultipleResultsException("Ambiguous name: " + word.getText(), word.getText());
+					ambiguousWords.add(word);
 			}
 			else {
-				// ignoring a word, needs confirm...
+				unknownTokens.add(inputTokens[i]);
 				toBeConfirmed = true;
 			}
 		}

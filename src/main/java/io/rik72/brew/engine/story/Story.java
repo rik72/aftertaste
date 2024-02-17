@@ -23,10 +23,8 @@ import io.rik72.brew.engine.loader.loaders.CharacterLoader;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.loaders.ActionLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
-import io.rik72.brew.engine.loader.loaders.PrepositionLoader;
 import io.rik72.brew.engine.loader.loaders.StoryLoader;
 import io.rik72.brew.engine.loader.loaders.ThingLoader;
-import io.rik72.brew.engine.loader.loaders.VerbLoader;
 import io.rik72.brew.engine.loader.loaders.WordLoader;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.delta.Delta;
@@ -48,8 +46,6 @@ public class Story {
 
 	public void init() {
 		new StoryLoader().register();
-		new PrepositionLoader().register();
-		new VerbLoader().register();
 		new WordLoader().register();
 		new LocationLoader().register();
 		new CharacterLoader().register();

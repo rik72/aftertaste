@@ -2,14 +2,12 @@ package io.rik72.brew.engine.processing.execution;
 
 import java.util.Vector;
 
-import io.rik72.brew.engine.db.entities.Word;
-
-public class AmbiguousExecutor extends Executor {
+public class AmbiguousTokenExecutor extends Executor {
 
 	private String offendingToken;
 
-	public AmbiguousExecutor(Vector<Word> words, String offendingToken) {
-		super(words, false);
+	public AmbiguousTokenExecutor(String offendingToken) {
+		super(new Vector<>(), false);
 		this.offendingToken = offendingToken;
 	}
 

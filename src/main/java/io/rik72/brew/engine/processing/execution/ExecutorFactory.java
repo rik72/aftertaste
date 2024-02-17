@@ -55,7 +55,11 @@ public class ExecutorFactory {
 		return null;
 	}
 
-	public static Executor getAmbiguousExecutor(Vector<Word> words, String offendingToken) {
-		return new AmbiguousExecutor(words, offendingToken);
+	public static Executor getAmbiguousTokenExecutor(String offendingToken) {
+		return new AmbiguousTokenExecutor(offendingToken);
+	}
+
+	public static Executor getUnknownTokensExecutor(List<String> offendingTokens) {
+		return new UnknownTokensExecutor(offendingTokens);
 	}
 }

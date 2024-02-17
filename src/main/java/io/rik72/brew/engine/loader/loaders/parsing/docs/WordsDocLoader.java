@@ -21,6 +21,7 @@ public class WordsDocLoader implements Loadable {
 		Docs.Words doc = (Docs.Words) parser.parse(loadPath, fileName);
 		
 		Helpers.loadWordList(doc.words.names, Type.name, EntityType.none);
+		Helpers.loadWordList(doc.words.stopWords, Type.stop_word, EntityType.none);
 		Helpers.loadWordList(doc.words.prepositions, Type.preposition, EntityType.none);
 		Helpers.loadWordList(doc.words.directions, Type.direction, EntityType.none);
 		Helpers.loadWordList(doc.words.directionActions, Type._d_action, EntityType.none);

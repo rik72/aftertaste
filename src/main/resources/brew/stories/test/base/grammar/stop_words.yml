@@ -1,0 +1,8 @@
+words:
+  stopWords:
+    - text: the
+    - text: a
+    - text: an
+    - text: please
+    - text: I    
+    

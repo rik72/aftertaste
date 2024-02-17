@@ -3,6 +3,7 @@ package io.rik72.brew.engine.loader.loaders.parsing.raw;
 import java.util.List;
 
 public class DictionaryRaw extends Raw {
+	public List<WordRaw> stopWords;
 	public List<WordRaw> names;
 	public List<WordRaw> prepositions;
 	public List<WordRaw> directions;

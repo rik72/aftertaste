@@ -17,16 +17,17 @@ import jakarta.persistence.ManyToOne;
 public class Word implements AbstractEntity {
 
 	public static enum Type {
+		command,
 		direction,
 		_d_action,
 		_0_action,
 		_1_action,
 		_2_action,
-		command,
-		name,
-		preposition,
-		number,
 		entity,
+		name,
+		number,
+		preposition,
+		stop_word,
 	}
 
 	public static enum EntityType {
