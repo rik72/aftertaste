@@ -68,7 +68,7 @@ public class TerminalView extends AbstractView {
 		promptLabel.setMaxWidth(110);
 		promptField = new TextField();
 		promptField.setPrefColumnCount(200);
-		promptField.setFont(CurrentSkin.FONT_NORMAL);
+		promptField.setFont(CurrentSkin.getGUIFont());
 		promptField.setDisable(true);
 		promptField.setOnKeyPressed(event -> {
 			KeyCode kc = event.getCode();

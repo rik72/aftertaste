@@ -2,6 +2,7 @@ package io.rik72.brew.engine.loader.loaders;
 
 import java.util.List;
 
+import io.rik72.aftertaste.ui.skin.AftertasteFont;
 import io.rik72.aftertaste.ui.skin.Skin;
 import io.rik72.aftertaste.ui.skin.SkinData;
 import io.rik72.amber.logger.Log;
@@ -36,7 +37,7 @@ public class StoryLoader implements Loadable {
 
 			if (doc.story.skin.name != null) {
 				try {
-					skinEnum = Skin.valueOf(doc.story.skin.name);
+					skinEnum = Skin.valueOf(doc.story.skin.name.strip().toUpperCase());
 					skinData = new SkinData(skinEnum.data);
 				}
 				catch (Exception e) {
@@ -44,7 +45,9 @@ public class StoryLoader implements Loadable {
 				}
 			}
 
-			if (doc.story.skin.colorTextFlowNormal != null ||
+			if (doc.story.skin.fontFamily != null ||
+				doc.story.skin.fontSize != null ||
+			    doc.story.skin.colorTextFlowNormal != null ||
 				doc.story.skin.colorTextFlowHilight != null ||
 				doc.story.skin.colorTextFlowEmphasis != null ||
 				doc.story.skin.colorTextFlowBg != null ||
@@ -61,6 +64,8 @@ public class StoryLoader implements Loadable {
 				doc.story.skin.colorWindowsModalBorder != null) {
 					skinEnum = Skin.CUSTOM;
 					SkinData storySkinData = new SkinData(
+						AftertasteFont.valueOf(doc.story.skin.fontFamily.strip().toUpperCase()),
+						doc.story.skin.fontSize,
 						doc.story.skin.colorTextFlowNormal,
 						doc.story.skin.colorTextFlowHilight,
 						doc.story.skin.colorTextFlowEmphasis,

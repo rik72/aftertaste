@@ -37,7 +37,7 @@ public class TerminalUX {
 
 	public void print(String text) {
 		Text textItem = new Text(text);
-		textItem.setFont(CurrentSkin.FONT_NORMAL);
+		textItem.setFont(CurrentSkin.getTerminalFontNormal());
 		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_NORMAL);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
@@ -50,7 +50,7 @@ public class TerminalUX {
 
 	public void hilightln(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(CurrentSkin.FONT_HILIGHT);
+		textItem.setFont(CurrentSkin.getTerminalFontHilight());
 		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_HILIGHT);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);
@@ -63,7 +63,7 @@ public class TerminalUX {
 
 	public void emphasisLongText(String text) {
 		Text textItem = new Text(text.strip() + "\n");
-		textItem.setFont(CurrentSkin.FONT_EMPHASIS);
+		textItem.setFont(CurrentSkin.getTerminalFontEmphasis());
 		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_EMPHASIS);
 		textItem.setLineSpacing(3);
 		gui.getTextFlow().getChildren().add(textItem);

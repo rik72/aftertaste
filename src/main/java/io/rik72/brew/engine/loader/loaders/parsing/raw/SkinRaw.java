@@ -2,6 +2,8 @@ package io.rik72.brew.engine.loader.loaders.parsing.raw;
 
 public class SkinRaw extends Raw {
 	public String name;
+	public String fontFamily;
+	public Integer fontSize;
 	public String colorTextFlowNormal;
 	public String colorTextFlowHilight;
 	public String colorTextFlowEmphasis;

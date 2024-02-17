@@ -55,7 +55,7 @@ public class ConfirmModal extends Stage {
 
 		dialogButtonsBox.getChildren().addAll(spacerl, yesButton, noButton, spacerr);
 		Text questionText = new Text(question);
-		questionText.setFont(CurrentSkin.FONT_NORMAL);
+		questionText.setFont(CurrentSkin.getGUIFont());
 		questionText.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_WINDOW_TEXT);
 		vBox.getChildren().addAll(questionText, spacerv, dialogButtonsBox);
 		BorderPane.setMargin(vBox, new Insets(10));

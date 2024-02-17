@@ -1,6 +1,9 @@
 package io.rik72.aftertaste.ui.skin;
 
 public class SkinData {
+	public AftertasteFont font;
+	public Integer fontSize;
+
 	public String COLOR_TEXT_FLOW_NORMAL;
 	public String COLOR_TEXT_FLOW_HILIGHT;
 	public String COLOR_TEXT_FLOW_EMPHASIS;
@@ -17,7 +20,10 @@ public class SkinData {
 	public String COLOR_WINDOW_MODAL_BG;
 	public String COLOR_WINDOW_MODAL_BORDER;
 
-	public SkinData(String COLOR_TEXT_FLOW_NORMAL,
+	public SkinData(
+		          AftertasteFont font,
+				  Integer fontSize,
+				  String COLOR_TEXT_FLOW_NORMAL,
 				  String COLOR_TEXT_FLOW_HILIGHT,
 				  String COLOR_TEXT_FLOW_EMPHASIS,
 				  String COLOR_TEXT_FLOW_BG,
@@ -32,6 +38,8 @@ public class SkinData {
 				  String COLOR_WINDOW_HOVER,
 				  String COLOR_WINDOW_MODAL_BG,
 				  String COLOR_WINDOW_MODAL_BORDER) {
+		this.font = font;
+		this.fontSize = fontSize;
 		this.COLOR_TEXT_FLOW_NORMAL = COLOR_TEXT_FLOW_NORMAL;
 		this.COLOR_TEXT_FLOW_HILIGHT = COLOR_TEXT_FLOW_HILIGHT;
 		this.COLOR_TEXT_FLOW_EMPHASIS = COLOR_TEXT_FLOW_EMPHASIS;
@@ -50,6 +58,8 @@ public class SkinData {
 	}
 
 	public SkinData(SkinData skinData) {
+		this.font = skinData.font;
+		this.fontSize = skinData.fontSize;
 		this.COLOR_TEXT_FLOW_NORMAL = skinData.COLOR_TEXT_FLOW_NORMAL;
 		this.COLOR_TEXT_FLOW_HILIGHT = skinData.COLOR_TEXT_FLOW_HILIGHT;
 		this.COLOR_TEXT_FLOW_EMPHASIS = skinData.COLOR_TEXT_FLOW_EMPHASIS;
@@ -68,29 +78,33 @@ public class SkinData {
 	}
 
 	public void applyOverrides(SkinData overrides) {
-		this.COLOR_TEXT_FLOW_NORMAL = elvis(overrides.COLOR_TEXT_FLOW_NORMAL, this.COLOR_TEXT_FLOW_NORMAL);
-		this.COLOR_TEXT_FLOW_HILIGHT = elvis(overrides.COLOR_TEXT_FLOW_HILIGHT, this.COLOR_TEXT_FLOW_HILIGHT);
-		this.COLOR_TEXT_FLOW_EMPHASIS = elvis(overrides.COLOR_TEXT_FLOW_EMPHASIS, this.COLOR_TEXT_FLOW_EMPHASIS);
-		this.COLOR_TEXT_FLOW_BG = elvis(overrides.COLOR_TEXT_FLOW_BG, this.COLOR_TEXT_FLOW_BG);
-		this.COLOR_TEXT_FLOW_SCROLLBAR = elvis(overrides.COLOR_TEXT_FLOW_SCROLLBAR, this.COLOR_TEXT_FLOW_SCROLLBAR);
-		this.COLOR_MENU_BG = elvis(overrides.COLOR_MENU_BG, this.COLOR_MENU_BG);
-		this.COLOR_MENU_HILIGHT = elvis(overrides.COLOR_MENU_HILIGHT, this.COLOR_MENU_HILIGHT);
-		this.COLOR_MENU_SEPARATOR = elvis(overrides.COLOR_MENU_SEPARATOR, this.COLOR_MENU_SEPARATOR);
-		this.COLOR_WINDOW_BG = elvis(overrides.COLOR_WINDOW_BG, this.COLOR_WINDOW_BG);
-		this.COLOR_WINDOW_TEXT = elvis(overrides.COLOR_WINDOW_TEXT, this.COLOR_WINDOW_TEXT);
-		this.COLOR_WINDOW_LOCATION_IMAGE_BG = elvis(overrides.COLOR_WINDOW_LOCATION_IMAGE_BG, this.COLOR_WINDOW_LOCATION_IMAGE_BG);
-		this.COLOR_WINDOW_BUTTON = elvis(overrides.COLOR_WINDOW_BUTTON, this.COLOR_WINDOW_BUTTON);
-		this.COLOR_WINDOW_HOVER = elvis(overrides.COLOR_WINDOW_HOVER, this.COLOR_WINDOW_HOVER);
-		this.COLOR_WINDOW_MODAL_BG = elvis(overrides.COLOR_WINDOW_MODAL_BG, this.COLOR_WINDOW_MODAL_BG);
-		this.COLOR_WINDOW_MODAL_BORDER = elvis(overrides.COLOR_WINDOW_MODAL_BORDER, this.COLOR_WINDOW_MODAL_BORDER);
+		this.font = (AftertasteFont) elvis(overrides.font, this.font);
+		this.fontSize = (Integer) elvis(overrides.fontSize, this.fontSize);
+		this.COLOR_TEXT_FLOW_NORMAL = (String) elvis(overrides.COLOR_TEXT_FLOW_NORMAL, this.COLOR_TEXT_FLOW_NORMAL);
+		this.COLOR_TEXT_FLOW_HILIGHT = (String) elvis(overrides.COLOR_TEXT_FLOW_HILIGHT, this.COLOR_TEXT_FLOW_HILIGHT);
+		this.COLOR_TEXT_FLOW_EMPHASIS = (String) elvis(overrides.COLOR_TEXT_FLOW_EMPHASIS, this.COLOR_TEXT_FLOW_EMPHASIS);
+		this.COLOR_TEXT_FLOW_BG = (String) elvis(overrides.COLOR_TEXT_FLOW_BG, this.COLOR_TEXT_FLOW_BG);
+		this.COLOR_TEXT_FLOW_SCROLLBAR = (String) elvis(overrides.COLOR_TEXT_FLOW_SCROLLBAR, this.COLOR_TEXT_FLOW_SCROLLBAR);
+		this.COLOR_MENU_BG = (String) elvis(overrides.COLOR_MENU_BG, this.COLOR_MENU_BG);
+		this.COLOR_MENU_HILIGHT = (String) elvis(overrides.COLOR_MENU_HILIGHT, this.COLOR_MENU_HILIGHT);
+		this.COLOR_MENU_SEPARATOR = (String) elvis(overrides.COLOR_MENU_SEPARATOR, this.COLOR_MENU_SEPARATOR);
+		this.COLOR_WINDOW_BG = (String) elvis(overrides.COLOR_WINDOW_BG, this.COLOR_WINDOW_BG);
+		this.COLOR_WINDOW_TEXT = (String) elvis(overrides.COLOR_WINDOW_TEXT, this.COLOR_WINDOW_TEXT);
+		this.COLOR_WINDOW_LOCATION_IMAGE_BG = (String) elvis(overrides.COLOR_WINDOW_LOCATION_IMAGE_BG, this.COLOR_WINDOW_LOCATION_IMAGE_BG);
+		this.COLOR_WINDOW_BUTTON = (String) elvis(overrides.COLOR_WINDOW_BUTTON, this.COLOR_WINDOW_BUTTON);
+		this.COLOR_WINDOW_HOVER = (String) elvis(overrides.COLOR_WINDOW_HOVER, this.COLOR_WINDOW_HOVER);
+		this.COLOR_WINDOW_MODAL_BG = (String) elvis(overrides.COLOR_WINDOW_MODAL_BG, this.COLOR_WINDOW_MODAL_BG);
+		this.COLOR_WINDOW_MODAL_BORDER = (String) elvis(overrides.COLOR_WINDOW_MODAL_BORDER, this.COLOR_WINDOW_MODAL_BORDER);
 	}
 
-	private String elvis(String curl, String eyes) {
+	private Object elvis(Object curl, Object eyes) {
 		return curl != null ? curl : eyes;
 	}
 
 	public boolean check() {
 		return
+			font != null &&
+			fontSize != null && fontSize > 0 &&
 			COLOR_TEXT_FLOW_NORMAL != null && COLOR_TEXT_FLOW_NORMAL.length() > 0 &&
 			COLOR_TEXT_FLOW_HILIGHT != null && COLOR_TEXT_FLOW_HILIGHT.length() > 0 &&
 			COLOR_TEXT_FLOW_EMPHASIS != null && COLOR_TEXT_FLOW_EMPHASIS.length() > 0 &&

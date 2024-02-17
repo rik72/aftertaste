@@ -33,10 +33,13 @@ public class YmlParser {
 			inputStream.close();
 		}
 
-		Mergeable results = parsed.remove(0);
-		for (Mergeable toMerge : parsed)
-			results.merge(toMerge);
+		if (parsed.size() > 0) {
+			Mergeable results = parsed.remove(0);
+			for (Mergeable toMerge : parsed)
+				results.merge(toMerge);
+			return results;
+		}
 
-		return results;
+		return null;
 	}
 }

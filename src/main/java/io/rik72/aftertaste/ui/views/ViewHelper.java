@@ -107,7 +107,7 @@ public class ViewHelper {
 	public static void openAlertModal(String msg, int width , int height) {
 		AlertModal modal = createModal(width, height, 20);
 		Text msgText = new Text(msg);
-		msgText.setFont(CurrentSkin.FONT_NORMAL);
+		msgText.setFont(CurrentSkin.getGUIFont());
 		msgText.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_WINDOW_TEXT);
 		modal.getVBox().getChildren().add(msgText);
 		modal.show();
