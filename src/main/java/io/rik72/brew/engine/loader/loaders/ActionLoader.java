@@ -545,8 +545,8 @@ public class ActionLoader implements Loadable {
 
 		Log.skip();
 		Log.debug("CHARACTER => THING 1-ACTIONS =================================");
-		List<CharacterOnThing> ThingThing1Actions = CharacterOnThingRepository.get().findAll();
-		ThingThing1Actions.forEach(s -> Log.debug(s));
+		List<CharacterOnThing> characterThing1Actions = CharacterOnThingRepository.get().findAll();
+		characterThing1Actions.forEach(s -> Log.debug(s));
 		// Log.skip();
 		// Log.debug("CHARACTER => THING 2-ACTIONS =================================");
 		// List<ThingThingOnThing> ThingThing2Actions = ThingThingOnThingRepository.get().findAll();

@@ -1,5 +1,7 @@
 package io.rik72.aftertaste.ui.skin;
 
+import javafx.scene.text.Font;
+
 public enum Skin {
 
 	CUSTOM (
@@ -52,12 +54,22 @@ public enum Skin {
 	public String name;
 	public SkinData data;
 
-	public static Skin getDefaultSkin() {
+	public static Skin getDefault() {
 		return Skin.NIGHT;
 	}
 
 	private Skin(String name, SkinData data) {
 		this.name = name;
 		this.data = data;
+	}
+
+	public Font getTerminalFontNormal() {
+		return data.font.getNormal(data.fontSize);
+	}
+	public Font getTerminalFontHilight() {
+		return data.font.getHilight(data.fontSize);
+	}
+	public Font getTerminalFontEmphasis() {
+		return data.font.getEmphasis(data.fontSize);
 	}
 }

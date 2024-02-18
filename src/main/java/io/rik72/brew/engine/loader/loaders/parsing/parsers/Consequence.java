@@ -1,9 +1,9 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
 
 public class Consequence extends Parser {
 
@@ -22,8 +22,8 @@ public class Consequence extends Parser {
 	}
 
 	// . -> invisible / ( something ) status -> other status ( some feedback )
-	public static Pattern consequenceP =
-		pattern("(\\.|([word]) *word) *(-> *word)? *(=> *word)? *([text])?");
+	public static ParseTypedPattern consequenceP =
+		pattern("consequenceP", "(\\.|([word]) *word) *(-> *word)? *(=> *word)? *([text])?");
 	public static String consequenceHR =
 		"( . | (thing) status_before [ -> status_after ]? [ => location_after ]? [ (feedback) ]? )";
 
@@ -37,7 +37,7 @@ public class Consequence extends Parser {
 		String feedback;
 		
 		if (raw != null) {
-			Matcher m = consequenceP.matcher(raw);
+			Matcher m = consequenceP.get().matcher(raw);
 			if (m.matches()) {
 				entity = trim(m.group(1));
 				canonical = trim(m.group(3));

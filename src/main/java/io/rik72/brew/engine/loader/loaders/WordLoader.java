@@ -14,7 +14,8 @@ public class WordLoader implements Loadable {
 
 	@Override
 	public void load(LoadPath loadPath) throws Exception {
-		for (String fileName : List.of("commands.yml", "prepositions.yml", "verbs.yml", "stop_words.yml", "other_names.yml")) {
+		for (String fileName : List.of("commands.yml", "prepositions.yml", "particles.yml", 
+		                                  "verbs.yml", "stop_words.yml", "other_names.yml")) {
 			WordsDocLoader loader = new WordsDocLoader(fileName);
 			loader.load(loadPath);
 		}

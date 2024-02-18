@@ -8,23 +8,31 @@ import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.EmptyOrMissingParseException;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.Raw;
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedString;
+import io.rik72.vati.ParseType;
 
 public abstract class Parser {
 	public static Parser parse(Raw raw) {
 		throw new UnsupportedOperationException();
 	}
 
-	protected static final String wordP = " *([a-z \\.]+) *";
-	protected static final String textP = " *([^()]+) *";
+	protected static ParseTypedString wordP =
+		new ParseTypedString("Parser.wordP", " *([a-z \\.]+) *", "　*(.+)　*");
+	protected static ParseTypedString textP =
+		new ParseTypedString("Parser.textP", " *([^()]+) *", "　*([^「」]+)　*");
 
-	protected static Pattern pattern(String pattern) {
+	protected static ParseTypedPattern pattern(String uniqueId, String pattern) {
+		return new ParseTypedPattern(uniqueId,
+			pattern(pattern, ParseType.ASCII), pattern(pattern, ParseType.JAPANESE));
+	}
+
+	private static Pattern pattern(String pattern, ParseType type) {
 		return Pattern.compile(pattern
-
 			.replace("[", "\\(")
 			.replace("]", "\\)")
-			.replace("word", wordP)
-			.replace("text", textP)
-
+			.replace("word", wordP.get(type))
+			.replace("text", textP.get(type))
 		);
 	}
 

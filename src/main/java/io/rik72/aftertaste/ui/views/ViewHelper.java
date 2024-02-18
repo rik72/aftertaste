@@ -47,6 +47,7 @@ public class ViewHelper {
 
 	public static void applySkin() {
 		CurrentSkin.setSkin(Story.get().getSkin(), Story.get().getSkinData());
+		Terminal.get().adjustPromptLabelSize();
     	App.getRoot().setStyle(
 			"-aft-color-menu-bg: " + CurrentSkin.data.COLOR_MENU_BG + ";" +
 			"-aft-color-menu-hilight: " + CurrentSkin.data.COLOR_MENU_HILIGHT + ";" +

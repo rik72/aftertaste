@@ -27,6 +27,7 @@ public class Word implements AbstractEntity {
 		name,
 		number,
 		preposition,
+		particle,
 		stop_word,
 	}
 

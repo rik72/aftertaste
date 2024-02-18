@@ -3,9 +3,9 @@ package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
 
 public class Direction extends Parser {
 
@@ -18,7 +18,7 @@ public class Direction extends Parser {
 	}
 
 	// tower ( fly )
-	public static Pattern directionP = pattern("word *([word])?");
+	public static ParseTypedPattern directionP = pattern("directionP", "word *([word])?");
 	public static String directionHR = "location [ (verb) ]?";
 
 	public static Direction parse(String raw) {
@@ -27,7 +27,7 @@ public class Direction extends Parser {
 		String verb;
 		
 		if (raw != null) {
-			Matcher m = directionP.matcher(raw);
+			Matcher m = directionP.get().matcher(raw);
 			if (m.matches()) {
 				location = trim(m.group(1));
 				verb = trim(m.group(3));

@@ -1,10 +1,10 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.PossibilityRaw;
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
 
 public class Possibility extends Parser {
 
@@ -23,10 +23,10 @@ public class Possibility extends Parser {
 	}
 
 	// fly ( The ceiling is very low. )
-	public static Pattern possibilityP = pattern("word *([text])? *(!important)?");
+	public static ParseTypedPattern possibilityP = pattern("possibilityP", "word *([text])? *(!important)?");
 	public static String possibilityHR = "verb [ (feedback) ]? [ !important ]?";
 	// ( initial ) fly
-	public static Pattern inheritP = pattern("[word] *word");
+	public static ParseTypedPattern inheritP = pattern("inheritP", "[word] *word");
 	public static String inheritHR = "(status) verb";
 
 	public static Possibility parse(PossibilityRaw raw) {
@@ -37,7 +37,7 @@ public class Possibility extends Parser {
 		String feedback;
 
 		if (raw.impossible != null) {
-			Matcher m = possibilityP.matcher(raw.impossible);
+			Matcher m = possibilityP.get().matcher(raw.impossible);
 			if (m.matches()) {
 				verb = trim(m.group(1));
 				feedback = trim(m.group(3));
@@ -49,7 +49,7 @@ public class Possibility extends Parser {
 		}
 
 		if (raw.possible != null) {
-			Matcher m = possibilityP.matcher(raw.possible);
+			Matcher m = possibilityP.get().matcher(raw.possible);
 			if (m.matches()) {
 				verb = trim( m.group(1));
 				feedback = trim(m.group(3));
@@ -61,7 +61,7 @@ public class Possibility extends Parser {
 		}
 
 		if (raw.inherit != null) {
-			Matcher m = inheritP.matcher(raw.inherit);
+			Matcher m = inheritP.get().matcher(raw.inherit);
 			if (m.matches()) {
 				inherit = trim(m.group(1));
 				verb = trim(m.group(2));

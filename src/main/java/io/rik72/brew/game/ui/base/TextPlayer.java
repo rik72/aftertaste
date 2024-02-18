@@ -6,6 +6,7 @@ import java.util.List;
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.vati.Strings;
 
 public class TextPlayer {
 
@@ -43,7 +44,7 @@ public class TextPlayer {
 		if (header.size() > 0) {
 			Terminal.get().skip(1);
 			for (String line : header) {
-				Terminal.get().println(line);
+				Terminal.get().printHeaderLn(line);
 			}
 			if (pages.size() > 0) {
 				Terminal.get().pressEnterToContinue(new Future() {
@@ -86,8 +87,10 @@ public class TextPlayer {
 						onFinish.onSuccess();
 				}
 			}
-		}, pages.size() > 0 || (pages.size() == 0 && footer.size() > 0) ?
-			defaultAction : finishAction);
+		},
+			Strings.get(
+				pages.size() > 0 || (pages.size() == 0 && footer.size() > 0) ?
+					defaultAction : finishAction));
 	}
 
 	public void finish() {
@@ -102,6 +105,6 @@ public class TextPlayer {
 				if (onFinish != null)
 					onFinish.onSuccess();
 			}
-		}, finishAction);
+		}, Strings.get(finishAction));
 	}
 }

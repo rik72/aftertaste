@@ -5,10 +5,10 @@ import javafx.scene.text.Font;
 public class CurrentSkin {
 
 	public static Skin skin;
-	public static SkinData data = Skin.getDefaultSkin().data;
+	public static SkinData data = Skin.getDefault().data;
 
 	static {
-		setSkin(Skin.getDefaultSkin());
+		setSkin(Skin.getDefault());
 	}
 
 	public static void setSkin(Skin skin) {
@@ -40,5 +40,4 @@ public class CurrentSkin {
 	public static Font getTerminalFontEmphasis() {
 		return data.font.getEmphasis(data.fontSize);
 	}
-
 }

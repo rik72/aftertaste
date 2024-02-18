@@ -10,6 +10,7 @@ import io.rik72.bottlerack.view.AbstractView;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.vati.Strings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -24,6 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
@@ -46,6 +48,7 @@ public class TerminalView extends AbstractView {
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private FileChooser fileChooser = new FileChooser();
 	private boolean menuShown = false;
+	private Label promptLabel;
 
 	public TerminalView(Stage stage) {
 		super(stage);
@@ -62,10 +65,9 @@ public class TerminalView extends AbstractView {
 		textFlow.setPadding(new Insets(0, 20, 0, 10));
 		textFlow.setStyle("-fx-background-color: -aft-color-text-flow-bg;");
 
-		Label promptLabel = new Label("Your action:");
+		promptLabel = new Label();
+		adjustPromptLabel();
 		promptLabel.setPadding(new Insets(0, 0, 0, 10));
-		promptLabel.setMinWidth(110);
-		promptLabel.setMaxWidth(110);
 		promptField = new TextField();
 		promptField.setPrefColumnCount(200);
 		promptField.setFont(CurrentSkin.getGUIFont());
@@ -126,6 +128,11 @@ public class TerminalView extends AbstractView {
         Terminal.get().setUX(new TerminalUX(this));
 
 		return rootPane;
+	}
+
+	public void adjustPromptLabel() {
+		promptLabel.setText(Strings.get("your_action"));
+		promptLabel.setMinWidth(Region.USE_PREF_SIZE);
 	}
 
 	public void onOpen() {

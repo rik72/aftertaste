@@ -9,5 +9,6 @@ public class StoryRaw {
 	public String title;
 	public String subtitle;
 	public List<String> intro;
+	public String locale;
 	public SkinRaw skin;
 }

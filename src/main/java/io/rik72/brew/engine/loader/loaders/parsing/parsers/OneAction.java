@@ -1,7 +1,8 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
 
 public class OneAction extends Parser {
 
@@ -14,7 +15,7 @@ public class OneAction extends Parser {
 	}
 
 	// take . ( Possessing this item makes you feel more literate. )
-	public static Pattern oneActionP = pattern("word *\\. *([text])?");
+	public static ParseTypedPattern oneActionP = pattern("oneActionP", "word *\\. *([text])?");
 	public static String oneActionHR = "verb . [ (feedback) ]?";
 
 	public static OneAction parse(String raw) {
@@ -22,7 +23,7 @@ public class OneAction extends Parser {
 		String verb;
 		String feedback;
 
-		Matcher m = oneActionP.matcher(raw);
+		Matcher m = oneActionP.get().matcher(raw);
 		if (m.matches()) {
 			verb = trim( m.group(1));
 			feedback = trim(m.group(3));

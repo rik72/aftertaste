@@ -1,7 +1,8 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
 
 public class TwoAction extends Parser {
 
@@ -20,7 +21,7 @@ public class TwoAction extends Parser {
 	}
 
     // put . ( on ) ( toolshed.shelves ) initial ( some optional feedback )
-	public static Pattern twoActionP = pattern("word *\\. *[word] *[word] *word *([text])?");
+	public static ParseTypedPattern twoActionP = pattern("twoActionP", "word *\\. *[word] *[word] *word *([text])?");
 	public static String twoActionHR = "verb . (preposition) (supplement) status [ (feedback) ]?";
 
 	public static TwoAction parse(String raw) {
@@ -31,7 +32,7 @@ public class TwoAction extends Parser {
 		String supplementStatus;
 		String feedback;
 
-		Matcher m = twoActionP.matcher(raw);
+		Matcher m = twoActionP.get().matcher(raw);
 		if (m.matches()) {
 			verb = trim( m.group(1));
 			preposition = trim( m.group(2));

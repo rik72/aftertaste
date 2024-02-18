@@ -112,6 +112,13 @@ public class Docs {
 			else
 				words.prepositions = ((Words)other).words.prepositions;
 
+			if (words.particles != null) {
+				if (((Words)other).words.particles != null)
+					words.particles.addAll(((Words)other).words.particles);
+			}
+			else
+				words.particles = ((Words)other).words.particles;
+
 			if (words.stopWords != null) {
 				if (((Words)other).words.stopWords != null)
 					words.stopWords.addAll(((Words)other).words.stopWords);

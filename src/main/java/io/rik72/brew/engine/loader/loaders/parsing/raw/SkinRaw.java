@@ -12,11 +12,11 @@ public class SkinRaw extends Raw {
 	public String colorMenuBg;
 	public String colorMenuHilight;
 	public String colorMenuSeparator;
-	public String colorWindowsBg;
-	public String colorWindowsText;
-	public String colorWindowsLocationImageBg;
-	public String colorWindowsButton;
-	public String colorWindowsHover;
-	public String colorWindowsModalBg;
-	public String colorWindowsModalBorder;
+	public String colorWindowBg;
+	public String colorWindowText;
+	public String colorWindowLocationImageBg;
+	public String colorWindowButton;
+	public String colorWindowHover;
+	public String colorWindowModalBg;
+	public String colorWindowModalBorder;
 }

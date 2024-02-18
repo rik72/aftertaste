@@ -23,6 +23,7 @@ public class WordsDocLoader implements Loadable {
 			Helpers.loadWordList(doc.words.names, Type.name, EntityType.none);
 			Helpers.loadWordList(doc.words.stopWords, Type.stop_word, EntityType.none);
 			Helpers.loadWordList(doc.words.prepositions, Type.preposition, EntityType.none);
+			Helpers.loadWordList(doc.words.particles, Type.particle, EntityType.none);
 			Helpers.loadWordList(doc.words.directions, Type.direction, EntityType.none);
 			Helpers.loadWordList(doc.words.directionActions, Type._d_action, EntityType.none);
 			Helpers.loadWordList(doc.words.zeroActions, Type._0_action, EntityType.none);

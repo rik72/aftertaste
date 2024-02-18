@@ -6,6 +6,7 @@ public class DictionaryRaw extends Raw {
 	public List<WordRaw> stopWords;
 	public List<WordRaw> names;
 	public List<WordRaw> prepositions;
+	public List<WordRaw> particles;
 	public List<WordRaw> directions;
 	public List<WordRaw> directionActions;
 	public List<WordRaw> zeroActions;

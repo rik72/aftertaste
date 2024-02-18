@@ -14,8 +14,11 @@ import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
+import io.rik72.brew.engine.settings.parse.CurrentParseType;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.StoryDescriptor;
+import io.rik72.vati.Strings;
+import io.rik72.vati.VatiLocale;
 
 public class StoryLoader implements Loadable {
 
@@ -30,8 +33,21 @@ public class StoryLoader implements Loadable {
 			for (String item : doc.story.intro)
 				Story.get().getIntro().add(item.strip());
 		}
-		
-		Skin skinEnum = Skin.getDefaultSkin();
+
+		VatiLocale localeEnum = VatiLocale.getDefault();
+		if (doc.story.locale != null) {
+			try {
+				localeEnum = VatiLocale.valueOf(doc.story.locale.strip().toUpperCase());
+			}
+			catch (Exception e) {
+				throw new IllegalParseException("locale: " + e.getMessage());
+			}
+		}
+		Story.get().setLocale(localeEnum);
+		Strings.setLocale(localeEnum.getLocale());
+		CurrentParseType.setType(localeEnum.getParseType());
+
+		Skin skinEnum = Skin.getDefault();
 		SkinData skinData = new SkinData(skinEnum.data);
 		if (doc.story.skin != null) {
 
@@ -55,13 +71,13 @@ public class StoryLoader implements Loadable {
 				doc.story.skin.colorMenuBg != null ||
 				doc.story.skin.colorMenuHilight != null ||
 				doc.story.skin.colorMenuSeparator != null ||
-				doc.story.skin.colorWindowsBg != null ||
-				doc.story.skin.colorWindowsText != null ||
-				doc.story.skin.colorWindowsLocationImageBg != null ||
-				doc.story.skin.colorWindowsButton != null ||
-				doc.story.skin.colorWindowsHover != null ||
-				doc.story.skin.colorWindowsModalBg != null ||
-				doc.story.skin.colorWindowsModalBorder != null) {
+				doc.story.skin.colorWindowBg != null ||
+				doc.story.skin.colorWindowText != null ||
+				doc.story.skin.colorWindowLocationImageBg != null ||
+				doc.story.skin.colorWindowButton != null ||
+				doc.story.skin.colorWindowHover != null ||
+				doc.story.skin.colorWindowModalBg != null ||
+				doc.story.skin.colorWindowModalBorder != null) {
 					skinEnum = Skin.CUSTOM;
 					SkinData storySkinData = new SkinData(
 						AftertasteFont.valueOf(doc.story.skin.fontFamily.strip().toUpperCase()),
@@ -74,13 +90,13 @@ public class StoryLoader implements Loadable {
 						doc.story.skin.colorMenuBg,
 						doc.story.skin.colorMenuHilight,
 						doc.story.skin.colorMenuSeparator,
-						doc.story.skin.colorWindowsBg,
-						doc.story.skin.colorWindowsText,
-						doc.story.skin.colorWindowsLocationImageBg,
-						doc.story.skin.colorWindowsButton,
-						doc.story.skin.colorWindowsHover,
-						doc.story.skin.colorWindowsModalBg,
-						doc.story.skin.colorWindowsModalBorder);
+						doc.story.skin.colorWindowBg,
+						doc.story.skin.colorWindowText,
+						doc.story.skin.colorWindowLocationImageBg,
+						doc.story.skin.colorWindowButton,
+						doc.story.skin.colorWindowHover,
+						doc.story.skin.colorWindowModalBg,
+						doc.story.skin.colorWindowModalBorder);
 
 					skinData.applyOverrides(storySkinData);
 			}

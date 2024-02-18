@@ -7,12 +7,14 @@ import org.girod.javafx.svgimage.SVGLoader;
 
 import io.rik72.aftertaste.App;
 import io.rik72.aftertaste.ui.skin.CurrentSkin;
+import io.rik72.aftertaste.ui.skin.Skin;
 import io.rik72.aftertaste.ui.views.TerminalView;
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
+import io.rik72.vati.Strings;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -48,6 +50,15 @@ public class TerminalUX {
 		print(text.strip() + "\n");
 	}
 
+	public void printHeaderLn(String text) {
+		Text textItem = new Text(text + "\n");
+		textItem.setFont(Skin.getDefault().getTerminalFontNormal());
+		textItem.setStyle("-fx-fill: " + CurrentSkin.data.COLOR_TEXT_FLOW_NORMAL);
+		textItem.setLineSpacing(3);
+		gui.getTextFlow().getChildren().add(textItem);
+		gui.setScrollToBottom();
+	}
+
 	public void hilightln(String text) {
 		Text textItem = new Text(text.strip() + "\n");
 		textItem.setFont(CurrentSkin.getTerminalFontHilight());
@@ -76,7 +87,7 @@ public class TerminalUX {
 
 	public void pressEnterTo(Future then, String action) {
 		skip(1);
-		hilightln("(Press ENTER to " + action + ")");
+		hilightln(Strings.get("press_enter_to", action));
 		skip(1);
 		gui.setEnterListener(then);
 	}
@@ -94,7 +105,7 @@ public class TerminalUX {
 	}
 
 	public void pressEnterToContinue(Future then) {
-		pressEnterTo(then, "continue");
+		pressEnterTo(then, Strings.get("continue"));
 	}
 
 	public void openInput() {
@@ -167,5 +178,9 @@ public class TerminalUX {
 
 	public File chooseDirectory(String dialogTitle) {
 		return gui.chooseDirectory(dialogTitle);
+	}
+
+	public void adjustPromptLabelSize() {
+		gui.adjustPromptLabel();
 	}
 }

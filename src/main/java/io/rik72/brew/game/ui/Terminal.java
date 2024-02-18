@@ -85,7 +85,7 @@ public class Terminal extends TerminalBase {
 				Terminal.get().openInput();
 			}			
 		});
-		player.setFinishAction("begin adventuring...");
+		player.setFinishAction("begin_adventuring");
 
 		player.start();
 	}
@@ -106,7 +106,7 @@ public class Terminal extends TerminalBase {
 				close();
 			}			
 		});
-		player.setFinishAction("finish game");
+		player.setFinishAction("finish_game");
 
 		player.start();
 	}

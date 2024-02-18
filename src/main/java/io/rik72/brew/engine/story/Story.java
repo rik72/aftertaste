@@ -29,12 +29,14 @@ import io.rik72.brew.engine.loader.loaders.WordLoader;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltas;
+import io.rik72.vati.VatiLocale;
 
 public class Story {
 	private StoryDescriptor descriptor;
 	private List<String> intro = new ArrayList<>();
 	private Skin skin;
 	private SkinData skinData;
+	private VatiLocale locale;
 
 	private Story() {
 	}
@@ -84,6 +86,14 @@ public class Story {
 
 	public SkinData getSkinData() {
 		return skinData;
+	}
+
+	public VatiLocale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(VatiLocale locale) {
+		this.locale = locale;
 	}
 
 	public void restart() throws Exception {

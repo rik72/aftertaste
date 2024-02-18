@@ -23,6 +23,10 @@ public abstract class TerminalBase {
 		ux.println(text);
 	}
 
+	public void printHeaderLn(String text) {
+		ux.printHeaderLn(text);
+	}
+
 	public void println(String text) {
 		ux.println(text);
 	}
@@ -98,5 +102,9 @@ public abstract class TerminalBase {
 	public void close() {
 		Terminal.get().setInGame(false);
 		ux.closeTerminalView();
+	}
+
+	public void adjustPromptLabelSize() {
+		ux.adjustPromptLabelSize();
 	}
 }
