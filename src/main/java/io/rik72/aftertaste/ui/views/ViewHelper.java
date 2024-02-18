@@ -6,6 +6,7 @@ import io.rik72.aftertaste.App;
 import io.rik72.aftertaste.ui.skin.CurrentSkin;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.story.Story;
+import io.rik72.brew.engine.story.StoryDescriptor;
 import io.rik72.brew.engine.story.registry.StoryRegistry;
 import io.rik72.brew.game.BrewController;
 import io.rik72.brew.game.savegames.SaveGame;
@@ -86,6 +87,26 @@ public class ViewHelper {
 		}
 	}
 
+
+	public static void removeStory(StoryDescriptor story) throws Exception {
+		switch (story.getLoadPath().getLoadType()) {
+			case CAN: {
+				StoryRegistry.get().removeStoryCan(story.getLoadPath().getPath());
+				openAlertModal("Story removed successfully", 360, 120);
+				break;
+			}
+
+			case FOLDER: {
+				StoryRegistry.get().removeStoryFolder(story.getLoadPath().getPath());
+				openAlertModal("Story removed successfully", 360, 120);
+				break;
+			}
+
+			default: {
+				openAlertModal("This story cannot be removed.", 360, 120);
+			}
+		}
+	}
 
 	public static void load() throws Exception {
 		File file = Terminal.get().chooseOpenFile("Load game", "Savegame", "*.save");

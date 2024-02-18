@@ -24,7 +24,6 @@ public class StoryRegistry {
 		initEmbeddedStory();
 		initStoryFolders();
 		initStoryCans();
-		// Collection<String> files = FileUtils.findFiles("story.yml", new LoadPath("/Users/riccardo/Projects/rik/c64/aftertaste/stories/test-zipped.can", LoadType.CAN));
 	}
 
 	private void initEmbeddedStory() throws Exception {

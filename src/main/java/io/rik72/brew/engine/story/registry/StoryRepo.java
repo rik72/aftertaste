@@ -16,7 +16,7 @@ public abstract class StoryRepo {
 	protected StoryRepo(String repoPrefsKey) {
 		this.repoPrefsKey = repoPrefsKey;
 		String pathString = getPref();
-		if (pathString != null) {
+		if (pathString != null && pathString.length() > 0) {
 			String[] pathArray = pathString.split(":");
 			paths.addAll(Arrays.asList(pathArray));
 		}

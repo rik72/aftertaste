@@ -1,5 +1,6 @@
 package io.rik72.aftertaste.ui.views.menu;
 
+import io.rik72.brew.engine.loader.LoadType;
 import io.rik72.brew.engine.story.StoryDescriptor;
 import io.rik72.brew.engine.story.registry.StoryRegistry;
 import javafx.scene.control.Menu;
@@ -21,25 +22,28 @@ public class TopMenu extends MenuBar {
 
         // Story menu
         storiesMenu = new Menu("Stories");
+
+        // add stories
+        for (StoryDescriptor descriptor : StoryRegistry.get().getAll())
+            addStory(descriptor);
+        
+        // other items
         MenuItem addStoryFolder = new AddStoryFolder("Add story from folder...");
         MenuItem addStoryCan = new AddStoryCan("Add story from .can file...");
         storiesMenu.getItems().addAll(new SeparatorMenuItem(), addStoryFolder, addStoryCan);
-
-        // add stories
-        int i = 1;
-        for (StoryDescriptor descriptor : StoryRegistry.get().getAll())
-            addStory(i++, descriptor);
 
         // add menus
         this.getMenus().add(aftertasteMenu);
         this.getMenus().add(storiesMenu);
     }	
 
-    public void addStory(int position, StoryDescriptor descriptor) {
+    public void addStory(StoryDescriptor descriptor) {
         Menu thisStoryMenu = new Menu(descriptor.getTitle());
         MenuItem gameNew = new GameNew("New game", descriptor);
         MenuItem gameLoad = new GameLoad("Load saved game...", descriptor);
         thisStoryMenu.getItems().addAll(gameNew, gameLoad);
-        storiesMenu.getItems().add(position, thisStoryMenu);
+        if (descriptor.getLoadPath().getLoadType() != LoadType.RESOURCES)
+            thisStoryMenu.getItems().addAll(new SeparatorMenuItem(), new RemoveStory("Remove this story...", descriptor));
+        storiesMenu.getItems().add(thisStoryMenu);
     }
 }
