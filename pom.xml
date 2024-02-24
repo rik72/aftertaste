@@ -54,6 +54,68 @@
     </dependencies>
     <profiles>
         <profile>
+            <id>win-shade-exe</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.5.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>io.rik72.aftertaste.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>l4j-gui</id>
+                                <phase>package</phase>
+                                <goals><goal>launch4j</goal></goals>
+                                <configuration>
+                                    <headerType>gui</headerType>
+                                    <outfile>target/aftertaste.exe</outfile>
+                                    <icon>src/res/Aftertaste.ico</icon>
+                                    <jar>target/aftertaste.jar</jar>
+                                    <errTitle>Aftertaste</errTitle>
+                                    <classPath>
+                                        <mainClass>io.rik72.aftertaste.Main</mainClass>
+                                    </classPath>
+                                    <jre>
+                                        <minVersion>21.0.0</minVersion>
+                                    </jre>
+                                    <versionInfo>
+                                        <fileVersion>0.9.0.0</fileVersion>
+                                        <txtFileVersion>0.9.0</txtFileVersion>
+                                        <fileDescription>0.9.0</fileDescription>
+                                        <copyright>Open Source Developer, Riccardo Mazzei</copyright>
+                                        <productVersion>0.9.0.0</productVersion>
+                                        <txtProductVersion>0.9.0</txtProductVersion>
+                                        <productName>Aftertaste</productName>
+                                        <internalName>Aftertaste</internalName>
+                                        <originalFilename>Aftertaste.exe</originalFilename>
+                                    </versionInfo>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>    
+        <profile>
             <id>shade</id>
             <build>
                 <plugins>
@@ -62,19 +124,19 @@
                         <artifactId>maven-shade-plugin</artifactId>
                         <version>3.5.1</version>
                         <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>shade</goal>
-                            </goals>
-                            <configuration>
-                                <transformers>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>io.rik72.aftertaste.Main</mainClass>
-                                    </transformer>
-                                </transformers>
-                            </configuration>
-                        </execution>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>io.rik72.aftertaste.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
