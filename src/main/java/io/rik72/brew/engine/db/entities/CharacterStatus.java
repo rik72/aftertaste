@@ -2,6 +2,7 @@ package io.rik72.brew.engine.db.entities;
 
 import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.entities.AbstractEntity;
 import io.rik72.mammoth.exceptions.EntityNotFoundException;
@@ -38,19 +39,27 @@ public class CharacterStatus implements AbstractEntity, Status {
     @JoinColumn
 	private Character character;
 
-    @Column
-    private String finale;
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup transition;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup finale;
 
 	public CharacterStatus() {
 	}
 
-	public CharacterStatus(String characterName, String label, String brief, String description, String canonical, String finale) {
+	public CharacterStatus(String characterName, String label, String brief, String description, String canonical, String transition, String finale) {
 		setCharacter(characterName);
 		this.label = label;
 		this.brief = brief;
 		this.description = description;
 		this.canonical = canonical;
-		this.finale = finale;
+		if (transition != null)
+			setTransition(transition);
+		if (finale != null)
+			setFinale(finale);
 	}
 
 	@Override
@@ -80,8 +89,24 @@ public class CharacterStatus implements AbstractEntity, Status {
 			throw new EntityNotFoundException("Character", characterName);
 	}
 
-	public String getFinale() {
+	public TextGroup getTransition() {
+		return transition;
+	}
+
+	public void setTransition(String textGroup) {
+		this.transition = TextGroupRepository.get().getByName(textGroup);
+		if (this.transition == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
+	public TextGroup getFinale() {
 		return finale;
+	}
+
+	public void setFinale(String textGroup) {
+		this.finale = TextGroupRepository.get().getByName(textGroup);
+		if (this.finale == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
 	}
 
 	@Override
@@ -102,7 +127,8 @@ public class CharacterStatus implements AbstractEntity, Status {
 			"canonical=" + TextUtils.denormalize(canonical) + ", " + 
 			"brief=" + TextUtils.denormalize(brief) + ", " + 
 			"description=" + TextUtils.denormalize(description) + ", " + 
-			"finale=" + TextUtils.denormalize(finale) +
+			"transition=" + transition + ", " +
+			"finale=" + finale +
 		" }";
     }
 }

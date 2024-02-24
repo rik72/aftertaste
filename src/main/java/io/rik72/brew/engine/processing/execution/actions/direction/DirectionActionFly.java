@@ -30,7 +30,7 @@ public class DirectionActionFly extends DirectionActionExecutor {
 			if (connection.getDirection().getText().equals(direction.getCanonical().getText()) && (connection.getVerb() == null || connection.getVerb().getText().equals(verb.getCanonical().getText()))) {
 				subject.setLocation(connection.getToLocation());
 				DB.persist(subject);
-				return buildResults(true, true, doneFeedback());
+				return buildResults(true, true, doneFeedback(), null, null);
 			} 
 		}
 		return new Results(false, false, cantDoThat());

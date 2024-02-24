@@ -6,6 +6,7 @@ import java.util.Vector;
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.CharacterStatusPossibility;
 import io.rik72.brew.engine.db.entities.LocationStatusPossibility;
+import io.rik72.brew.engine.db.entities.TextGroup;
 import io.rik72.brew.engine.db.entities.ThingStatusPossibility;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Possibility;
@@ -134,7 +135,7 @@ public class ZeroActionExecutor extends Executor {
 		if (!possibility.isPossible()) {
 			if (possibility.getFeedback() != null && possibility.getFeedback().length() > 0)
 				possibilityFeedback = possibility.getFeedback();
-			results = buildResults(false, false, thisCantDoThat());
+			results = buildResults(false, false, thisCantDoThat(), null, null);
 		}
 		else {
 			possibilityFeedback = possibility.getFeedback();
@@ -142,16 +143,16 @@ public class ZeroActionExecutor extends Executor {
 		return results;
 	}
 
-	protected Results buildResults(boolean success, boolean refresh, String feedback) {
-		return buildResults(success, refresh, feedback, false, false);
+	protected Results buildResults(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale) {
+		return buildResults(success, refresh, feedback, transition, finale, false, false);
 	}
 
-	protected Results buildResults(boolean success, boolean refresh, String feedback, boolean emphasis) {
-		return buildResults(success, refresh, feedback, emphasis, false);
+	protected Results buildResults(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale, boolean emphasis) {
+		return buildResults(success, refresh, feedback, transition, finale, emphasis, false);
 	}
 
-	protected Results buildResults(boolean success, boolean refresh, String feedback, boolean emphasis, boolean restart) {
-		Results results = new Results(success, refresh, feedback, emphasis, restart);
+	protected Results buildResults(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale, boolean emphasis, boolean restart) {
+		Results results = new Results(success, refresh, feedback, transition, finale, emphasis, restart);
 		mergeFeedbacks(results);
 		return results;
 	}

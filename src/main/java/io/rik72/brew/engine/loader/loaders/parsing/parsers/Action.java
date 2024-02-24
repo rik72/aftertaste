@@ -11,11 +11,15 @@ public class Action extends Parser {
 	public OneAction oneAction;
 	public TwoAction twoAction;
 	public List<Consequence> consequences;
+	public String transition;
+	public String finale;
 
-	public Action(OneAction oneAction, TwoAction twoAction, List<Consequence> consequences) {
+	private Action(OneAction oneAction, TwoAction twoAction, List<Consequence> consequences, String transition, String finale) {
 		this.oneAction = oneAction;
 		this.twoAction = twoAction;
 		this.consequences = consequences;
+		this.transition = transition;
+		this.finale = finale;
 	}
 
 	public static Action parse(ActionRaw raw) {
@@ -35,6 +39,6 @@ public class Action extends Parser {
 			}
 		}
 
-		return new Action(oneAction, twoAction, consequences);
+		return new Action(oneAction, twoAction, consequences, raw.transition, raw.finale);
 	}
 }

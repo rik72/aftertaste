@@ -6,7 +6,9 @@ import io.rik72.aftertaste.ui.skin.AftertasteFont;
 import io.rik72.aftertaste.ui.skin.Skin;
 import io.rik72.aftertaste.ui.skin.SkinData;
 import io.rik72.amber.logger.Log;
+import io.rik72.brew.engine.db.entities.TextGroup;
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
@@ -30,8 +32,9 @@ public class StoryLoader implements Loadable {
 		Story.get().clear();
 		Story.get().setDescriptor(StoryDescriptor.load(loadPath));
 		if (doc.story.intro != null) {
-			for (String item : doc.story.intro)
-				Story.get().getIntro().add(item.strip());
+			TextGroup group = TextGroupRepository.get().getByName(doc.story.intro);
+			Story.get().getIntro().addAll(group.getTextStrings());
+			Story.get().setIntroId(group.getId());
 		}
 
 		VatiLocale localeEnum = VatiLocale.getDefault();

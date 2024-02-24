@@ -13,6 +13,7 @@ import io.rik72.brew.engine.settings.parse.registry.ParseTypedString;
 import io.rik72.vati.ParseType;
 
 public abstract class Parser {
+	
 	public static Parser parse(Raw raw) {
 		throw new UnsupportedOperationException();
 	}

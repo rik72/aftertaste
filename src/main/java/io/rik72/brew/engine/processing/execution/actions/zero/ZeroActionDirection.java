@@ -25,7 +25,7 @@ public class ZeroActionDirection extends ZeroActionExecutor {
 				subject.setLocation(connection.getToLocation());
 				DB.persist(subject);
 				setDoable(true);
-				return buildResults(true, true, doneFeedback());
+				return buildResults(true, true, doneFeedback(), null, null);
 			} 
 		}
 		return new Results(false, false, cantDoThat());

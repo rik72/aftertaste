@@ -90,7 +90,6 @@ things:
               - ( toolshed.note ) initial -> visible ( Under one of the cans you spot a small note on paper. )
               - ( toolshed.paints ) initial -> taken
               - ( lazlo ) initial -> encumbered ( You feel encumbered. )
-              - ( toolshed ) initial -> door.opened
           - action: drop .
             consequences:
               - ( lazlo ) encumbered -> initial ( You feel lighter now. )

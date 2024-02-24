@@ -2,6 +2,8 @@ package io.rik72.brew.game.ui;
 
 import io.rik72.aftertaste.config.Config;
 import io.rik72.brew.engine.db.entities.Location;
+import io.rik72.brew.engine.db.entities.TextGroup;
+import io.rik72.brew.engine.db.repositories.CharacterXTextGroupRepository;
 import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
@@ -13,7 +15,7 @@ import io.rik72.mammoth.db.DB;
 
 public class Terminal extends TerminalBase {
 
-	private static String finale;
+	private static TextGroup finale;
 
 	private String lastLocationDescription;
 
@@ -40,7 +42,6 @@ public class Terminal extends TerminalBase {
 
 		String title = Story.get().getDescriptor().getTitle();
 		String subtitle = Story.get().getDescriptor().getSubtitle().toLowerCase().strip();
-
 
 		player.getHeader().add("");
 		player.getHeader().add("");
@@ -87,13 +88,26 @@ public class Terminal extends TerminalBase {
 		});
 		player.setFinishAction("begin_adventuring");
 
+		Story.get().getMainCharacter().remember(Story.get().getIntroId());
+
 		player.start();
 	}
 
-	public void finale(final String finale) {
+	public void transition(TextGroup transition) {
+
 		TextPlayer player = new TextPlayer();
 
-		player.getPages().add(finale);
+		player.getPages().addAll(transition.getTextStrings());
+
+		Story.get().getMainCharacter().remember(transition);
+
+		player.start();
+	}
+
+	public void finale(TextGroup finale) {
+		TextPlayer player = new TextPlayer();
+
+		player.getPages().addAll(finale.getTextStrings());
 		player.getFooter().add("* * * * * * * * * * * * * * * * * * * *");
 		player.getFooter().add("");
 		player.getFooter().add("               T H E    E N D");
@@ -170,43 +184,78 @@ public class Terminal extends TerminalBase {
 				Terminal.get().showLocation();
 				lastLineSkipped = true;
 			}
-			
-			String characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
-			String locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
-			
-			finale = null;
-			if (characterFinale != null && characterFinale.length() > 0)
-				finale = characterFinale;
-			else if (locationFinale != null && locationFinale.length() > 0)
-				finale = locationFinale;
 
-			if (finale != null) {
-				if (!lastLineSkipped)
-					skip(1);
-				Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-				closeInput();
-				// dummy - required since the bubbling of last ENTER keypress is not done yet
-				pressEnterToContinue(new Future() {
-					@Override
-					public void onSuccess() {
-						pull(2);
-						printLongText(
-							"It seems your story has come to an end.\n" +
-							"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
-						// start finale text slideshow
-						pressEnterToContinue(new Future() {
-							@Override
-							public void onSuccess() {
-								pull(2);
-								skip(1);
-								finale(finale);
-							}
-						});
-					}
-				});
-			}
+			if (!checkForFinale(results, lastLineSkipped))
+				checkForTransition(results, lastLineSkipped);
+			
 			DB.commitTransaction();  // begun at the start of executeInput(...)
 		}
+	}
+
+	private boolean checkForTransition(Results results, boolean lastLineSkipped) {
+		TextGroup characterTransition = Story.get().getMainCharacter().getStatus().getTransition();
+		TextGroup resultsTransition = results.getTransition();
+		TextGroup locationTransition = Story.get().getMainCharacter().getLocation().getStatus().getTransition();
+
+		TextGroup transition = null;
+		if (characterTransition != null)
+			transition = characterTransition;
+		else if (resultsTransition != null)
+			transition = resultsTransition;
+		else if (locationTransition != null)
+			transition = locationTransition;
+
+		if (transition != null && !CharacterXTextGroupRepository.get().existsByCharacterAndTextGroup(
+			Story.get().getMainCharacter(), transition)) {
+				skip(1);
+				transition(transition);
+				return true;
+		}
+
+		return false;
+	}
+
+	private boolean checkForFinale(Results results, boolean lastLineSkipped) {
+		TextGroup characterFinale = Story.get().getMainCharacter().getStatus().getFinale();
+		TextGroup resultsFinale = results.getFinale();
+		TextGroup locationFinale = Story.get().getMainCharacter().getLocation().getStatus().getFinale();
+		
+		finale = null;
+		if (characterFinale != null)
+			finale = characterFinale;
+		else if (resultsFinale != null)
+			finale = resultsFinale;
+		else if (locationFinale != null)
+			finale = locationFinale;
+
+		if (finale != null) {
+			if (!lastLineSkipped)
+				skip(1);
+			Terminal.get().hilightln("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+			closeInput();
+			// dummy - required since the bubbling of last ENTER keypress is not done yet
+			pressEnterToContinue(new Future() {
+				@Override
+				public void onSuccess() {
+					pull(2);
+					printLongText(
+						"It seems your story has come to an end.\n" +
+						"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
+					// start finale text slideshow
+					pressEnterToContinue(new Future() {
+						@Override
+						public void onSuccess() {
+							pull(2);
+							skip(1);
+							finale(finale);
+						}
+					});
+				}
+			});
+			return true;
+		}
+
+		return false;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

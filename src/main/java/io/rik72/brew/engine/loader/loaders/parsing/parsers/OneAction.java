@@ -9,7 +9,7 @@ public class OneAction extends Parser {
 	public String verb;
 	public String feedback;
 
-	public OneAction(String verb, String feedback) {
+	private OneAction(String verb, String feedback) {
 		this.verb = verb;
 		this.feedback = feedback;
 	}

@@ -28,7 +28,7 @@ public class CommandRestart extends CommandExecutor {
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in restarting game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
 				}
-				Terminal.get().consumeResults(new Results(true, true, "", false, true));
+				Terminal.get().consumeResults(new Results(true, true, "", null, null, false, true));
 			}
 
 			@Override

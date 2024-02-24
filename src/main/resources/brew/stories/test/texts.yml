@@ -1,0 +1,37 @@
+texts:
+
+  - name: the awakening
+    chunks:
+      - >
+        You find yourself slowly and painfully emerging from a deep slumber, the very air you breathe
+        heavy with the weight of forgotten dreams. As consciousness reluctantly reclaims its grip,
+        a haze lifts, and the world swims into focus, revealing your own figure in a dimly lit space.
+
+        Slowly, awareness seeps in, a dull ache pervading every limb.
+
+  - name: that cans of paint can be heavy
+    chunks:
+      - >
+        You must remember this: a can can be uncannily heavy.
+
+  - name: you drank the night away
+    chunks:
+      - >
+        Now you remember: last night you drank too much beer and well... maybe letting the water imp drive home
+        was not a good idea.
+
+  - name: the tower finale
+    chunks:
+      - >
+        Your life goes back to business as usual, but every now and then you wonder
+        how on earth you ended up in that old cranky little toolshed...
+
+  - name: the suicide of a wizard
+    chunks:
+      - >
+        You become tired of your stupid life, everything looks so much of nothing to you.
+        You loose interest in seeking the way home or in anything else you could do at the moment.
+        You crash your head on the first spiked object you find.
+        
+        You die.
+

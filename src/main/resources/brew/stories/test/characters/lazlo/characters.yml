@@ -20,13 +20,11 @@ characters:
         brief: You are carrying something that burdens you.
         possibilities:
           - impossible: fly ( You are carrying too much! ) !important
-          - inherit: ( initial ) read 
+          - inherit: ( initial ) read
+        transition: that cans of paint can be heavy
       - status: suicidal
-        finale: >
-          You become tired of your stupid life, everything looks so much of nothing to you.
-          You loose interest in seeking the way home or in anything else you could do at the moment.
-          You crash your head on the first spiked object you find.
-          
-          You die.
+        finale: the suicide of a wizard
       - status: fatigued
-        finale: >
+        possibilities:
+          - impossible: fly ( You feel tired. ) !important
+          - inherit: ( initial ) read 

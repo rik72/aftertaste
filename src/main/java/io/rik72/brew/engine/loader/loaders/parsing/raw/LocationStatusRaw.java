@@ -9,5 +9,6 @@ public class LocationStatusRaw extends Raw {
 	public WordRaw word;
 	public DirectionsRaw directions;
 	public List<PossibilityRaw> possibilities;
+	public String transition;
 	public String finale;
 }

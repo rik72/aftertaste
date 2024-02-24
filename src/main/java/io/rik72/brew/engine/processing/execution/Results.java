@@ -3,6 +3,7 @@ package io.rik72.brew.engine.processing.execution;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rik72.brew.engine.db.entities.TextGroup;
 import io.rik72.brew.engine.utils.TextUtils;
 
 public class Results {
@@ -12,25 +13,33 @@ public class Results {
 	private boolean emphasis;
 	private boolean restart;
 	private List<String> texts = new ArrayList<>();
+	private TextGroup transition;
+	private TextGroup finale;
 
-	public Results(boolean success, boolean refresh, String feedback, boolean emphasis, boolean restart) {
+	public Results(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale, boolean emphasis, boolean restart) {
 		this.success = success;
 		this.refresh = refresh;
 		this.feedback = feedback;
+		this.transition = transition;
+		this.finale = finale;
 		this.emphasis = emphasis;
 		this.restart = restart;
 	}
 
-	public Results(boolean success, boolean refresh, String feedback, boolean emphasis) {
-		this(success, refresh, feedback, emphasis, false);
+	public Results(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale, boolean emphasis) {
+		this(success, refresh, feedback, transition, finale, emphasis, false);
+	}
+
+	public Results(boolean success, boolean refresh, String feedback, TextGroup transition, TextGroup finale) {
+		this(success, refresh, feedback, transition, finale, false, false);
 	}
 
 	public Results(boolean success, boolean refresh, String feedback) {
-		this(success, refresh, feedback, false, false);
+		this(success, refresh, feedback, null, null, false, false);
 	}
 
 	public Results(boolean success) {
-		this(success, false, null, false, false);
+		this(success, false, null, null, null, false, false);
 	}
 
 	public boolean isSuccess() {
@@ -71,6 +80,22 @@ public class Results {
 
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
+	}
+
+	public TextGroup getTransition() {
+		return transition;
+	}
+
+	public void setTransition(TextGroup transition) {
+		this.transition = transition;
+	}
+
+	public TextGroup getFinale() {
+		return finale;
+	}
+
+	public void setFinale(TextGroup finale) {
+		this.finale = finale;
 	}
 
 	public List<String> getTexts() {

@@ -70,7 +70,7 @@ public class CharacterLoader implements Loadable {
 				CharacterStatus status = new CharacterStatus(
 					chItem.name, stItem.status, stItem.brief, description,
 					stItem.word != null ? stItem.word.text : chItem.word.text,
-					stItem.finale != null ? stItem.finale.strip() : null);
+					stItem.transition, stItem.finale);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
 					throw new IllegalParseException("character status list: first item must be the 'initial' status");

@@ -15,7 +15,7 @@ public class Directions extends Parser {
 	public Direction up;
 	public Direction down;
 
-	public Directions(Direction north, Direction northeast, Direction east, Direction southeast, Direction south,
+	private Directions(Direction north, Direction northeast, Direction east, Direction southeast, Direction south,
 			Direction southwest, Direction west, Direction northwest, Direction up, Direction down) {
 		this.north = north;
 		this.northeast = northeast;

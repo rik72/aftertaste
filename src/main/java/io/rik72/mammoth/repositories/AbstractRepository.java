@@ -6,9 +6,15 @@ import io.rik72.mammoth.MultipleResultsException;
 import io.rik72.mammoth.db.DB;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Root;
 
 public abstract class AbstractRepository <T> {
+
+	public static enum OrderBy {
+		ASC,
+		DESC;
+	}
 
 	protected Class<T> entityClass;
 
@@ -40,6 +46,19 @@ public abstract class AbstractRepository <T> {
 		CriteriaQuery<T> cr = cb.createQuery(entityClass);
 		Root<T> root = cr.from(entityClass);
 		cr.select(root).where(cb.equal(root.get(field), value));
+		return DB.createQuery(cr).list();
+	}
+
+	public List<T> findByField(String field, Object value, String orderBy, OrderBy direction) {
+		CriteriaBuilder cb = DB.getCriteriaBuilder();
+		CriteriaQuery<T> cr = cb.createQuery(entityClass);
+		Root<T> root = cr.from(entityClass);
+		Order order = null;
+		if (direction == OrderBy.DESC)
+			order = cb.asc(root.get(orderBy));
+		else
+			order = cb.desc(root.get(orderBy));
+		cr.select(root).where(cb.equal(root.get(field), value)).orderBy(order);
 		return DB.createQuery(cr).list();
 	}
 

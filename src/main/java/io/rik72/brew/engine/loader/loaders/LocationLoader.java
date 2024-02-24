@@ -69,7 +69,8 @@ public class LocationLoader implements Loadable {
 				if (stItem.image == null)
 					stItem.image = stItem.status;
 				LocationStatus status = new LocationStatus(location.getName(), stItem.status, stItem.image, description,
-					stItem.word != null ? stItem.word.text : locItem.word.text, stItem.finale != null ? stItem.finale.strip() : null);
+					stItem.word != null ? stItem.word.text : locItem.word.text,
+					stItem.transition, stItem.finale);
 				DB.persist(status);
 				if (firstStatus && !"initial".equals(stItem.status))
 					throw new IllegalParseException("location status list: first item must be the 'initial' status");

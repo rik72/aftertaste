@@ -8,10 +8,4 @@ locations:
       - status: initial
         description: >
           You are on the top of a very high tower.
-
-          Now you remember: last night you drank too much beer and well... maybe letting the water imp drive home
-          was not a good idea.
-
-        finale: >
-          Your life goes back to business as usual, but every now and then you wonder
-          how on earth you ended up in that old cranky little toolshed...
+        finale: the tower finale

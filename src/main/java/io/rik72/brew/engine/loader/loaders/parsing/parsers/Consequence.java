@@ -13,7 +13,7 @@ public class Consequence extends Parser {
 	public String to;
 	public String feedback;
 
-	public Consequence(String entity, String before, String after, String to, String feedback) {
+	private Consequence(String entity, String before, String after, String to, String feedback) {
 		this.entity = entity;
 		this.before = before;
 		this.after = after;

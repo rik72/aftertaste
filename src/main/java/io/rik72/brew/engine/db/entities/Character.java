@@ -3,8 +3,11 @@ package io.rik72.brew.engine.db.entities;
 import io.rik72.brew.engine.db.delta.CharacterDelta;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
+import io.rik72.brew.engine.db.repositories.CharacterXTextGroupRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.utils.TextUtils;
+import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltable;
 import io.rik72.mammoth.exceptions.EntityNotFoundException;
@@ -148,5 +151,20 @@ public class Character extends Complement implements Deltable {
 	@Override
 	public Delta getDelta() {
 		return new CharacterDelta(this);
+	}
+
+	public void remember(short textGroupId) {
+		TextGroup toBeRemembered = TextGroupRepository.get().getById(textGroupId);
+		if (!CharacterXTextGroupRepository.get().existsByCharacterAndTextGroup(this, toBeRemembered)) {
+			CharacterXTextGroup newMemory = new CharacterXTextGroup(this, toBeRemembered);
+			DB.persist(newMemory);
+		}
+	}
+
+	public void remember(TextGroup toBeRemembered) {
+		if (!CharacterXTextGroupRepository.get().existsByCharacterAndTextGroup(this, toBeRemembered)) {
+			CharacterXTextGroup newMemory = new CharacterXTextGroup(this, toBeRemembered);
+			DB.persist(newMemory);
+		}
 	}
 }

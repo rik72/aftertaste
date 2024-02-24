@@ -12,7 +12,7 @@ public class TwoAction extends Parser {
 	public String supplementStatus;
 	public String feedback;
 
-	public TwoAction(String verb, String preposition, String supplement, String supplementStatus, String feedback) {
+	private TwoAction(String verb, String preposition, String supplement, String supplementStatus, String feedback) {
 		this.verb = verb;
 		this.preposition = preposition;
 		this.supplement = supplement;

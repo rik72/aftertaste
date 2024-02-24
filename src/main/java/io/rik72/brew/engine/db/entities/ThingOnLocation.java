@@ -3,6 +3,7 @@ package io.rik72.brew.engine.db.entities;
 import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnLocation;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.LocationStatusRepository;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.utils.TextUtils;
@@ -44,19 +45,33 @@ public class ThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
 	@Column
 	String afterText;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup transition;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup finale;
+
 	public ThingOnLocation() {
 	}
 
 	public ThingOnLocation(String action,
-							      Thing complement, String complementStatusLabel,
-							      String beforeName, String beforeStatusLabel,
-							      String afterStatusLabel,
-							      String afterText) {
+						   Thing complement, String complementStatusLabel,
+						   String beforeName, String beforeStatusLabel,
+						   String afterStatusLabel,
+						   String afterText,
+						   String transition,
+						   String finale) {
 		setAction(action);
 		setComplementStatus(complement, complementStatusLabel);
 		setBeforeStatus(beforeName, beforeStatusLabel);
 		setAfterStatus(afterStatusLabel);
 		this.afterText = afterText;
+		if (transition != null)
+			setTransition(transition);
+		if (finale != null)
+			setFinale(finale);
 	}
 
 	@Override
@@ -113,17 +128,41 @@ public class ThingOnLocation implements AbstractEntity, ConsequenceOnLocation {
 		return afterText;
 	}
 
+	@Override
+	public TextGroup getTransition() {
+		return transition;
+	}
+
+	public void setTransition(String textGroup) {
+		this.transition = TextGroupRepository.get().getByName(textGroup);
+		if (this.transition == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
+	@Override
+	public TextGroup getFinale() {
+		return finale;
+	}
+
+	public void setFinale(String textGroup) {
+		this.finale = TextGroupRepository.get().getByName(textGroup);
+		if (this.finale == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
     @Override
     public String toString() {
         return "{ ThingOnLocation :: " + 
-			id + " : " + 
-			TextUtils.quote(action.getText()) + " : " + 
-			TextUtils.quote(complementStatus.getThing().getName()) + " : " + 
-			TextUtils.quote(complementStatus.getLabel()) + " : " + 
-			TextUtils.quote(beforeStatus.getLocation().getName()) + " : " + 
-			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
-			TextUtils.quote(afterStatus.getLabel()) + " : " + 
-			(afterText != null ? afterText : "-") +
+			"id=" + id + ", " + 
+			"action=" + TextUtils.quote(action.getText()) + ", " + 
+			"complement=" + TextUtils.quote(complementStatus.getThing().getName()) + ", " + 
+			"complementStatus=" + TextUtils.quote(complementStatus.getLabel()) + ", " + 
+			"before=" + TextUtils.quote(beforeStatus.getLocation().getName()) + ", " + 
+			"beforeStatus=" + TextUtils.quote(beforeStatus.getLabel()) + ", " + 
+			"afterStatus=" + (afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : null) + ", " + 
+			"afterText=" + TextUtils.quote(afterText) + ", " + 
+			"transition=" + (transition != null ? TextUtils.quote(transition.getName()) : null) + ", " +
+			"finale=" + (finale != null ? TextUtils.quote(finale.getName()) : null) +
 		" }";
 	}
 }

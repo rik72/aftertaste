@@ -21,5 +21,6 @@ characters:
               - . -> ready
               - ( toolshed.big.hammer ) initial => lazlo.inventory ( A big hammer appears in your hands )
               - ( toolshed.big.hammer ) initial -> visible
+            transition: you drank the night away
       - status: ready
         brief: The water imp stands quietly, waiting for your orders.

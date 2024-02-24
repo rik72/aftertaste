@@ -33,10 +33,13 @@
         <mapping class="io.rik72.brew.engine.db.entities.CharacterThingOnLocation" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterOnThing" />
         <mapping class="io.rik72.brew.engine.db.entities.CharacterThingOnThing" />
+        <mapping class="io.rik72.brew.engine.db.entities.CharacterXTextGroup" />
         <mapping class="io.rik72.brew.engine.db.entities.Location" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationXLocation" />
         <mapping class="io.rik72.brew.engine.db.entities.LocationStatusPossibility" />
+        <mapping class="io.rik72.brew.engine.db.entities.Text" />
+        <mapping class="io.rik72.brew.engine.db.entities.TextGroup" />
         <mapping class="io.rik72.brew.engine.db.entities.Thing" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatus" />
         <mapping class="io.rik72.brew.engine.db.entities.ThingStatusPossibility" />

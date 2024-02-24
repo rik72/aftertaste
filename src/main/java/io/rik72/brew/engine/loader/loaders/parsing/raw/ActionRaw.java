@@ -5,4 +5,6 @@ import java.util.List;
 public class ActionRaw extends Raw {
 	public String action;
 	public List<String> consequences;
+	public String transition;
+	public String finale;
 }

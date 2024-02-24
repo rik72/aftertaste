@@ -3,6 +3,7 @@ package io.rik72.brew.engine.db.entities;
 import io.rik72.brew.engine.db.entities.abstractions.ConsequenceOnThing;
 import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingStatusRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
@@ -52,6 +53,14 @@ public class CharacterOnThing implements AbstractEntity, ConsequenceOnThing {
 	@Column
 	String afterText;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup transition;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup finale;
+
 	public CharacterOnThing() {
 	}
 
@@ -61,7 +70,9 @@ public class CharacterOnThing implements AbstractEntity, ConsequenceOnThing {
 							String afterStatusLabel,
 							String toLocationName,
 							Boolean afterVisibility,
-							String afterText) {
+							String afterText,
+							String transition,
+							String finale) {
 		setAction(action);
 		setComplementStatus(complement, complementStatusLabel);
 		setBeforeStatus(beforeName, beforeStatusLabel);
@@ -71,6 +82,10 @@ public class CharacterOnThing implements AbstractEntity, ConsequenceOnThing {
 			setToLocation(toLocationName);
 		this.afterVisibility = afterVisibility;
 		this.afterText = afterText;
+		if (transition != null)
+			setTransition(transition);
+		if (finale != null)
+			setFinale(finale);
 	}
 
 	@Override
@@ -143,19 +158,43 @@ public class CharacterOnThing implements AbstractEntity, ConsequenceOnThing {
 		return afterText;
 	}
 
+	@Override
+	public TextGroup getTransition() {
+		return transition;
+	}
+
+	public void setTransition(String textGroup) {
+		this.transition = TextGroupRepository.get().getByName(textGroup);
+		if (this.transition == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
+	@Override
+	public TextGroup getFinale() {
+		return finale;
+	}
+
+	public void setFinale(String textGroup) {
+		this.finale = TextGroupRepository.get().getByName(textGroup);
+		if (this.finale == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
     @Override
     public String toString() {
         return "{ CharacterOnThing :: " + 
-			id + " : " + 
-			TextUtils.quote(action.getText()) + " : " + 
-			TextUtils.quote(complementStatus.getCharacter().getName()) + " : " + 
-			TextUtils.quote(complementStatus.getLabel()) + " : " + 
-			TextUtils.quote(beforeStatus.getThing().getName()) + " : " + 
-			TextUtils.quote(beforeStatus.getLabel()) + " : " + 
-			(afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : "-") + " : " + 
-			(toLocation != null ? TextUtils.quote(toLocation.getName()) : "-") + " : " + 
-			(afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : "-") + " : " + 
-			(afterText != null ? afterText : "-") +
+			"id=" + id + ", " + 
+			"action=" + TextUtils.quote(action.getText()) + ", " + 
+			"complement=" + TextUtils.quote(complementStatus.getCharacter().getName()) + ", " + 
+			"complementStatus=" + TextUtils.quote(complementStatus.getLabel()) + ", " + 
+			"before=" + TextUtils.quote(beforeStatus.getThing().getName()) + ", " + 
+			"beforeStatus=" + TextUtils.quote(beforeStatus.getLabel()) + ", " + 
+			"afterStatus=" + (afterStatus != null ? TextUtils.quote(afterStatus.getLabel()) : null) + ", " + 
+			"toLocation=" + (toLocation != null ? TextUtils.quote(toLocation.getName()) : null) + ", " + 
+			"afterVisibility=" + (afterVisibility != null ? (afterVisibility ? "visible" : "invisible") : null) + ", " + 
+			"afterText=" + afterText + ", " +
+			"transition=" + (transition != null ? TextUtils.quote(transition.getName()) : null) + ", " +
+			"finale=" + (finale != null ? TextUtils.quote(finale.getName()) : null) +
 		" }";
 	}
 }

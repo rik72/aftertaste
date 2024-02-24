@@ -21,8 +21,8 @@ public class ExecutorFactory {
 
 	static {
 		executorMap.put(new Type[] { Type.command }, CommandExecutor.class);
+		executorMap.put(new Type[] { Type.command, Type.number }, CommandExecutor.class);
 		executorMap.put(new Type[] { Type.command, Type.name }, CommandExecutor.class);
-		executorMap.put(new Type[] { Type.command, Type.name, Type.number }, CommandExecutor.class);
 		executorMap.put(new Type[] { Type.command, Type.name, Type.number }, CommandExecutor.class);
 		executorMap.put(new Type[] { Type.command, Type.entity }, CommandExecutor.class);
 		executorMap.put(new Type[] { Type.direction }, ZeroActionExecutor.class);

@@ -12,7 +12,7 @@ public class Direction extends Parser {
 	public String location;
 	public List<String> verbs;
 		
-	public Direction(String location, List<String> verbs) {
+	private Direction(String location, List<String> verbs) {
 		this.location = location;
 		this.verbs = verbs;
 	}

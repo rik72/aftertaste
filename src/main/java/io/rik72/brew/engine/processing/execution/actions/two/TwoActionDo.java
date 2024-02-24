@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
+import io.rik72.brew.engine.db.entities.TextGroup;
 import io.rik72.brew.engine.db.entities.Thing;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.Word.EntityType;
@@ -99,6 +100,8 @@ public class TwoActionDo extends TwoActionExecutor {
 
 		boolean refresh = false;
 		List<String> texts = new ArrayList<>();
+		TextGroup transition = null;
+		TextGroup finale = null;
 
 		if (consequencesOnThings.size() > 0) {
 			for (ConsequenceOnThing action : consequencesOnThings) {
@@ -107,6 +110,10 @@ public class TwoActionDo extends TwoActionExecutor {
 					ConsequenceHelper.applyConsequenceOnThing(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
+					if (action.getTransition() != null)
+						transition = action.getTransition();
+					if (action.getFinale() != null)
+						finale = action.getFinale();
 				}
 			}
 		}
@@ -118,6 +125,10 @@ public class TwoActionDo extends TwoActionExecutor {
 					ConsequenceHelper.applyConsequenceOnLocation(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
+					if (action.getTransition() != null)
+						transition = action.getTransition();
+					if (action.getFinale() != null)
+						finale = action.getFinale();
 					refresh = true;
 				}
 			}
@@ -130,14 +141,18 @@ public class TwoActionDo extends TwoActionExecutor {
 					ConsequenceHelper.applyConsequenceOnCharacter(action, before);
 					if (action.getAfterText() != null)
 						texts.add(action.getAfterText());
+					if (action.getTransition() != null)
+						transition = action.getTransition();
+					if (action.getFinale() != null)
+						finale = action.getFinale();
 				}
 			}
 		}
 
 		if (isDoable())
-			results = buildResults(true, refresh, doneFeedback());
+			results = buildResults(true, refresh, doneFeedback(), transition, finale);
 		else
-			results = buildResults(false, refresh, cantDoThat());
+			results = buildResults(false, refresh, cantDoThat(), transition, finale);
 		results.getTexts().addAll(texts);
 		return results;
 	}

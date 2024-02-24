@@ -24,6 +24,7 @@ import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.loaders.ActionLoader;
 import io.rik72.brew.engine.loader.loaders.LocationLoader;
 import io.rik72.brew.engine.loader.loaders.StoryLoader;
+import io.rik72.brew.engine.loader.loaders.TextLoader;
 import io.rik72.brew.engine.loader.loaders.ThingLoader;
 import io.rik72.brew.engine.loader.loaders.WordLoader;
 import io.rik72.mammoth.db.DB;
@@ -33,6 +34,7 @@ import io.rik72.vati.VatiLocale;
 
 public class Story {
 	private StoryDescriptor descriptor;
+	private short introId;
 	private List<String> intro = new ArrayList<>();
 	private Skin skin;
 	private SkinData skinData;
@@ -47,6 +49,7 @@ public class Story {
 	}
 
 	public void init() {
+		new TextLoader().register();
 		new StoryLoader().register();
 		new WordLoader().register();
 		new LocationLoader().register();
@@ -69,6 +72,14 @@ public class Story {
 
 	public List<String> getIntro() {
 		return intro;
+	}
+
+	public short getIntroId() {
+		return introId;
+	}
+
+	public void setIntroId(short introId) {
+		this.introId = introId;
 	}
 
 	public Skin getSkin() {

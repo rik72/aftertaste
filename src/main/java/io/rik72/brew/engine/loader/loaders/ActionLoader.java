@@ -27,6 +27,7 @@ import io.rik72.brew.engine.db.repositories.CharacterOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.CharacterOnThingRepository;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
+import io.rik72.brew.engine.db.repositories.CharacterThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnLocationRepository;
@@ -58,6 +59,11 @@ public class ActionLoader implements Loadable {
 	public void load(LoadPath loadPath) throws Exception {
 		loadThingActions(loadPath);
 		loadCharacterActions(loadPath);
+	}
+
+	private void resetTransitionAndFinale(Action actData) {
+		actData.transition = null;
+		actData.finale = null;
 	}
 
 	private void loadThingActions(LoadPath loadPath) throws Exception {
@@ -104,8 +110,10 @@ public class ActionLoader implements Loadable {
 												complement, 				stItem.status,
 												beforeName, 				beforeStatus,
 												afterStatus,				conData.to,
-												afterVisibility,			conData.feedback);
+												afterVisibility,			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -114,8 +122,10 @@ public class ActionLoader implements Loadable {
 												oneActData.verb,
 												complement, 				stItem.status,
 												conData.entity, 			conData.before,
-												conData.after,				conData.feedback);
+												conData.after,				conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -130,9 +140,11 @@ public class ActionLoader implements Loadable {
 												oneActData.verb,
 												complement, 				stItem.status,
 												conData.entity, 			conData.before,
-												conData.after,			conData.to,
-												afterVisibility, 			conData.feedback);
+												conData.after,				conData.to,
+												afterVisibility, 			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -150,8 +162,10 @@ public class ActionLoader implements Loadable {
 									complement, 						stItem.status,
 									complement.getName(),				stItem.status,
 									stItem.status, 						null,
-									null,				oneActData.feedback);
+									null,				oneActData.feedback,
+									actData.transition,					actData.finale);
 								DB.persist(action);
+								resetTransitionAndFinale(actData);
 							}
 						}
 						else {
@@ -196,8 +210,10 @@ public class ActionLoader implements Loadable {
 													(Character) supplement, 	twoActData.supplementStatus,
 													beforeName, 				beforeStatus,
 													afterStatus,				conData.to,
-													afterVisibility,			conData.feedback);
+													afterVisibility,			conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											else {
 												ThingThingOnThing action = new ThingThingOnThing(
@@ -207,8 +223,10 @@ public class ActionLoader implements Loadable {
 													(Thing)supplement, 			twoActData.supplementStatus,
 													beforeName, 				beforeStatus,
 													afterStatus,				conData.to,
-													afterVisibility,			conData.feedback);
+													afterVisibility,			conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											break;
 										}
@@ -221,8 +239,10 @@ public class ActionLoader implements Loadable {
 													twoActData.preposition,
 													(Character)supplement, 		twoActData.supplementStatus,
 													conData.entity, 			conData.before,
-													conData.after,				conData.feedback);
+													conData.after,				conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											else {
 												ThingThingOnLocation action = new ThingThingOnLocation(
@@ -231,8 +251,10 @@ public class ActionLoader implements Loadable {
 													twoActData.preposition,
 													(Thing)supplement, 			twoActData.supplementStatus,
 													conData.entity, 			conData.before,
-													conData.after,				conData.feedback);
+													conData.after,				conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											break;
 										}
@@ -256,8 +278,10 @@ public class ActionLoader implements Loadable {
 													(Character)supplement, 		twoActData.supplementStatus,
 													beforeName, 				beforeStatus,
 													afterStatus,				conData.to,
-													afterVisibility,			conData.feedback);
+													afterVisibility,			conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											else {
 												ThingThingOnCharacter action = new ThingThingOnCharacter(
@@ -267,8 +291,10 @@ public class ActionLoader implements Loadable {
 													(Thing)supplement, 			twoActData.supplementStatus,
 													beforeName, 				beforeStatus,
 													afterStatus,				conData.to,
-													afterVisibility,			conData.feedback);
+													afterVisibility,			conData.feedback,
+													actData.transition,			actData.finale);
 												DB.persist(action);
+												resetTransitionAndFinale(actData);
 											}
 											break;
 										}
@@ -290,8 +316,10 @@ public class ActionLoader implements Loadable {
 										(Character)supplement, 				twoActData.supplementStatus,
 										complement.getName(),				stItem.status,
 										stItem.status,						null,
-										null,				twoActData.feedback);
+										null,				twoActData.feedback,
+										actData.transition,					actData.finale);
 									DB.persist(action);
+									resetTransitionAndFinale(actData);
 								}
 								else {
 									ThingThingOnThing action = new ThingThingOnThing(
@@ -301,8 +329,10 @@ public class ActionLoader implements Loadable {
 										(Thing)supplement, 					twoActData.supplementStatus,
 										complement.getName(),				stItem.status,
 										stItem.status,						null,
-										null,				twoActData.feedback);
+										null,				twoActData.feedback,
+										actData.transition,					actData.finale);
 									DB.persist(action);
+									resetTransitionAndFinale(actData);
 								}
 							}
 						}
@@ -355,8 +385,10 @@ public class ActionLoader implements Loadable {
 												complement, 				stItem.status,
 												conData.entity, 			conData.before,
 												afterStatus,				conData.to,
-												afterVisibility,			conData.feedback);
+												afterVisibility,			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -365,8 +397,10 @@ public class ActionLoader implements Loadable {
 												oneActData.verb,
 												complement, 				stItem.status,
 												conData.entity, 			conData.before,
-												conData.after,				conData.feedback);
+												conData.after,				conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -386,8 +420,10 @@ public class ActionLoader implements Loadable {
 												complement, 				stItem.status,
 												beforeName, 				beforeStatus,
 												afterStatus,				conData.to,
-												afterVisibility, 			conData.feedback);
+												afterVisibility, 			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -405,8 +441,10 @@ public class ActionLoader implements Loadable {
 									complement, 						stItem.status,
 									complement.getName(),				stItem.status,
 									stItem.status, 						null,
-									null,				oneActData.feedback);
+									null,				oneActData.feedback,
+									actData.transition,					actData.finale);
 								DB.persist(action);
+								resetTransitionAndFinale(actData);
 							}
 						}
 						else {
@@ -445,8 +483,10 @@ public class ActionLoader implements Loadable {
 												supplement, 				twoActData.supplementStatus,
 												beforeName, 				beforeStatus,
 												afterStatus,				conData.to,
-												afterVisibility,			conData.feedback);
+												afterVisibility,			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -457,8 +497,10 @@ public class ActionLoader implements Loadable {
 												twoActData.preposition,
 												supplement, 				twoActData.supplementStatus,
 												conData.entity, 			conData.before,
-												conData.after,				conData.feedback);
+												conData.after,				conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -480,8 +522,10 @@ public class ActionLoader implements Loadable {
 												supplement, 				twoActData.supplementStatus,
 												beforeName, 				beforeStatus,
 												afterStatus,				conData.to,
-												afterVisibility, 			conData.feedback);
+												afterVisibility, 			conData.feedback,
+												actData.transition,			actData.finale);
 											DB.persist(action);
+											resetTransitionAndFinale(actData);
 											break;
 										}
 
@@ -501,8 +545,10 @@ public class ActionLoader implements Loadable {
 									supplement, 						twoActData.supplementStatus,
 									complement.getName(),				stItem.status,
 									stItem.status,						null,
-									null,				twoActData.feedback);
+									null,				twoActData.feedback,
+									actData.transition,					actData.finale);
 								DB.persist(action);
+								resetTransitionAndFinale(actData);
 							}
 						}
 					}
@@ -523,7 +569,7 @@ public class ActionLoader implements Loadable {
 		List<ThingOnThing> thingThing1Actions = ThingOnThingRepository.get().findAll();
 		thingThing1Actions.forEach(s -> Log.debug(s));
 		Log.skip();
-		Log.debug("THING => THING 2-ACTIONS =================================");
+		Log.debug("THING, THING => THING 2-ACTIONS =================================");
 		List<ThingThingOnThing> thingThing2Actions = ThingThingOnThingRepository.get().findAll();
 		thingThing2Actions.forEach(s -> Log.debug(s));
 		Log.skip();
@@ -531,7 +577,7 @@ public class ActionLoader implements Loadable {
 		List<ThingOnLocation> thingLocation1Actions = ThingOnLocationRepository.get().findAll();
 		thingLocation1Actions.forEach(s -> Log.debug(s));
 		Log.skip();
-		Log.debug("THING => LOCATION 2-ACTIONS ==============================");
+		Log.debug("THING, THING => LOCATION 2-ACTIONS ==============================");
 		List<ThingThingOnLocation> thingLocation2Actions = ThingThingOnLocationRepository.get().findAll();
 		thingLocation2Actions.forEach(s -> Log.debug(s));
 		Log.skip();
@@ -539,7 +585,7 @@ public class ActionLoader implements Loadable {
 		List<ThingOnCharacter> thingCharacter1Actions = ThingOnCharacterRepository.get().findAll();
 		thingCharacter1Actions.forEach(s -> Log.debug(s));
 		Log.skip();
-		Log.debug("THING => CHARACTER 2-ACTIONS ==============================");
+		Log.debug("THING, THING => CHARACTER 2-ACTIONS ==============================");
 		List<ThingThingOnCharacter> thingCharacter2Actions = ThingThingOnCharacterRepository.get().findAll();
 		thingCharacter2Actions.forEach(s -> Log.debug(s));
 
@@ -547,10 +593,10 @@ public class ActionLoader implements Loadable {
 		Log.debug("CHARACTER => THING 1-ACTIONS =================================");
 		List<CharacterOnThing> characterThing1Actions = CharacterOnThingRepository.get().findAll();
 		characterThing1Actions.forEach(s -> Log.debug(s));
-		// Log.skip();
-		// Log.debug("CHARACTER => THING 2-ACTIONS =================================");
-		// List<ThingThingOnThing> ThingThing2Actions = ThingThingOnThingRepository.get().findAll();
-		// ThingThing2Actions.forEach(s -> Log.debug(s));
+		Log.skip();
+		Log.debug("CHARACTER => THING 2-ACTIONS =================================");
+		List<CharacterThingOnCharacter> characterThing2Actions = CharacterThingOnCharacterRepository.get().findAll();
+		characterThing2Actions.forEach(s -> Log.debug(s));
 		Log.skip();
 		Log.debug("CHARACTER => LOCATION 1-ACTIONS ==============================");
 		List<CharacterOnLocation> characterLocation1Actions = CharacterOnLocationRepository.get().findAll();

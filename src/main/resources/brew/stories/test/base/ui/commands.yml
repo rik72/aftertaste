@@ -12,4 +12,7 @@ words:
     - text: inventory
       synonyms:
         - i
+    - text: memory
+      synonyms:
+        - m
     - text: dump

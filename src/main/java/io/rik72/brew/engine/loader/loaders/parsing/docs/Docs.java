@@ -6,6 +6,7 @@ import io.rik72.brew.engine.loader.loaders.parsing.raw.CharacterRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.DictionaryRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.LocationRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.StoryRaw;
+import io.rik72.brew.engine.loader.loaders.parsing.raw.TextRaw;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.ThingRaw;
 
 public class Docs {
@@ -62,6 +63,20 @@ public class Docs {
 			}
 			else
 				things = ((Things)other).things;
+		}
+	}
+
+	public static class Texts implements Mergeable {
+		public List<TextRaw> texts;
+
+		@Override
+		public void merge(Mergeable other) {
+			if (texts != null) {
+				if (((Texts)other).texts != null)
+					texts.addAll(((Texts)other).texts);
+			}
+			else
+				texts = ((Texts)other).texts;
 		}
 	}
 

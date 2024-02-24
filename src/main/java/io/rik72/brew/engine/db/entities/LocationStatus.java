@@ -2,6 +2,7 @@ package io.rik72.brew.engine.db.entities;
 
 import io.rik72.brew.engine.db.entities.abstractions.Status;
 import io.rik72.brew.engine.db.repositories.LocationRepository;
+import io.rik72.brew.engine.db.repositories.TextGroupRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.entities.AbstractEntity;
 import io.rik72.mammoth.exceptions.EntityNotFoundException;
@@ -34,8 +35,13 @@ public class LocationStatus implements AbstractEntity, Status {
     @Column
     private String canonical;
 
-    @Column
-    private String finale;
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup transition;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn
+    private TextGroup finale;
 
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn
@@ -44,13 +50,16 @@ public class LocationStatus implements AbstractEntity, Status {
 	public LocationStatus() {
 	}
 
-	public LocationStatus(String locationName, String label, String image, String description, String canonical, String finale) {
+	public LocationStatus(String locationName, String label, String image, String description, String canonical, String transition, String finale) {
 		setLocation(locationName);
 		this.label = label;
 		this.image = image;
 		this.description = description;
 		this.canonical = canonical;
-		this.finale = finale;
+		if (transition != null)
+			setTransition(transition);
+		if (finale != null)
+			setFinale(finale);
 	}
 
 	@Override
@@ -89,8 +98,24 @@ public class LocationStatus implements AbstractEntity, Status {
 			throw new EntityNotFoundException("Location", locationName);
 	}
 
-	public String getFinale() {
+	public TextGroup getFinale() {
 		return finale;
+	}
+
+	public void setFinale(String textGroup) {
+		this.finale = TextGroupRepository.get().getByName(textGroup);
+		if (this.finale == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
+	}
+
+	public TextGroup getTransition() {
+		return transition;
+	}
+
+	public void setTransition(String textGroup) {
+		this.transition = TextGroupRepository.get().getByName(textGroup);
+		if (this.transition == null)
+			throw new EntityNotFoundException("TextGroup", textGroup);
 	}
 
     @Override
@@ -102,7 +127,8 @@ public class LocationStatus implements AbstractEntity, Status {
 			"canonical=" + TextUtils.denormalize(canonical) + ", " + 
 			"image=" + TextUtils.denormalize(image) + ", " + 
 			"description=" + TextUtils.denormalize(description) + ", " + 
-			"finale=" + TextUtils.denormalize(finale) +
+			"transition=" + transition + ", " +
+			"finale=" + finale +
 		" }";
     }
 }

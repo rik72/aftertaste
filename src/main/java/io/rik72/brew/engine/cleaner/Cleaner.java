@@ -28,7 +28,6 @@ public class Cleaner {
 			ThingCharacterOnLocationRepository.get().deleteAll();
 			ThingCharacterOnThingRepository.get().deleteAll();
 			CharacterStatusRepository.get().deleteAll();
-			CharacterRepository.get().deleteAll();
 
 			ThingOnLocationRepository.get().deleteAll();
 			ThingThingOnLocationRepository.get().deleteAll();
@@ -41,8 +40,13 @@ public class Cleaner {
 			LocationStatusPossibilityRepository.get().deleteAll();
 			LocationXLocationRepository.get().deleteAll();
 			LocationStatusRepository.get().deleteAll();
+
+			TextRepository.get().deleteAll();
+			CharacterXTextGroupRepository.get().deleteAll();
+			TextGroupRepository.get().deleteAll();
+			CharacterRepository.get().deleteAll();
 			LocationRepository.get().deleteAll();
-			
+
 			WordRepository.get().deleteAll();
 
             DB.commitTransaction();
