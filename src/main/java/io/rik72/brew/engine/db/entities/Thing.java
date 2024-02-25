@@ -8,6 +8,7 @@ import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltable;
 import io.rik72.mammoth.exceptions.EntityNotFoundException;
+import io.rik72.vati.locale.Translations;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -67,7 +68,7 @@ public class Thing extends Complement implements Deltable {
 	}
 
 	public String getListCanonical() {
-		return (plural ? "" : "a ") + getStatus().getCanonical();
+		return (plural ? "" : Translations.get("_single_indeterminate_article")) + getStatus().getCanonical();
 	}
 
 	public Location getLocation() {

@@ -30,7 +30,7 @@ import io.rik72.brew.engine.loader.loaders.WordLoader;
 import io.rik72.mammoth.db.DB;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltas;
-import io.rik72.vati.VatiLocale;
+import io.rik72.vati.core.VatiLocale;
 
 public class Story {
 	private StoryDescriptor descriptor;

@@ -1,11 +1,13 @@
-package io.rik72.vati;
+package io.rik72.vati.locale;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-class StringsBackend {
+import io.rik72.vati.core.VatiLocale;
 
-	void setLocale(Locale locale) {
+public class LocaleBackend {
+
+	public void setLocale(Locale locale) {
 		setBundle(getResourceBundle(locale));
 	}
 
@@ -13,7 +15,9 @@ class StringsBackend {
 		return bundle;
 	}
 
-	static StringsBackend get() {
+	public static LocaleBackend get() {
+		if (instance == null)
+			instance = new LocaleBackend();
 		return instance;
 	}
 
@@ -22,7 +26,7 @@ class StringsBackend {
 
 	private ResourceBundle bundle;
 
-	private StringsBackend() {
+	private LocaleBackend() {
 		setBundle(getResourceBundle(VatiLocale.getDefault().getLocale()));
 	}
 
@@ -30,7 +34,7 @@ class StringsBackend {
 		this.bundle = bundle;
 	}
 
-	private static StringsBackend instance = new StringsBackend();
+	private static LocaleBackend instance;
 
 	private static ResourceBundle getResourceBundle(Locale locale) {
 		return ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale);

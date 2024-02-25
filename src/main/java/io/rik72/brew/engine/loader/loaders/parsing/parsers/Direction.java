@@ -3,9 +3,10 @@ package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
+import io.rik72.vati.parselocale.ParseLocalized;
 
 public class Direction extends Parser {
 
@@ -18,7 +19,7 @@ public class Direction extends Parser {
 	}
 
 	// tower ( fly )
-	public static ParseTypedPattern directionP = pattern("directionP", "word *([word])?");
+	public static ParseLocalized<Pattern> directionP = pattern("directionP", "word *([word])?");
 	public static String directionHR = "location [ (verb) ]?";
 
 	public static Direction parse(String raw) {

@@ -16,11 +16,9 @@ import io.rik72.brew.engine.loader.Loader;
 import io.rik72.brew.engine.loader.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
-import io.rik72.brew.engine.settings.parse.CurrentParseType;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.StoryDescriptor;
-import io.rik72.vati.Strings;
-import io.rik72.vati.VatiLocale;
+import io.rik72.vati.core.VatiLocale;
 
 public class StoryLoader implements Loadable {
 
@@ -47,8 +45,7 @@ public class StoryLoader implements Loadable {
 			}
 		}
 		Story.get().setLocale(localeEnum);
-		Strings.setLocale(localeEnum.getLocale());
-		CurrentParseType.setType(localeEnum.getParseType());
+		VatiLocale.setCurrent(localeEnum);
 
 		Skin skinEnum = Skin.getDefault();
 		SkinData skinData = new SkinData(skinEnum.data);

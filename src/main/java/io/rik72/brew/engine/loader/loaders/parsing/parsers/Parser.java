@@ -8,9 +8,8 @@ import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.EmptyOrMissingParseException;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.Raw;
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedString;
-import io.rik72.vati.ParseType;
+import io.rik72.vati.parselocale.ParseLocale;
+import io.rik72.vati.parselocale.ParseLocalized;
 
 public abstract class Parser {
 	
@@ -18,17 +17,17 @@ public abstract class Parser {
 		throw new UnsupportedOperationException();
 	}
 
-	protected static ParseTypedString wordP =
-		new ParseTypedString("Parser.wordP", " *([a-z \\.]+) *", "　*(.+)　*");
-	protected static ParseTypedString textP =
-		new ParseTypedString("Parser.textP", " *([^()]+) *", "　*([^「」]+)　*");
+	protected static ParseLocalized<String> wordP =
+		new ParseLocalized<>("Parser.wordP", " *([a-z \\.]+) *", "　*(.+)　*");
+	protected static ParseLocalized<String> textP =
+		new ParseLocalized<>("Parser.textP", " *([^()]+) *", "　*([^「」]+)　*");
 
-	protected static ParseTypedPattern pattern(String uniqueId, String pattern) {
-		return new ParseTypedPattern(uniqueId,
-			pattern(pattern, ParseType.ASCII), pattern(pattern, ParseType.JAPANESE));
+	protected static ParseLocalized<Pattern> pattern(String uniqueId, String pattern) {
+		return new ParseLocalized<>(uniqueId,
+			pattern(pattern, ParseLocale.ASCII), pattern(pattern, ParseLocale.JAPANESE));
 	}
 
-	private static Pattern pattern(String pattern, ParseType type) {
+	private static Pattern pattern(String pattern, ParseLocale type) {
 		return Pattern.compile(pattern
 			.replace("[", "\\(")
 			.replace("]", "\\)")

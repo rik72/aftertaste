@@ -1,10 +1,11 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
 import io.rik72.brew.engine.loader.loaders.parsing.raw.PossibilityRaw;
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
+import io.rik72.vati.parselocale.ParseLocalized;
 
 public class Possibility extends Parser {
 
@@ -23,10 +24,10 @@ public class Possibility extends Parser {
 	}
 
 	// fly ( The ceiling is very low. )
-	public static ParseTypedPattern possibilityP = pattern("possibilityP", "word *([text])? *(!important)?");
+	public static ParseLocalized<Pattern> possibilityP = pattern("possibilityP", "word *([text])? *(!important)?");
 	public static String possibilityHR = "verb [ (feedback) ]? [ !important ]?";
 	// ( initial ) fly
-	public static ParseTypedPattern inheritP = pattern("inheritP", "[word] *word");
+	public static ParseLocalized<Pattern> inheritP = pattern("inheritP", "[word] *word");
 	public static String inheritHR = "(status) verb";
 
 	public static Possibility parse(PossibilityRaw raw) {

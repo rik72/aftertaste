@@ -9,6 +9,7 @@ import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.db.DB;
+import io.rik72.vati.locale.Translations;
 
 public class CommandSave extends CommandExecutor {
 
@@ -26,7 +27,7 @@ public class CommandSave extends CommandExecutor {
 					File file = Terminal.get().chooseSaveFile("Save game");
                     if (file != null) {
 						SaveGame.saveToFile(file.getPath());
-						Terminal.get().println("Game saved.");
+						Terminal.get().println(Translations.get("game_saved"));
 					}
 				} catch (Exception e) {
 					Terminal.get().hilightln("Error in saving game (" + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");

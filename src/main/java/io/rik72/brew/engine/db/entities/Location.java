@@ -10,6 +10,7 @@ import io.rik72.brew.engine.db.repositories.ThingRepository;
 import io.rik72.brew.engine.utils.TextUtils;
 import io.rik72.mammoth.delta.Delta;
 import io.rik72.mammoth.delta.Deltable;
+import io.rik72.vati.locale.Translations;
 import jakarta.persistence.*;
 
 @Entity
@@ -71,19 +72,21 @@ public class Location extends Complement implements Deltable {
 			for (Character character : charactersHere) {
 				String name = character.getName();
 				builder.append("\n").append(Complement.ucName(name))
-				       .append(" is here. ")
+				       .append(Translations.get("is_here"))
 				       .append(character.getStatus().getBrief());
 			}
 		}
 		List<Thing> thingsHere = ThingRepository.get().findByLocation(this, true, true);
 		if (thingsHere.size() > 0) {
-			builder.append("\nYou see: ");
 			String sep = "";
+			StringBuilder listBuilder = new StringBuilder();
 			for (Thing thing : thingsHere) {
-				builder.append(sep).append(thing.getListCanonical());
-				sep = ", ";
+				listBuilder.append(sep).append(thing.getListCanonical());
+				sep = Translations.get("_comma") + Translations.get("_space");
 			}
-			builder.append(".");
+			builder.append("\n")
+			       .append(Translations.get("you_see", listBuilder.toString()))
+				   .append(Translations.get("_fullstop"));
 		}
 		return builder.toString();
 	}

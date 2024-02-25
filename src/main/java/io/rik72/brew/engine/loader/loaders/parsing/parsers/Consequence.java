@@ -1,9 +1,10 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.exceptions.IllegalParseException;
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
+import io.rik72.vati.parselocale.ParseLocalized;
 
 public class Consequence extends Parser {
 
@@ -22,7 +23,7 @@ public class Consequence extends Parser {
 	}
 
 	// . -> invisible / ( something ) status -> other status ( some feedback )
-	public static ParseTypedPattern consequenceP =
+	public static ParseLocalized<Pattern> consequenceP =
 		pattern("consequenceP", "(\\.|([word]) *word) *(-> *word)? *(=> *word)? *([text])?");
 	public static String consequenceHR =
 		"( . | (thing) status_before [ -> status_after ]? [ => location_after ]? [ (feedback) ]? )";

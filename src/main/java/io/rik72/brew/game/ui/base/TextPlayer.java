@@ -6,7 +6,7 @@ import java.util.List;
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
-import io.rik72.vati.Strings;
+import io.rik72.vati.locale.Translations;
 
 public class TextPlayer {
 
@@ -88,7 +88,7 @@ public class TextPlayer {
 				}
 			}
 		},
-			Strings.get(
+			Translations.get(
 				pages.size() > 0 || (pages.size() == 0 && footer.size() > 0) ?
 					defaultAction : finishAction));
 	}
@@ -105,6 +105,6 @@ public class TextPlayer {
 				if (onFinish != null)
 					onFinish.onSuccess();
 			}
-		}, Strings.get(finishAction));
+		}, Translations.get(finishAction));
 	}
 }

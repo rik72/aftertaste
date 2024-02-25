@@ -1,8 +1,9 @@
 package io.rik72.brew.engine.loader.loaders.parsing.parsers;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import io.rik72.brew.engine.settings.parse.registry.ParseTypedPattern;
+import io.rik72.vati.parselocale.ParseLocalized;
 
 public class OneAction extends Parser {
 
@@ -15,7 +16,7 @@ public class OneAction extends Parser {
 	}
 
 	// take . ( Possessing this item makes you feel more literate. )
-	public static ParseTypedPattern oneActionP = pattern("oneActionP", "word *\\. *([text])?");
+	public static ParseLocalized<Pattern> oneActionP = pattern("oneActionP", "word *\\. *([text])?");
 	public static String oneActionHR = "verb . [ (feedback) ]?";
 
 	public static OneAction parse(String raw) {

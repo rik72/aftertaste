@@ -14,7 +14,7 @@ import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.game.ui.Terminal;
-import io.rik72.vati.Strings;
+import io.rik72.vati.locale.Translations;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -87,7 +87,7 @@ public class TerminalUX {
 
 	public void pressEnterTo(Future then, String action) {
 		skip(1);
-		hilightln(Strings.get("press_enter_to", action));
+		hilightln(Translations.get("press_enter_to", action));
 		skip(1);
 		gui.setEnterListener(then);
 	}
@@ -105,7 +105,7 @@ public class TerminalUX {
 	}
 
 	public void pressEnterToContinue(Future then) {
-		pressEnterTo(then, Strings.get("continue"));
+		pressEnterTo(then, Translations.get("continue"));
 	}
 
 	public void openInput() {

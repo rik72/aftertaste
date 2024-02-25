@@ -10,6 +10,7 @@ import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.savegames.SaveGame;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.delta.Deltas;
+import io.rik72.vati.locale.Translations;
 
 public class CommandLoad extends CommandExecutor {
 
@@ -32,13 +33,13 @@ public class CommandLoad extends CommandExecutor {
 							Story.get().restart();
 							Deltas.set(SaveGame.getInstance().getDeltas());
 							Story.get().applyDeltas();
-							Terminal.get().println("Game loaded.");
+							Terminal.get().println(Translations.get("game_loaded"));
 							Terminal.get().consumeResults(new Results(true, true, "", null, null, false, true));
 						}
 						else {
-							Terminal.get().hilightln("Incompatible save file " + 
-								"('" + SaveGame.getInstance().getStoryDescriptor().getRefId() + "' format vs '" + Story.get().getDescriptor().getRefId() + "'" +
-								" required by current story)");
+							Terminal.get().hilightln(Translations.get("incompatible_save_file",
+								SaveGame.getInstance().getStoryDescriptor().getRefId(),
+								Story.get().getDescriptor().getRefId()));
 							Terminal.get().consumeResults(new Results(false, false, ""));
 						}
                     }

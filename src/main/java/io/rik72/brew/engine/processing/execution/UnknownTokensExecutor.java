@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+import io.rik72.vati.locale.Translations;
+
 public class UnknownTokensExecutor extends Executor {
 
 	private List<String> offendingTokens;
@@ -15,6 +17,6 @@ public class UnknownTokensExecutor extends Executor {
 
 	public Results execute() {
 		String tokenCommaList = offendingTokens.stream().collect(Collectors.joining(", "));
-		return new Results(false, false, "I do not understand the following words: " + tokenCommaList);
+		return new Results(false, false, Translations.get("cant_understand", tokenCommaList));
 	}
 }

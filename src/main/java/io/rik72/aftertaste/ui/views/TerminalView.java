@@ -10,7 +10,7 @@ import io.rik72.bottlerack.view.AbstractView;
 import io.rik72.brew.engine.processing.execution.Future;
 import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.game.ui.Terminal;
-import io.rik72.vati.Strings;
+import io.rik72.vati.locale.Translations;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -131,7 +131,7 @@ public class TerminalView extends AbstractView {
 	}
 
 	public void adjustPromptLabel() {
-		promptLabel.setText(Strings.get("your_action"));
+		promptLabel.setText(Translations.get("your_action"));
 		promptLabel.setMinWidth(Region.USE_PREF_SIZE);
 	}
 
