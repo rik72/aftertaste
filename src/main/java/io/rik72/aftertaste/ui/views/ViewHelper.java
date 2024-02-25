@@ -4,7 +4,7 @@ import java.io.File;
 
 import io.rik72.aftertaste.App;
 import io.rik72.aftertaste.ui.skin.CurrentSkin;
-import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.engine.processing.execution.base.Future;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.engine.story.StoryDescriptor;
 import io.rik72.brew.engine.story.registry.StoryRegistry;

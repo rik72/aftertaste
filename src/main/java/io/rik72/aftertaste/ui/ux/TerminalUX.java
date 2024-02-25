@@ -12,7 +12,7 @@ import io.rik72.aftertaste.ui.views.TerminalView;
 import io.rik72.aftertaste.ui.views.ViewHelper;
 import io.rik72.amber.logger.Log;
 import io.rik72.brew.engine.db.entities.Location;
-import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.engine.processing.execution.base.Future;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.vati.locale.Translations;
 import javafx.geometry.Insets;

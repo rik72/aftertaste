@@ -1,19 +1,20 @@
 package io.rik72.brew.engine.processing.execution.actions.zero;
 
 import java.util.List;
-import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.LocationXLocation;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.repositories.LocationXLocationRepository;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.mammoth.db.DB;
+import io.rik72.vati.locale.Translations;
 
 public class ZeroActionDirection extends ZeroActionExecutor {
 
-	protected ZeroActionDirection(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback);
+	protected ZeroActionDirection(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback) {
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback);
 	}
 
 	@Override
@@ -33,11 +34,11 @@ public class ZeroActionDirection extends ZeroActionExecutor {
 
 	@Override
 	protected String cantDoThat() {
-		return "You can't go that way.";
+		return Translations.get("you_cant_direction");
 	}
 
 	@Override
 	protected String doneFeedback() {
-		return "You go " + verb.getCanonical().getText() + ".";
+		return Translations.get("you_done_direction", verb.getCanonical().getText());
 	}
 }

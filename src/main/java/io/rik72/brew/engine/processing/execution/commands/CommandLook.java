@@ -1,15 +1,13 @@
 package io.rik72.brew.engine.processing.execution.commands;
 
-import java.util.Vector;
-
-import io.rik72.brew.engine.db.entities.Word;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.game.ui.Terminal;
 
 public class CommandLook extends CommandExecutor {
 
-	protected CommandLook(Vector<Word> words, boolean toBeConfirmed) {
-		super(words, toBeConfirmed);
+	protected CommandLook(WordMap wordMap, boolean toBeConfirmed) {
+		super(wordMap, toBeConfirmed);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package io.rik72.brew.engine.processing.execution.actions.two;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
@@ -24,17 +23,19 @@ import io.rik72.brew.engine.db.repositories.ThingCharacterOnThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnThingRepository;
-import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.ConsequenceHelper;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.utils.TextUtils;
+import io.rik72.vati.locale.Translations;
 
 public class TwoActionDo extends TwoActionExecutor {
 
-	protected TwoActionDo(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
+	protected TwoActionDo(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
 	                      Word cName, Complement complement, boolean complementIsInInventory,
 						  Word preposition,
 						  Word sName, Complement supplement, boolean supplementIsInInventory) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback,
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback,
 			cName, complement, complementIsInInventory, preposition, sName, supplement, supplementIsInInventory);
 	}
 
@@ -193,35 +194,35 @@ public class TwoActionDo extends TwoActionExecutor {
 		String supplementText = cName.getEntityType() == EntityType.character ?
 			TextUtils.ucFirst(sName.getCanonical().getText()) :
 			"the " + sName.getCanonical().getText();
-		return "You " + verb.getText() + " " + complementText + " " + preposition.getText() + " " + supplementText + ".";
+		return Translations.get("done_2", verb.getText(), complementText, preposition.getText(), supplementText);
 	}
 
 	protected String complementNotInInventory() {
-		return "You do not possess the " + cName.getCanonical().getText();
+		return Translations.get("you_do_not_own", cName.getCanonical().getText());
 	}
 
 	protected String complementNotInLocation() {
-		return "You must drop the " + cName.getCanonical().getText() + " first";
+		return Translations.get("you_must_drop", cName.getCanonical().getText());
 	}
 
 	protected String supplementNotInInventory() {
-		return "You do not possess the " + sName.getCanonical().getText();
+		return Translations.get("you_do_not_own", sName.getCanonical().getText());
 	}
 
 	protected String supplementNotInLocation() {
-		return "You must drop the " + sName.getCanonical().getText() + " first";
+		return Translations.get("you_must_drop", sName.getCanonical().getText());
 	}
 
 	protected String noSuchSupplement() {
 		switch (sName.getEntityType()) {
 			case character:
-				return sName.getCanonical().getText() + " is not here.";
+				return Translations.get("cant_see_character", cName.getCanonical().getText());
 			
 			case location:
-				return "There " + (supplement.isPlural() ? "is" : "are") + " no " + sName.getCanonical().getText() + " here.";
+				return Translations.get("cant_see_location", cName.getCanonical().getText());
 
 			default:
-				return "You can't see any " + sName.getCanonical().getText() + " here.";
+				return Translations.get("cant_see_thing", cName.getCanonical().getText());
 		}
 	}
 }

@@ -1,13 +1,11 @@
-package io.rik72.brew.engine.processing.execution;
-
-import java.util.Vector;
+package io.rik72.brew.engine.processing.execution.base;
 
 public class AmbiguousTokenExecutor extends Executor {
 
 	private String offendingToken;
 
 	public AmbiguousTokenExecutor(String offendingToken) {
-		super(new Vector<>(), false);
+		super();
 		this.offendingToken = offendingToken;
 	}
 

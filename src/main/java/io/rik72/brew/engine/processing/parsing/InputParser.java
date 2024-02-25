@@ -1,7 +1,8 @@
 package io.rik72.brew.engine.processing.parsing;
 
-import io.rik72.brew.engine.processing.execution.Executor;
 import io.rik72.brew.engine.processing.execution.ExecutorFactory;
+import io.rik72.brew.engine.processing.execution.base.Executor;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.processing.parsing.tokenize.AsciiTokenizer;
 import io.rik72.brew.engine.processing.parsing.tokenize.JapaneseTokenizer;
 import io.rik72.brew.engine.processing.parsing.tokenize.TokenizeResults;
@@ -23,7 +24,8 @@ public class InputParser {
 				return ExecutorFactory.getUnknownTokensExecutor(results.getUnknownTokens());
 			if (results.getAmbiguousWords().size() > 0)
 				return ExecutorFactory.getAmbiguousTokenExecutor(results.getAmbiguousWords().get(0).getText());
-			return ExecutorFactory.get(results.getWords(), results.isToBeConfirmed());
+			
+			return ExecutorFactory.get(new WordMap(results.getWords()), results.isToBeConfirmed());
 		}
 		catch (MultipleResultsException ex) {
 			return ExecutorFactory.getAmbiguousTokenExecutor(ex.getOffendingValue());

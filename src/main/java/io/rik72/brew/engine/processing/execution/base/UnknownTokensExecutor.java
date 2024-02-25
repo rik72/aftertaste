@@ -1,7 +1,6 @@
-package io.rik72.brew.engine.processing.execution;
+package io.rik72.brew.engine.processing.execution.base;
 
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 import io.rik72.vati.locale.Translations;
@@ -11,7 +10,7 @@ public class UnknownTokensExecutor extends Executor {
 	private List<String> offendingTokens;
 
 	public UnknownTokensExecutor(List<String> offendingTokens) {
-		super(new Vector<>(), false);
+		super();
 		this.offendingTokens = offendingTokens;
 	}
 

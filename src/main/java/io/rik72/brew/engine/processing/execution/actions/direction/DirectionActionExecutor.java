@@ -1,24 +1,24 @@
 package io.rik72.brew.engine.processing.execution.actions.direction;
 
-import java.util.Vector;
-
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
-import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.zero.ZeroActionExecutor;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.utils.TextUtils;
+import io.rik72.vati.locale.Translations;
 
 public class DirectionActionExecutor extends ZeroActionExecutor {
 
 	protected Word direction;
 
-	public DirectionActionExecutor(Vector<Word> words, boolean toBeConfirmed) {
-		super(words, toBeConfirmed);
-		this.direction = words.get(1);
+	public DirectionActionExecutor(WordMap wordMap, boolean toBeConfirmed) {
+		super(wordMap, toBeConfirmed);
+		this.direction = wordMap.getComplement();
 	}
 
-	protected DirectionActionExecutor(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback, Word direction) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback);
+	protected DirectionActionExecutor(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback, Word direction) {
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback);
 		this.direction = direction;
 	}
 
@@ -29,18 +29,18 @@ public class DirectionActionExecutor extends ZeroActionExecutor {
 		Class<DirectionActionExecutor> commandClass = (Class<DirectionActionExecutor>)
 			Class.forName("io.rik72.brew.engine.processing.execution.actions.direction." + className);
 		DirectionActionExecutor action = commandClass.getDeclaredConstructor(
-			Vector.class, boolean.class, Word.class, Character.class, String.class, Word.class).newInstance(
-				words, toBeConfirmed, verb, subject, additionalFeedback, direction);
+			WordMap.class, boolean.class, Word.class, Character.class, String.class, Word.class).newInstance(
+				wordMap, toBeConfirmed, verb, subject, additionalFeedback, direction);
 		return action.execute();
 	}
 
 	@Override
 	protected String cantDoThat() {
-		return "You can't " + verb.getCanonical().getText() + " that way.";
+		return Translations.get("you_cant_direction", verb.getCanonical().getText());
 	}
 
 	@Override
 	protected String doneFeedback() {
-		return "You " + verb.getCanonical().getText() + " " + direction.getCanonical().getText() + ".";
+		return Translations.get("you_done_direction", verb.getCanonical().getText(), direction.getCanonical().getText());
 	}
 }

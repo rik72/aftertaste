@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.rik72.aftertaste.ui.views.ViewHelper;
-import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.engine.processing.execution.base.Future;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.vati.locale.Translations;
 

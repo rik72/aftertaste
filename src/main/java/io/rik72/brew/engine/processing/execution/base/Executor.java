@@ -1,22 +1,25 @@
-package io.rik72.brew.engine.processing.execution;
+package io.rik72.brew.engine.processing.execution.base;
 
 import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Word;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 
 public abstract class Executor {
-	protected Vector<Word> words;
+	protected WordMap wordMap;
 	protected boolean toBeConfirmed;
 
-	public Executor(Vector<Word> words, boolean toBeConfirmed) {
-		this.words = words;
+	protected Executor() {}
+
+	public Executor(WordMap wordMap, boolean toBeConfirmed) {
+		this.wordMap = wordMap;
 		this.toBeConfirmed = toBeConfirmed;
 	}
 
 	public abstract Results execute() throws Exception;
 
 	public Vector<Word> getWords() {
-		return words;
+		return wordMap.getWords();
 	}
 
 	public boolean isToBeConfirmed() {

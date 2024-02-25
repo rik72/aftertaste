@@ -1,15 +1,15 @@
 package io.rik72.brew.engine.processing.execution.actions.one;
 
-import java.util.Vector;
-
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
 import io.rik72.brew.engine.db.repositories.CharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingRepository;
-import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.zero.ZeroActionExecutor;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.utils.TextUtils;
+import io.rik72.vati.locale.Translations;
 
 public class OneActionExecutor extends ZeroActionExecutor {
 
@@ -17,15 +17,15 @@ public class OneActionExecutor extends ZeroActionExecutor {
 	protected Complement complement;
 	protected boolean complementIsInInventory;
 
-	public OneActionExecutor(Vector<Word> words, boolean toBeConfirmed) {
-		super(words, toBeConfirmed);
-		this.cName = words.get(1);
+	public OneActionExecutor(WordMap wordMap, boolean toBeConfirmed) {
+		super(wordMap, toBeConfirmed);
+		this.cName = wordMap.getComplement();
 		resolveComplement();
 	}
 
-	protected OneActionExecutor(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
+	protected OneActionExecutor(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
 								Word cName, Complement complement, boolean complementIsInInventory) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback);
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback);
 		this.cName = cName;
 		this.complement = complement;
 		this.complementIsInInventory = complementIsInInventory;
@@ -46,8 +46,8 @@ public class OneActionExecutor extends ZeroActionExecutor {
 			commandClass = OneActionDo.class;
 		}
 		OneActionExecutor action = commandClass.getDeclaredConstructor(
-			Vector.class, boolean.class, Word.class, Character.class, String.class, Word.class, Complement.class, boolean.class).newInstance(
-				words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
+			WordMap.class, boolean.class, Word.class, Character.class, String.class, Word.class, Complement.class, boolean.class).newInstance(
+				wordMap, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 		return action.execute();
 	}
 
@@ -73,13 +73,13 @@ public class OneActionExecutor extends ZeroActionExecutor {
 	protected String noSuchComplement() {
 		switch (cName.getEntityType()) {
 			case character:
-				return cName.getCanonical().getText() + " is not here.";
+				return Translations.get("cant_see_character", cName.getCanonical().getText());
 			
 			case location:
-				return "There " + (complement.isPlural() ? "is" : "are") + " no " + cName.getCanonical().getText() + " here.";
+				return Translations.get("cant_see_location", cName.getCanonical().getText());
 
 			default:
-				return "You can't see any " + cName.getCanonical().getText() + " here.";
+				return Translations.get("cant_see_thing", cName.getCanonical().getText());
 		}
 	}
 }

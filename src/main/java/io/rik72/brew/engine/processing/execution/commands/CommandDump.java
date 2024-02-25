@@ -27,13 +27,14 @@ import io.rik72.brew.engine.db.repositories.ThingOnThingRepository;
 import io.rik72.brew.engine.db.repositories.ThingThingOnThingRepository;
 import io.rik72.brew.engine.db.repositories.WordRepository;
 import io.rik72.brew.engine.db.repositories.abstractions.ComplementRepository;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.mammoth.repositories.AbstractRepository;
 
 public class CommandDump extends CommandExecutor {
 
-	public CommandDump(Vector<Word> words, boolean toBeConfirmed) {
-		super(words, toBeConfirmed);
+	public CommandDump(WordMap wordMap, boolean toBeConfirmed) {
+		super(wordMap, toBeConfirmed);
 	}
 
 	private static Map<String, AbstractRepository<?>> repoMap = new HashMap<>();
@@ -60,6 +61,7 @@ public class CommandDump extends CommandExecutor {
 	@Override
 	public Results execute() {
 
+		Vector<Word> words = wordMap.getWords();
 		Word entity = words.size() >= 2 ? words.get(1) : null;
 		Word id = words.size() >= 3 ? words.get(2) : null;
 

@@ -1,18 +1,18 @@
 package io.rik72.brew.engine.processing.execution.actions.one;
 
-import java.util.Vector;
-
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.mammoth.db.DB;
+import io.rik72.vati.locale.Translations;
 
 public class OneActionDrop extends OneActionDo {
 
-	protected OneActionDrop(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
+	protected OneActionDrop(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
 	                        Word cName, Complement complement, boolean complementIsInInventory) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 	}
 
 	@Override
@@ -46,21 +46,21 @@ public class OneActionDrop extends OneActionDo {
 	protected String noSuchComplement() {
 		if (complement == null)
 			return "No such thing is in your inventory.";
-		return "The " + cName.getText() + " " + (complement.isPlural() ? "are" : "is") + " not in your inventory.";
+		return Translations.get("you_do_not_own", cName.getCanonical().getText());
 	}
 
 	@Override
 	protected String doneFeedback() {
-		return "You drop the " + cName.getText() + ".";
+		return Translations.get("you_done_drop", cName.getText());
 	}
 
 	@Override
 	protected String cantDoThat() {
-		return "You can't drop the " + cName.getText() + ".";
+		return Translations.get("you_cant_drop", cName.getText());
 	}
 
 	@Override
 	protected String complementNotInInventory() {
-		return "The " + cName.getText() + " " + (complement.isPlural() ? "are" : "is") + " not in your inventory.";
+		return Translations.get("you_do_not_own", cName.getCanonical().getText());
 	}
 }

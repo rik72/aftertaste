@@ -1,16 +1,15 @@
 package io.rik72.brew.engine.processing.execution.actions.one;
 
-import java.util.Vector;
-
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Word;
 import io.rik72.brew.engine.db.entities.abstractions.Complement;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 
 public class OneActionClose extends OneActionDo {
 
-	protected OneActionClose(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
+	protected OneActionClose(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
 	                         Word cName, Complement complement, boolean complementIsInInventory) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 	}
 
 	@Override

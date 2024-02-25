@@ -2,7 +2,6 @@ package io.rik72.brew.engine.processing.execution.actions.one;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import io.rik72.brew.engine.db.entities.Character;
 import io.rik72.brew.engine.db.entities.Location;
@@ -21,15 +20,17 @@ import io.rik72.brew.engine.db.repositories.LocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnCharacterRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnLocationRepository;
 import io.rik72.brew.engine.db.repositories.ThingOnThingRepository;
-import io.rik72.brew.engine.processing.execution.Results;
 import io.rik72.brew.engine.processing.execution.actions.ConsequenceHelper;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.utils.TextUtils;
+import io.rik72.vati.locale.Translations;
 
 public class OneActionDo extends OneActionExecutor {
 
-	protected OneActionDo(Vector<Word> words, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
+	protected OneActionDo(WordMap wordMap, boolean toBeConfirmed, Word verb, Character subject, String additionalFeedback,
 	                      Word cName, Complement complement, boolean complementIsInInventory) {
-		super(words, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
+		super(wordMap, toBeConfirmed, verb, subject, additionalFeedback, cName, complement, complementIsInInventory);
 	}
 
 	@Override
@@ -148,14 +149,14 @@ public class OneActionDo extends OneActionExecutor {
 		String complementText = cName.getEntityType() == EntityType.character ?
 			TextUtils.ucFirst(cName.getCanonical().getText()) :
 			"the " + cName.getCanonical().getText();
-		return "You " + verb.getText() + " " + complementText + ".";
+		return Translations.get("done_1", verb.getText() + " " + complementText);
 	}
 
 	protected String complementNotInInventory() {
-		return "You do not possess the " + cName.getCanonical().getText();
+		return Translations.get("you_do_not_own", cName.getCanonical().getText());
 	}
 
 	protected String complementNotInLocation() {
-		return "You must drop the " + cName.getCanonical().getText() + " first";
+		return Translations.get("you_must_drop", cName.getCanonical().getText());
 	}
 }

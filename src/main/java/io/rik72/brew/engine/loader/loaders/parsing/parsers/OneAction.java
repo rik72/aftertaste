@@ -15,7 +15,6 @@ public class OneAction extends Parser {
 		this.feedback = feedback;
 	}
 
-	// take . ( Possessing this item makes you feel more literate. )
 	public static ParseLocalized<Pattern> oneActionP = pattern("oneActionP", "word *\\. *([text])?");
 	public static String oneActionHR = "verb . [ (feedback) ]?";
 

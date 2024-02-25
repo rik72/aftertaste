@@ -1,18 +1,16 @@
 package io.rik72.brew.engine.processing.execution.commands;
 
-import java.util.Vector;
-
-import io.rik72.brew.engine.db.entities.Word;
-import io.rik72.brew.engine.processing.execution.Future;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Future;
+import io.rik72.brew.engine.processing.execution.base.Results;
+import io.rik72.brew.engine.processing.parsing.mapping.WordMap;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.Terminal;
 import io.rik72.mammoth.db.DB;
 
 public class CommandRestart extends CommandExecutor {
 
-	public CommandRestart(Vector<Word> words, boolean toBeConfirmed) {
-		super(words, toBeConfirmed);
+	public CommandRestart(WordMap wordMap, boolean toBeConfirmed) {
+		super(wordMap, toBeConfirmed);
 	}
 
 	@Override

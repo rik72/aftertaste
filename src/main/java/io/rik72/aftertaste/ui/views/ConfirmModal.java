@@ -2,7 +2,7 @@ package io.rik72.aftertaste.ui.views;
 
 import io.rik72.aftertaste.App;
 import io.rik72.aftertaste.ui.skin.CurrentSkin;
-import io.rik72.brew.engine.processing.execution.Future;
+import io.rik72.brew.engine.processing.execution.base.Future;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;

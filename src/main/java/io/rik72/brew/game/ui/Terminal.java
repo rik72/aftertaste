@@ -4,14 +4,15 @@ import io.rik72.aftertaste.config.Config;
 import io.rik72.brew.engine.db.entities.Location;
 import io.rik72.brew.engine.db.entities.TextGroup;
 import io.rik72.brew.engine.db.repositories.CharacterXTextGroupRepository;
-import io.rik72.brew.engine.processing.execution.Executor;
-import io.rik72.brew.engine.processing.execution.Future;
-import io.rik72.brew.engine.processing.execution.Results;
+import io.rik72.brew.engine.processing.execution.base.Executor;
+import io.rik72.brew.engine.processing.execution.base.Future;
+import io.rik72.brew.engine.processing.execution.base.Results;
 import io.rik72.brew.engine.processing.parsing.InputParser;
 import io.rik72.brew.engine.story.Story;
 import io.rik72.brew.game.ui.base.TerminalBase;
 import io.rik72.brew.game.ui.base.TextPlayer;
 import io.rik72.mammoth.db.DB;
+import io.rik72.vati.locale.Translations;
 
 public class Terminal extends TerminalBase {
 
@@ -238,9 +239,7 @@ public class Terminal extends TerminalBase {
 				@Override
 				public void onSuccess() {
 					pull(2);
-					printLongText(
-						"It seems your story has come to an end.\n" +
-						"Maybe it's not The End, and maybe it's not the end we thought for you from the start, but it is an ending anyway...");
+					printLongText(Translations.get("the_end"));
 					// start finale text slideshow
 					pressEnterToContinue(new Future() {
 						@Override
