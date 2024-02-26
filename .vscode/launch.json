@@ -9,6 +9,7 @@
 			"name": "Main",
 			"request": "launch",
 			"mainClass": "io.rik72.aftertaste.Main",
+			//"args": ["--resetPrefs"],
 			"projectName": "aftertaste"
 		}
 	]

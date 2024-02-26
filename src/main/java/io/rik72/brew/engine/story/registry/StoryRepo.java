@@ -44,6 +44,6 @@ public abstract class StoryRepo {
 	}
 	
 	public void putPref() {
-		UserPreferences.put(repoPrefsKey, String.join(":", paths));
+		UserPreferences.put(repoPrefsKey, String.join(":::", paths));
 	}
 }

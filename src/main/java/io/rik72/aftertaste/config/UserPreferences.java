@@ -1,6 +1,9 @@
 package io.rik72.aftertaste.config;
 
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+
+import io.rik72.amber.logger.Log;
 
 public class UserPreferences {
 
@@ -16,6 +19,15 @@ public class UserPreferences {
         getInstance().putPrefImpl(key, value);
     }
 
+    public static void clear() {
+        try {
+            getInstance().clearAllPrefs();
+            Log.info("All user preferences cleared");
+        } catch (BackingStoreException e) {
+            Log.error("It was not possible to reset user preferences due to a BackingStoreException: " + e.getMessage());
+        }
+    }
+
     private Preferences prefs;
 
 	private UserPreferences() {
@@ -28,6 +40,10 @@ public class UserPreferences {
 
     private void putPrefImpl(String key, String defaultValue) {
         prefs.put(key, defaultValue);
+    }
+
+    private void clearAllPrefs() throws BackingStoreException {
+        prefs.clear();
     }
 
 	///////////////////////////////////////////////////////////////////////////
