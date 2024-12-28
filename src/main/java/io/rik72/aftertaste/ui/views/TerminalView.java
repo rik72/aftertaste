@@ -13,6 +13,11 @@ import io.rik72.brew.game.ui.Terminal;
 import io.rik72.vati.locale.Translations;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,6 +27,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -72,6 +78,7 @@ public class TerminalView extends AbstractView {
 		promptField.setPrefColumnCount(200);
 		promptField.setFont(CurrentSkin.getGUIFont());
 		promptField.setDisable(true);
+					
 		promptField.setOnKeyPressed(event -> {
 			KeyCode kc = event.getCode();
 			String text = promptField.getText();
@@ -88,6 +95,62 @@ public class TerminalView extends AbstractView {
 				}
 			}
 		});
+
+	    // final EventHandler<KeyEvent> promptKeyPressHandler = new EventHandler<>() {
+		// 	@Override
+		// 	public void handle(KeyEvent event) {
+		// 		KeyCode kc = event.getCode();
+		// 		String text = promptField.getText();
+		// 		if (kc == KeyCode.ENTER) {
+		// 			if (text.length() > 0) {
+		// 				try {
+		// 					Terminal.get().hilightln("> " + text);
+		// 					promptField.clear();
+		// 					Results results = Terminal.get().executeInput(text);
+		// 					Terminal.get().consumeResults(results);
+		// 				} catch (Exception e) {
+		// 					e.printStackTrace();
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// };
+
+		// promptField.setEventDispatcher(new EventDispatcher() {
+
+		// 	@Override
+		// 	public Event dispatchEvent(Event event, EventDispatchChain tail) {
+		// 		// // First, dispatch event for the capturing phase
+		// 		// event = dispatchCapturingEvent(event);
+		// 		// if (event.isConsumed()) {
+		// 		// 	return null;
+		// 		// }
+
+		// 		event = tail.dispatchEvent(event);
+
+		// 		// once we've reached this point the capturing phase has completed
+
+		// 		if (event != null) {
+		// 			// Not consumed from down the chain so we now handle the
+		// 			// bubbling phase of the process
+
+		// 			if (event instanceof KeyEvent)
+		// 				promptKeyPressHandler.handle((KeyEvent)event);
+
+		// 			if (event.isConsumed()) {
+		// 				// One of the EventHandlers invoked in dispatchBubblingEvent
+		// 				// consumed the event. Return null to indicate processing is complete
+		// 				return null;
+		// 			}
+
+		// 			if (!event.getEventType().getName().contains("MOUSE"))
+		// 				System.out.println(event);
+		// 		}
+
+		// 		// return the event, or null if tail.dispatchEvent returned null
+		// 		return event;
+		// 	}	
+		// });
 
 		// Layout ===========================================================
 		// scrollable text pane

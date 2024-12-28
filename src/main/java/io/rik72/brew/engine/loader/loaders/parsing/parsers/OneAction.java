@@ -25,13 +25,12 @@ public class OneAction extends Parser {
 
 		Matcher m = oneActionP.get().matcher(raw);
 		if (m.matches()) {
-			verb = trim( m.group(1));
+			verb = trim(m.group(1));
 			feedback = trim(m.group(3));
-		}
-		else {
+		} else {
 			return null;
 		}
-			
+
 		return new OneAction(verb, feedback);
 	}
 }

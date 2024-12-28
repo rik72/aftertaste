@@ -15,7 +15,7 @@ import io.rik72.brew.engine.db.repositories.CharacterStatusRepository;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
 import io.rik72.brew.engine.loader.Loader;
-import io.rik72.brew.engine.loader.YmlParser;
+import io.rik72.brew.engine.loader.loaders.parsing.YmlParser;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Helpers;
 import io.rik72.brew.engine.loader.loaders.parsing.parsers.Parser;

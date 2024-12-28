@@ -4,7 +4,7 @@ import io.rik72.brew.engine.db.entities.Word.EntityType;
 import io.rik72.brew.engine.db.entities.Word.Type;
 import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.Loadable;
-import io.rik72.brew.engine.loader.YmlParser;
+import io.rik72.brew.engine.loader.loaders.parsing.YmlParser;
 
 public class WordsDocLoader implements Loadable {
 

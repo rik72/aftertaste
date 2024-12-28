@@ -1,4 +1,4 @@
-package io.rik72.brew.engine.loader;
+package io.rik72.brew.engine.loader.loaders.parsing;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import io.rik72.brew.engine.loader.LoadPath;
 import io.rik72.brew.engine.loader.loaders.parsing.docs.Docs.Mergeable;
 import io.rik72.brew.engine.utils.FileUtils;
 

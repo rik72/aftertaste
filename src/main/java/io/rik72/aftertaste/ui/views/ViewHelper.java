@@ -28,7 +28,7 @@ public class ViewHelper {
         Terminal.get().clearTextFlow();
 	}
 
-    public static void restart(boolean skipIntro) {
+	public static void restart(boolean skipIntro) {
 
         try {
             BrewController.load();
@@ -87,7 +87,6 @@ public class ViewHelper {
 		}
 	}
 
-
 	public static void removeStory(StoryDescriptor story) throws Exception {
 		switch (story.getLoadPath().getLoadType()) {
 			case CAN: {
@@ -135,7 +134,7 @@ public class ViewHelper {
 		modal.show();
 	}
 
-    public static AlertModal createModal(int width, int height, int padding) {
+	public static AlertModal createModal(int width, int height, int padding) {
 		return new AlertModal(width, height, padding);
     }
 
